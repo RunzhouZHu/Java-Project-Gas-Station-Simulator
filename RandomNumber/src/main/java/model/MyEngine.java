@@ -90,6 +90,16 @@ public class MyEngine extends Engine {
             case ARR:
                 customer = new Customer();
                 customer.setEventTypesToVisit(); // Random
+
+                // Todo:
+                // If the customer do not want anything, add a gas refill default
+                // don't know if this is right, further discussing required.
+                if (customer.getEventTypesToVisit().isEmpty()){
+                    customer.getEventTypesToVisit().add(EventType.DEP1);
+                }
+
+                System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
+
                 routers[0].addQueue(customer);
                 arrivalProcess.generateNextEvent();
                 break;
@@ -97,14 +107,17 @@ public class MyEngine extends Engine {
             // Router events, the 'splits' should be at here
             case Rot1:
                 customer = routers[0].removeQueue();
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().getFirst());
+
                 switch (customer.getEventTypesToVisit().getFirst()) {
                     case DEP1:
                         servicePoints[0].addQueue(customer);
                         break;
-                    case DEP2:
+                    case DEP2, DEP5:
                         servicePoints[1].addQueue(customer);
                         break;
-                    case DEP3, DEP5:
+                    case DEP3:
                         servicePoints[2].addQueue(customer);
                         break;
                     case DEP4:
@@ -117,8 +130,14 @@ public class MyEngine extends Engine {
                 customer = routers[1].removeQueue();
                 if (customer.getEventTypesToVisit().contains(EventType.DEP5)) {
                     servicePoints[4].addQueue(customer);
+
+                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DEP5.");
+
                 } else {
                     routers[2].addQueue(customer);
+
+                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to router3.");
+
                 }
                 break;
 
@@ -129,6 +148,9 @@ public class MyEngine extends Engine {
                     customer.reportResults();
                 } else {
                     routers[0].addQueue(customer);
+
+                    System.out.println("!!!Customer " + customer.getId() + " leaving router3 and reenter the system.");
+
                 }
                 break;
 
@@ -136,30 +158,45 @@ public class MyEngine extends Engine {
             case DEP1:
                 customer = servicePoints[0].removeQueue();
                 customer.finishService(EventType.DEP1);
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving DEP1.");
+
                 routers[2].addQueue(customer);
                 break;
 
             case DEP2:
                 customer = servicePoints[1].removeQueue();
                 customer.finishService(EventType.DEP2);
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving DEP2.");
+
                 routers[1].addQueue(customer);
                 break;
 
             case DEP3:
                 customer = servicePoints[2].removeQueue();
                 customer.finishService(EventType.DEP3);
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving DEP3.");
+
                 routers[2].addQueue(customer);
                 break;
 
             case DEP4:
                 customer = servicePoints[3].removeQueue();
                 customer.finishService(EventType.DEP4);
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving DEP4.");
+
                 routers[2].addQueue(customer);
                 break;
 
             case DEP5:
                 customer = servicePoints[4].removeQueue();
                 customer.finishService(EventType.DEP5);
+
+                System.out.println("!!!Customer " + customer.getId() + " leaving DEP5.");
+
                 routers[2].addQueue(customer);
                 break;
         }

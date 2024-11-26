@@ -63,11 +63,12 @@ public class Customer {
     public void finishService(EventType eventType) {
         if (eventTypesToVisit.contains(eventType)) {
             eventTypesToVisit.remove(eventType);
+        } else if (eventTypesToVisit.contains(EventType.DEP5) && !eventTypesToVisit.contains(EventType.DEP2)) {
+            System.out.println("Attention, the customer ordered the dryer, so the washing is added default.");
         } else {
             System.err.println("ERROR! The customer do not want this service!!");
+            System.err.println("Customer " + id + eventType);
         }
-        System.out.println("Customer " + id + eventTypesToVisit);
-
     }
 
     public void reportResults() {

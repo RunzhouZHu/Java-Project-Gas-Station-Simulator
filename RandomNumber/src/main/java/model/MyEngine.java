@@ -99,7 +99,8 @@ public class MyEngine extends Engine {
 
         switch ((EventType)event.getEventType()) {
             case ARR:
-                routers[0].addQueue(new Customer());
+                customer = new Customer();
+                routers[0].addQueue(customer);
                 arrivalProcess.generateNextEvent();
                 break;
 
@@ -177,6 +178,11 @@ public class MyEngine extends Engine {
         for (ServicePoint servicePoint : servicePoints) {
             if (!servicePoint.isReserved() && servicePoint.isOnQueue()) {
                 servicePoint.beginService();
+            }
+        }
+        for (Router router : routers) {
+            if (!router.isReserved() && router.isOnQueue()) {
+                router.beginService();
             }
         }
     }

@@ -7,16 +7,13 @@ import java.util.LinkedList;
 
 public class Router {
     private final LinkedList<Customer> queue = new LinkedList<>();
-
     private EventList eventList = new EventList();
-
-    private HashMap<EventType, Integer> eventTypes = new HashMap<>();
-
+    private EventType eventTypeScheduled;
     private boolean reserved = false;
 
-    public Router(EventList eventList, HashMap<EventType, Integer> eventTypes) {
+    public Router(EventList eventList, EventType eventTypeScheduled) {
         this.eventList = eventList;
-        this.eventTypes = eventTypes;
+        this.eventTypeScheduled = eventTypeScheduled;
     }
 
     public void addQueue(Customer customer) {
@@ -30,11 +27,9 @@ public class Router {
 
     public void beginService() {
         Trace.out(Trace.Level.INFO, "Starting a new service for the customer #" + queue.peek().getId());
-
-        RandomChooser randomChooser = new RandomChooser(eventTypes);
         reserved = true;
-        EventType eventTypeScheduled = randomChooser.choose();
-        eventList.add(new Event(eventTypeScheduled, Clock.getInstance().getClock()));
+
+        eventList.add(new Event(eventTypeScheduled, 0));
     }
 
     public boolean isReserved() {

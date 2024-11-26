@@ -7,7 +7,7 @@ public class Simulator {
         Trace.setTraceLevel(Trace.Level.INFO);
 
         Engine m = new MyEngine();
-        m.setSimulationTime(100);
+        m.setSimulationTime(1000);
         m.run();
     }
 }

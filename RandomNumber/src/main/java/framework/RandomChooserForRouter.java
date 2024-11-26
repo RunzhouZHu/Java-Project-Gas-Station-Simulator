@@ -6,11 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class RandomChooser {
+/*
+        Get next event type randomly according to the output possibility of
+    the router.
+        This class should be abandoned.
+ */
+public class RandomChooserForRouter {
     private final HashMap<EventType, Integer> eventTypes;
     private Integer totalProbability = 0;
 
-    public RandomChooser(HashMap<EventType, Integer> eventTypes) {
+    public RandomChooserForRouter(HashMap<EventType, Integer> eventTypes) {
         this.eventTypes = eventTypes;
         for (EventType eventType : eventTypes.keySet()) {
             int probability = eventTypes.get(eventType);
@@ -23,9 +28,6 @@ public class RandomChooser {
         Random rand = new Random();
         int randomValue = rand.nextInt(totalProbability);
         for (Map.Entry<EventType, Integer> entry : eventTypes.entrySet()) {
-
-            System.out.println(randomValue + " " + entry.getValue());
-
             if (randomValue < entry.getValue()) {
                 return entry.getKey();
             }
@@ -39,7 +41,7 @@ public class RandomChooser {
         eventTypes.put(EventType.DEP2, 20);
         eventTypes.put(EventType.DEP3, 30);
 
-        RandomChooser chooser = new RandomChooser(eventTypes);
+        RandomChooserForRouter chooser = new RandomChooserForRouter(eventTypes);
 
         for (int i = 0; i < 10; i++) {
             System.out.println(chooser.choose());

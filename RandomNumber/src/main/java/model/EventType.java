@@ -40,18 +40,11 @@ public enum EventType implements IEventType {
     // Gas,  Wash, Repair, Store, Dryer
        DEP1, DEP2, DEP3,   DEP4,  DEP5,
 
-    // 3 Choose Service Router events, the customer exit the Choose Service router,
-    // and has 4 options:
-    // Gas,   Wash,  Repair, Store
-       Rot11, Rot12, Rot13,  Rot14,
-
-    // 2 Dryer or not Router events, customer exit the wash service point and
-    // choose whether to go to the dryer
-    // 2 options:
-       Rot21,// Exit or Choose another service Router
-       Rot22,// Dryer
-
-    // 2 Exit or choose another service events
-       Rot31,// Exit
-       Rot32,// Choose another service
+    // 3 Router events,
+    // Choose Service Router
+        Rot1,
+    // Dryer or not Router
+        Rot2,
+    // Exit or Choose another service Router
+        Rot3,
 }

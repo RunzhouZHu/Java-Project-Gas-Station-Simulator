@@ -65,24 +65,13 @@ public class MyEngine extends Engine {
         // Set 3 Routers
         routers = new Router[3];
         // Router 1, Choose Service Router
-        routers[0] = new Router(eventList, new HashMap<>(){{
-            put(EventType.Rot11, 25);
-            put(EventType.Rot12, 25);
-            put(EventType.Rot13, 25);
-            put(EventType.Rot14, 25);
-        }});
+        routers[0] = new Router(eventList, EventType.Rot1);
 
         // Router 2, Dryer or not Router
-        routers[1] = new Router(eventList, new HashMap<>(){{
-            put(EventType.Rot21, 1);
-            put(EventType.Rot22, 2);
-        }});
+        routers[1] = new Router(eventList, EventType.Rot2);
 
         // Router 3, Exit or Choose another service Router
-        routers[2] = new Router(eventList, new HashMap<>(){{
-            put(EventType.Rot31, 1);
-            put(EventType.Rot32, 2);
-        }});
+        routers[2] = new Router(eventList, EventType.Rot3);
 
         // Set arrival process
         arrivalProcess = new ArrivalProcess(new Negexp(15, 5), eventList, EventType.ARR);
@@ -100,75 +89,48 @@ public class MyEngine extends Engine {
         switch ((EventType)event.getEventType()) {
             case ARR:
                 customer = new Customer();
+                customer.setEventTypesToVisit(); // Random
                 routers[0].addQueue(customer);
                 arrivalProcess.generateNextEvent();
                 break;
 
-            case Rot11:
+            // Router events, the 'splits' should be at here
+            case Rot1:
                 customer = routers[0].removeQueue();
-                servicePoints[0].addQueue(customer);
-                break;
-
-            case Rot12:
-                customer = routers[0].removeQueue();
-                servicePoints[1].addQueue(customer);
-                break;
-
-            case Rot13:
-                customer = routers[0].removeQueue();
-                servicePoints[2].addQueue(customer);
-                break;
-
-            case Rot14:
-                customer = routers[0].removeQueue();
-                servicePoints[3].addQueue(customer);
-                break;
 
 
-            case Rot21:
-                customer = routers[1].removeQueue();
-                routers[2].addQueue(customer);
-                break;
 
-            case Rot22:
-                customer = routers[1].removeQueue();
-                servicePoints[4].addQueue(customer);
-                break;
 
-            case Rot31:
-                customer = routers[2].removeQueue();
-                customer.setRemovalTime(Clock.getInstance().getClock());
-                customer.reportResults();
-                break;
 
-            case Rot32:
-                customer = routers[2].removeQueue();
-                routers[1].addQueue(customer);
-                break;
-
+            // ServicePoint events
             case DEP1:
                 customer = servicePoints[0].removeQueue();
-                routers[3].addQueue(customer);
+                customer.finishService(EventType.DEP1);
+                routers[2].addQueue(customer);
                 break;
 
             case DEP2:
                 customer = servicePoints[1].removeQueue();
-                routers[2].addQueue(customer);
+                customer.finishService(EventType.DEP2);
+                routers[1].addQueue(customer);
                 break;
 
             case DEP3:
                 customer = servicePoints[2].removeQueue();
-                routers[3].addQueue(customer);
+                customer.finishService(EventType.DEP3);
+                routers[2].addQueue(customer);
                 break;
 
             case DEP4:
                 customer = servicePoints[3].removeQueue();
-                routers[3].addQueue(customer);
+                customer.finishService(EventType.DEP4);
+                routers[2].addQueue(customer);
                 break;
 
             case DEP5:
                 customer = servicePoints[4].removeQueue();
-                routers[3].addQueue(customer);
+                customer.finishService(EventType.DEP5);
+                routers[2].addQueue(customer);
                 break;
         }
     }

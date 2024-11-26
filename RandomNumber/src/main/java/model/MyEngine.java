@@ -184,6 +184,6 @@ public class MyEngine extends Engine {
     @Override
     protected void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
-        System.out.println("123123123");
+        System.out.println("Result, haven't done this part yet.");
     }
 }

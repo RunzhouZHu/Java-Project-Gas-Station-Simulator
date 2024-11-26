@@ -10,6 +10,16 @@ public class Engine {
     // events to be processed are stored here
     protected EventList eventList;
 
+    public Engine() {
+        clock = Clock.getInstance();
+
+        eventList = new EventList();
+    }
+
+    public void setSimulationTime(double simulationTime) {
+        this.simulationTime = simulationTime;
+    }
+
     public void run() {
         initialize(); // creating, e.g., the first event
 
@@ -39,7 +49,7 @@ public class Engine {
     }
 
     private boolean simulate() {
-        return clock.getClock() < eventList.getNextEventTime();
+        return clock.getClock() < simulationTime;
     }
 
 

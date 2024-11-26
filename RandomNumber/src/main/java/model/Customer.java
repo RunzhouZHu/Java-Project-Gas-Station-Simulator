@@ -66,6 +66,7 @@ public class Customer {
         } else {
             System.err.println("ERROR! The customer do not want this service!!");
         }
+        System.out.println("Customer " + id + eventTypesToVisit);
 
     }
 

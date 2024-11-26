@@ -97,10 +97,40 @@ public class MyEngine extends Engine {
             // Router events, the 'splits' should be at here
             case Rot1:
                 customer = routers[0].removeQueue();
+                switch (customer.getEventTypesToVisit().getFirst()) {
+                    case DEP1:
+                        servicePoints[0].addQueue(customer);
+                        break;
+                    case DEP2:
+                        servicePoints[1].addQueue(customer);
+                        break;
+                    case DEP3, DEP5:
+                        servicePoints[2].addQueue(customer);
+                        break;
+                    case DEP4:
+                        servicePoints[3].addQueue(customer);
+                        break;
+                }
+                break;
 
+            case Rot2:
+                customer = routers[1].removeQueue();
+                if (customer.getEventTypesToVisit().contains(EventType.DEP5)) {
+                    servicePoints[4].addQueue(customer);
+                } else {
+                    routers[2].addQueue(customer);
+                }
+                break;
 
-
-
+            case Rot3:
+                customer = routers[2].removeQueue();
+                if (customer.getEventTypesToVisit().isEmpty()) {
+                    customer.setRemovalTime(Clock.getInstance().getClock());
+                    customer.reportResults();
+                } else {
+                    routers[0].addQueue(customer);
+                }
+                break;
 
             // ServicePoint events
             case DEP1:

@@ -29,7 +29,7 @@ public class Router {
         Trace.out(Trace.Level.INFO, "Starting a new service for the customer #" + queue.peek().getId());
         reserved = true;
 
-        eventList.add(new Event(eventTypeScheduled, 0));
+        eventList.add(new Event(eventTypeScheduled, 1));
     }
 
     public boolean isReserved() {

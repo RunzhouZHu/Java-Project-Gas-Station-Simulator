@@ -6,11 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="RandomNumber" />
+        <module name="Simulator" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Simulator" target="23" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -44,12 +44,20 @@ public class Engine {
         }
     }
 
-    private double currentTime() {
+    public double currentTime() {
         return eventList.getNextEventTime();
     }
 
-    private boolean simulate() {
+    public boolean simulate() {
         return clock.getClock() < simulationTime;
+    }
+
+    public Clock getClock() {
+        return clock;
+    }
+
+    public EventList getEventList() {
+        return eventList;
     }
 
 

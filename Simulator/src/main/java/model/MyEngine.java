@@ -76,7 +76,7 @@ public class MyEngine extends Engine {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         arrivalProcess.generateNextEvent();
     }
 
@@ -215,7 +215,7 @@ public class MyEngine extends Engine {
     }
 
     @Override
-    protected void results() {
+    public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
     }
@@ -229,4 +229,9 @@ public class MyEngine extends Engine {
     public ServicePoint[] getServicePoints() {
         return servicePoints;
     }
+
+    public ArrivalProcess getArrivalProcesses() {
+        return arrivalProcess;
+    }
+
 }

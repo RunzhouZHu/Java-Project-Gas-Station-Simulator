@@ -7,8 +7,6 @@ import framework.Clock;
 import framework.Engine;
 import framework.Event;
 
-import java.util.HashMap;
-
 public class MyEngine extends Engine {
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
@@ -220,5 +218,15 @@ public class MyEngine extends Engine {
     protected void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
+    }
+
+    // Try to get the instance of routers and service points
+
+    public Router[] getRouters() {
+        return routers;
+    }
+
+    public ServicePoint[] getServicePoints() {
+        return servicePoints;
     }
 }

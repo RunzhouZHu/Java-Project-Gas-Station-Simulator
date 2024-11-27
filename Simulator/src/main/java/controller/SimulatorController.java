@@ -1,11 +1,9 @@
 package controller;
 
-import framework.Engine;
 import framework.Trace;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import model.MyEngine;
-import model.Router;
 import view.SimulatorView;
 
 public class SimulatorController {

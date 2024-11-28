@@ -3,6 +3,7 @@ package controller;
 import framework.Clock;
 import framework.Event;
 import framework.Trace;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,21 +41,36 @@ public class SimulatorController {
 
     @FXML
     private void startSimulationButtonClicked() {
-        System.out.println("startSimulationButtonClicked() called");
 
-        Trace.setTraceLevel(Trace.Level.INFO);
+        Thread thread = new Thread(() -> {
+
+            System.out.println("startSimulationButtonClicked() called");
+
+            Trace.setTraceLevel(Trace.Level.INFO);
 
 
-        m.setSimulationTime(1000);
-        runSimulation();
+            m.setSimulationTime(1000);
+
+            try {
+                runSimulation();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
+
+        thread.start();
 
     }
 
     // Run simulation with UI
-    private void runSimulation() {
+    private void runSimulation() throws InterruptedException {
         m.initialize();
 
         while (m.simulate()) {
+
+            Thread.sleep(10);
+
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + m.currentTime());
             m.getClock().setClock(m.currentTime());
 
@@ -81,7 +97,7 @@ public class SimulatorController {
 
         Customer customer;
 
-        switch ((EventType)event.getEventType()) {
+        switch ((EventType) event.getEventType()) {
             case ARR:
                 customer = new Customer();
                 customer.setEventTypesToVisit(); // Random
@@ -89,7 +105,7 @@ public class SimulatorController {
                 // Todo:
                 // If the customer do not want anything, add a gas refill default
                 // don't know if this is right, further discussing required.
-                if (customer.getEventTypesToVisit().isEmpty()){
+                if (customer.getEventTypesToVisit().isEmpty()) {
                     customer.getEventTypesToVisit().add(EventType.DEP1);
                 }
 
@@ -97,7 +113,8 @@ public class SimulatorController {
 
                 routers[0].addQueue(customer);
 
-                arrivedCustomer.setText(String.valueOf(parseInt(arrivedCustomer.getText()) + 1));
+                Platform.runLater(() -> arrivedCustomer.setText(String.valueOf(parseInt(arrivedCustomer.getText()) + 1)));
+
                 m.getArrivalProcesses().generateNextEvent();
                 break;
 
@@ -110,7 +127,9 @@ public class SimulatorController {
                 switch (customer.getEventTypesToVisit().getFirst()) {
                     case DEP1:
                         servicePoints[0].addQueue(customer);
-                        gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) + 1));
+
+                        Platform.runLater(() -> gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) + 1)));
+
                         break;
                     case DEP2, DEP5:
                         servicePoints[1].addQueue(customer);
@@ -160,7 +179,9 @@ public class SimulatorController {
                 System.out.println("!!!Customer " + customer.getId() + " leaving DEP1.");
 
                 routers[2].addQueue(customer);
-                gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) - 1));
+
+                Platform.runLater(() -> gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) - 1)));
+
                 break;
 
             case DEP2:
@@ -212,9 +233,5 @@ public class SimulatorController {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SimulatorView.launch(SimulatorView.class);
     }
 }

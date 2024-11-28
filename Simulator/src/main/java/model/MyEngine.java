@@ -50,7 +50,7 @@ public class MyEngine extends Engine {
 
         // Set the service points, remember to set suit mean and variance for service time!
         // Gas
-        servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP1);
+        servicePoints[0] = new ServicePoint(new Normal(50,6), eventList, EventType.DEP1);
         // Wash
         servicePoints[1] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP2);
         // Repair

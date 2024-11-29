@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import model.*;
-import view.SimulatorView;
 
 import static java.lang.Integer.parseInt;
 
@@ -133,6 +132,8 @@ public class SimulatorController {
                         break;
                     case DEP2, DEP5:
                         servicePoints[1].addQueue(customer);
+
+                        Platform.runLater(() -> washingCustomer.setText(String.valueOf(parseInt(washingCustomer.getText()) + 1)));
                         break;
                     case DEP3:
                         servicePoints[2].addQueue(customer);
@@ -191,6 +192,8 @@ public class SimulatorController {
                 System.out.println("!!!Customer " + customer.getId() + " leaving DEP2.");
 
                 routers[1].addQueue(customer);
+
+                Platform.runLater(() -> washingCustomer.setText(String.valueOf(parseInt(washingCustomer.getText()) - 1)));
                 break;
 
             case DEP3:

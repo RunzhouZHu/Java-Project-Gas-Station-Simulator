@@ -52,7 +52,7 @@ public class MyEngine extends Engine {
         // Gas
         servicePoints[0] = new ServicePoint(new Normal(30,6), eventList, EventType.DEP1);
         // Wash
-        servicePoints[1] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP2);
+        servicePoints[1] = new ServicePoint(new Normal(20,6), eventList, EventType.DEP2);
         // Repair
         servicePoints[2] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP3);
         // Store

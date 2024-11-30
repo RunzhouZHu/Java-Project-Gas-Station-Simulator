@@ -74,7 +74,7 @@ public class MyEngine extends Engine {
         routers[2] = new Router(eventList, EventType.Rot3);
 
         // Set arrival process
-        arrivalProcess = new ArrivalProcess(new Negexp(15, 5), eventList, EventType.ARR);
+        arrivalProcess = new ArrivalProcess(new Normal(15, 5), eventList, EventType.ARR);
     }
 
     @Override
@@ -108,9 +108,9 @@ public class MyEngine extends Engine {
             case Rot1:
                 customer = routers[0].removeQueue();
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().getFirst());
+                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().get(0));
 
-                switch (customer.getEventTypesToVisit().getFirst()) {
+                switch (customer.getEventTypesToVisit().get(0)) {
                     case DEP1:
                         servicePoints[0].addQueue(customer);
                         break;

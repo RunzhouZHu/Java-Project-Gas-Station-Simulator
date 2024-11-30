@@ -1,13 +1,13 @@
 package framework;
 
-import eduni.distributions.ContinuousGenerator;
+import eduni.distributions.Normal;
 
 public class ArrivalProcess {
-    private ContinuousGenerator generator;
+    private Normal generator;
     private EventList eventList;
     private IEventType eventType;
 
-    public ArrivalProcess(ContinuousGenerator generator, EventList eventList, IEventType eventType) {
+    public ArrivalProcess(Normal generator, EventList eventList, IEventType eventType) {
         this.generator = generator;
         this.eventList = eventList;
         this.eventType = eventType;

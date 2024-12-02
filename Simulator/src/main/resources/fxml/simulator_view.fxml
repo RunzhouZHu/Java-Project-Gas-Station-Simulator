@@ -11,15 +11,6 @@
 <?import javafx.scene.text.Font?>
 
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ImageView fitHeight="800.0" fitWidth="1026.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/station.jpg" />
-         </image>
-      </ImageView>
-   </children>
-</HBox>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SimulatorController">
    <top>
       <Label text="Gas Station Simulator" BorderPane.alignment="CENTER">
@@ -29,6 +20,15 @@
       </Label>
    </top>
    <center>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+         <children>
+            <ImageView fitHeight="800.0" fitWidth="1026.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/station.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="600.0">

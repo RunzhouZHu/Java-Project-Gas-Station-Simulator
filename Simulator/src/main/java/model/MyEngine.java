@@ -7,6 +7,8 @@ import framework.Clock;
 import framework.Engine;
 import framework.Event;
 
+import java.util.HashMap;
+
 public class MyEngine extends Engine {
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
@@ -17,66 +19,73 @@ public class MyEngine extends Engine {
 
     /*
     Simulation case: a gas station with 5 different service points
-                                    ARRIVE
-                                      │
-                    ┌─────────────────▼──────────────────┐
-                    │         Choose Service             │◄──┐
-                    └─┬─────────┬─────────┬───────────┬──┘   │
-                      │         │         │           │      │
-                    ┌─▼─┐    ┌──▼──┐   ┌──▼───┐    ┌──▼──┐   │
-                    │Gas│    │Wash │   │Repair│    │Store│   │
-                    └─┬─┘    └──┬──┘   └──┬───┘    └──┬──┘   │
-                      │         │         │           │      │
-                      │      ┌──▼──┐      │           │      │
-                      │      │Dryer│      │           │      │
-                      │   ┌──┤or   │      │           │      │
-                      │   │  │not  │      │           │      │
-                      │   │  └──┬──┘      │           │      │
-                      │   │     │         │           │      │
-                      │   │  ┌──▼──┐      │           │      │
-                      │   │  │Dryer│      │           │      │
-                      │   │  └──┬──┘      │           │      │
-                      │   │     │         │           │      │
-                    ┌─▼───▼─────▼─────────▼───────────▼───┐  │
-                    │   Exit or Choose another service    ├──┘
-                    └─────────────────┬───────────────────┘
-                                      │
-                                      ▼
-                                     EXIT
+
+                               ARRIVE
+                                 │
+                ┌----------------▼-------------┐
+                │        Choose Service        │◄--┐
+                └-----┬----------┬---------┬---┘   │
+                      │          │         │       │
+                ┌-----▼----┐ ┌---▼---┐ ┌---▼----┐  │
+                │Refuelling│ │Washing│ │Shopping│  │
+                └-----┬----┘ └---┬---┘ └---┬----┘  │
+                      │          │         │       │
+                      │      ┌---▼---┐     │       │
+                      │      │Drying │     │       │
+                      │   ┌--┤  or   │     │       │
+                      │   │  │  not  │     │       │
+                      │   │  └---┬---┘     │       │
+                      │   │      │         │       │
+                      │   │  ┌---▼---┐     │       │
+                      │   │  │Drying │     │       │
+                      │   │  └---┬---┘     │       │
+                      │   │      │         │       │
+                ┌-----▼---▼------▼---------▼---┐   │
+                │Pay or Choose another service ├---┘
+                └----------------┬-------------┘
+                                 │
+                             ┌---▼---┐
+                             │Paying │
+                             └---┬---┘
+                                 │
+                                 ▼
+                                EXIT
      */
 
     public MyEngine() {
         servicePoints = new ServicePoint[5];
 
         // Set the service points, remember to set suit mean and variance for service time!
-        // Gas
-        servicePoints[0] = new ServicePoint(new Normal(20,6), eventList, EventType.DEP1);
-        // Wash
-        servicePoints[1] = new ServicePoint(new Normal(30,6), eventList, EventType.DEP2);
-        // Repair
-        servicePoints[2] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP3);
-        // Store
-        servicePoints[3] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP4);
-        // Dryer
-        servicePoints[4] = new ServicePoint(new Normal(10,6), eventList, EventType.DEP5);
+        // Refuelling
+        servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.REFUELLING);
+        // Washing
+        servicePoints[1] = new ServicePoint(new Normal(10,6), eventList, EventType.WASHING);
+        // Shopping
+        servicePoints[2] = new ServicePoint(new Normal(10,6), eventList, EventType.SHOPPING);
+        // Paying
+        servicePoints[3] = new ServicePoint(new Normal(10,6), eventList, EventType.PAYING);
+        // Drying
+        servicePoints[4] = new ServicePoint(new Normal(10,6), eventList, EventType.DRYING);
 
         // Set 3 Routers
         routers = new Router[3];
         // Router 1, Choose Service Router
         routers[0] = new Router(eventList, EventType.Rot1);
 
-        // Router 2, Dryer or not Router
+        // Router 2, Dry or not Router
         routers[1] = new Router(eventList, EventType.Rot2);
 
-        // Router 3, Exit or Choose another service Router
+        // Router 3, Pay or Choose another service Router
         routers[2] = new Router(eventList, EventType.Rot3);
 
         // Set arrival process
-        arrivalProcess = new ArrivalProcess(new Negexp(10, 5), eventList, EventType.ARR);
+        arrivalProcess = new ArrivalProcess(
+            new Normal(15, 5), eventList, EventType.ARRIVE
+        );
     }
 
     @Override
-    public void initialize() {
+    protected void initialize() {
         arrivalProcess.generateNextEvent();
     }
 
@@ -85,17 +94,9 @@ public class MyEngine extends Engine {
         Customer customer;
 
         switch ((EventType)event.getEventType()) {
-            case ARR:
+            case ARRIVE:
                 customer = new Customer();
                 customer.setEventTypesToVisit(); // Random
-
-                // Todo:
-                // If the customer do not want anything, add a gas refill default
-                // don't know if this is right, further discussing required.
-                if (customer.getEventTypesToVisit().isEmpty()){
-                    customer.getEventTypesToVisit().add(EventType.DEP1);
-                }
-
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
 
                 routers[0].addQueue(customer);
@@ -106,19 +107,19 @@ public class MyEngine extends Engine {
             case Rot1:
                 customer = routers[0].removeQueue();
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().getFirst());
+                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().get(0));
 
-                switch (customer.getEventTypesToVisit().getFirst()) {
-                    case DEP1:
+                switch (customer.getEventTypesToVisit().get(0)) {
+                    case REFUELLING:
                         servicePoints[0].addQueue(customer);
                         break;
-                    case DEP2, DEP5:
+                    case WASHING, DRYING:
                         servicePoints[1].addQueue(customer);
                         break;
-                    case DEP3:
+                    case SHOPPING:
                         servicePoints[2].addQueue(customer);
                         break;
-                    case DEP4:
+                    case PAYING:
                         servicePoints[3].addQueue(customer);
                         break;
                 }
@@ -126,10 +127,10 @@ public class MyEngine extends Engine {
 
             case Rot2:
                 customer = routers[1].removeQueue();
-                if (customer.getEventTypesToVisit().contains(EventType.DEP5)) {
+                if (customer.getEventTypesToVisit().contains(EventType.DRYING)) {
                     servicePoints[4].addQueue(customer);
 
-                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DEP5.");
+                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DRYING.");
 
                 } else {
                     routers[2].addQueue(customer);
@@ -142,8 +143,8 @@ public class MyEngine extends Engine {
             case Rot3:
                 customer = routers[2].removeQueue();
                 if (customer.getEventTypesToVisit().isEmpty()) {
-                    customer.setRemovalTime(Clock.getInstance().getClock());
-                    customer.reportResults();
+                    customer.getEventTypesToVisit().add(EventType.PAYING);
+                    servicePoints[3].addQueue(customer);
                 } else {
                     routers[0].addQueue(customer);
 
@@ -153,47 +154,47 @@ public class MyEngine extends Engine {
                 break;
 
             // ServicePoint events
-            case DEP1:
+            case REFUELLING:
                 customer = servicePoints[0].removeQueue();
-                customer.finishService(EventType.DEP1);
+                customer.finishService(EventType.REFUELLING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP1.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving REFUELLING.");
 
                 routers[2].addQueue(customer);
                 break;
 
-            case DEP2:
+            case WASHING:
                 customer = servicePoints[1].removeQueue();
-                customer.finishService(EventType.DEP2);
+                customer.finishService(EventType.WASHING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP2.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving WASHING.");
 
                 routers[1].addQueue(customer);
                 break;
 
-            case DEP3:
+            case SHOPPING:
                 customer = servicePoints[2].removeQueue();
-                customer.finishService(EventType.DEP3);
+                customer.finishService(EventType.SHOPPING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP3.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving SHOPPING.");
 
                 routers[2].addQueue(customer);
                 break;
 
-            case DEP4:
+            case PAYING:
                 customer = servicePoints[3].removeQueue();
-                customer.finishService(EventType.DEP4);
+                customer.finishService(EventType.PAYING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP4.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving PAYING.");
 
-                routers[2].addQueue(customer);
+                customer.reportResults();
                 break;
 
-            case DEP5:
+            case DRYING:
                 customer = servicePoints[4].removeQueue();
-                customer.finishService(EventType.DEP5);
+                customer.finishService(EventType.DRYING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP5.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving DRYING.");
 
                 routers[2].addQueue(customer);
                 break;
@@ -215,23 +216,8 @@ public class MyEngine extends Engine {
     }
 
     @Override
-    public void results() {
+    protected void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
     }
-
-    // Try to get the instance of routers and service points
-
-    public Router[] getRouters() {
-        return routers;
-    }
-
-    public ServicePoint[] getServicePoints() {
-        return servicePoints;
-    }
-
-    public ArrivalProcess getArrivalProcesses() {
-        return arrivalProcess;
-    }
-
 }

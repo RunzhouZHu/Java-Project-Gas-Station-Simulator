@@ -1,6 +1,4 @@
-package framework;
-
-import model.EventType;
+package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,11 +28,11 @@ public class RandomChooserForCustomer {
 
     public static void main(String[] args) {
         HashMap<EventType, Double> eventTypes = new HashMap<>();
-        eventTypes.put(EventType.DEP1, 0.5);
-        eventTypes.put(EventType.DEP2, 0.5);
-        eventTypes.put(EventType.DEP3, 0.5);
-        eventTypes.put(EventType.DEP4, 0.5);
-        eventTypes.put(EventType.DEP5, 0.5);
+        eventTypes.put(EventType.REFUELLING, 0.5);
+        eventTypes.put(EventType.WASHING,    0.5);
+        eventTypes.put(EventType.SHOPPING,   0.5);
+        eventTypes.put(EventType.PAYING,     0.5);
+        eventTypes.put(EventType.DRYING,     0.5);
 
         RandomChooserForCustomer chooser = new RandomChooserForCustomer(eventTypes);
 

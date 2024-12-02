@@ -1,7 +1,7 @@
 package model;
 
 import framework.Clock;
-import framework.RandomChooserForCustomer;
+//import framework.RandomChooserForCustomer;
 import framework.Trace;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ public class Customer {
     private ArrayList<EventType> eventTypesToVisit = new ArrayList<EventType>();
     private RandomChooserForCustomer randomChooserForCustomer = new RandomChooserForCustomer(new HashMap<>(){{
         // Here to decide the possibility a customer visit each service point
-        put(EventType.DEP1, 0.5); // Possibility to visit gas station
-        put(EventType.DEP2, 0.5); // Possibility to visit gas station
-        put(EventType.DEP3, 0.5); // Possibility to visit gas station
-        put(EventType.DEP4, 0.5); // Possibility to visit gas station
-        put(EventType.DEP5, 0.5); // Possibility to visit gas station
+        put(EventType.REFUELLING, 0.5); // Possibility to visit gas station
+        put(EventType.WASHING, 0.5); // Possibility to visit gas station
+        put(EventType.SHOPPING, 0.5); // Possibility to visit gas station
+        put(EventType.DRYING, 0.5); // Possibility to visit gas station
     }});
 
     public Customer() {
         id = i++;
 
         arrivalTime = Clock.getInstance().getClock();
+        removalTime = arrivalTime;
         Trace.out(Trace.Level.INFO, "New customer " + id + " arrivalTime=" + arrivalTime);
     }
 
@@ -38,8 +38,10 @@ public class Customer {
         this.arrivalTime = arrivalTime;
     }
 
-    public void setRemovalTime(double removalTime) {
-        this.removalTime = removalTime;
+    //public void setRemovalTime(double removalTime) {
+    public void setRemovalTime() {
+        //this.removalTime = removalTime;
+        this.removalTime += Clock.getInstance().getClock();
     }
 
     public double getArrivalTime() {
@@ -59,11 +61,16 @@ public class Customer {
     }
     public void setEventTypesToVisit() {
         eventTypesToVisit = randomChooserForCustomer.choose();
+        if (eventTypesToVisit.isEmpty()) {
+            eventTypesToVisit.add(EventType.REFUELLING);
+        }
     }
     public void finishService(EventType eventType) {
         if (eventTypesToVisit.contains(eventType)) {
             eventTypesToVisit.remove(eventType);
-        } else if (eventTypesToVisit.contains(EventType.DEP5) && !eventTypesToVisit.contains(EventType.DEP2)) {
+            setRemovalTime();
+        } else if (eventTypesToVisit.contains(EventType.DRYING) && !eventTypesToVisit.contains(EventType.WASHING)) {
+            setRemovalTime();
             System.out.println("Attention, the customer ordered the dryer, so the washing is added default.");
         } else {
             System.err.println("ERROR! The customer do not want this service!!");

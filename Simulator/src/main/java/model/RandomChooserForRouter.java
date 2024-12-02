@@ -1,6 +1,4 @@
-package framework;
-
-import model.EventType;
+package model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +35,9 @@ public class RandomChooserForRouter {
 
     public static void main(String[] args) {
         HashMap<EventType, Integer> eventTypes = new HashMap<>();
-        eventTypes.put(EventType.DEP1, 10);
-        eventTypes.put(EventType.DEP2, 20);
-        eventTypes.put(EventType.DEP3, 30);
+        eventTypes.put(EventType.WASHING, 10);
+        eventTypes.put(EventType.PAYING, 20);
+        eventTypes.put(EventType.DRYING, 30);
 
         RandomChooserForRouter chooser = new RandomChooserForRouter(eventTypes);
 

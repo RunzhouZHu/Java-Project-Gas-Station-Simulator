@@ -2,7 +2,6 @@ package model;
 
 import framework.*;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Router {

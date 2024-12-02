@@ -9,5 +9,8 @@
         <module name="Simulator" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RandomNumber" target="23" />
+    </bytecodeTargetLevel>
   </component>
 </project>

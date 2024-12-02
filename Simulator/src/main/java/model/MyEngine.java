@@ -56,7 +56,7 @@ public class MyEngine extends Engine {
         servicePoints = new ServicePoint[5];
 
         // Set the service points, remember to set suit mean and variance for service time!
-        // Refuelling 
+        // Refuelling
         servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.REFUELLING);
         // Washing
         servicePoints[1] = new ServicePoint(new Normal(10,6), eventList, EventType.WASHING);
@@ -85,7 +85,7 @@ public class MyEngine extends Engine {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         arrivalProcess.generateNextEvent();
     }
 
@@ -216,8 +216,21 @@ public class MyEngine extends Engine {
     }
 
     @Override
-    protected void results() {
+    public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
     }
+
+    public Router[] getRouters() {
+        return routers;
+    }
+
+    public ServicePoint[] getServicePoints() {
+        return servicePoints;
+    }
+
+    public ArrivalProcess getArrivalProcesses() {
+        return arrivalProcess;
+    }
+
 }

@@ -65,7 +65,8 @@ public class Customer {
             eventTypesToVisit.add(EventType.REFUELLING);
         }
     }
-    public void finishService(EventType eventType) {
+    public void finishService(EventType eventType) throws InterruptedException {
+        Thread.sleep(1000);
         if (eventTypesToVisit.contains(eventType)) {
             eventTypesToVisit.remove(eventType);
             setRemovalTime();

@@ -61,6 +61,22 @@ public class SimulatorController {
 
     }
 
+    private void counterUp(Label counter) {
+        Platform.runLater(
+            () -> counter.setText(
+                String.valueOf(parseInt(counter.getText()) + 1)
+            )
+        );
+    }
+
+    private void counterDown(Label counter) {
+        Platform.runLater(
+            () -> counter.setText(
+                String.valueOf(parseInt(counter.getText()) - 1)
+            )
+        );
+    }
+
     // Run simulation with UI
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
@@ -103,7 +119,7 @@ public class SimulatorController {
 
                 routers[0].addQueue(customer);
 
-                Platform.runLater(() -> arrivedCustomer.setText(String.valueOf(parseInt(arrivedCustomer.getText()) + 1)));
+                counterUp(arrivedCustomer);
 
                 myEngine.getArrivalProcesses().generateNextEvent();
                 break;
@@ -118,18 +134,18 @@ public class SimulatorController {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
 
-                        Platform.runLater(() -> refuellingCustomer.setText(String.valueOf(parseInt(refuellingCustomer.getText()) + 1)));
+                        counterUp(refuellingCustomer);
 
                         break;
                     case WASHING, DRYING:
                         servicePoints[1].addQueue(customer);
 
-                        Platform.runLater(() -> washingCustomer.setText(String.valueOf(parseInt(washingCustomer.getText()) + 1)));
+                        counterUp(washingCustomer);
                         break;
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
 
-                        Platform.runLater(() -> shoppingCustomer.setText(String.valueOf(parseInt(shoppingCustomer.getText()) + 1)));
+                        counterUp(shoppingCustomer);
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
@@ -143,7 +159,8 @@ public class SimulatorController {
                     servicePoints[4].addQueue(customer);
 
                     System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DRYING.");
-                    Platform.runLater(() -> dryingCustomer.setText(String.valueOf(parseInt(dryingCustomer.getText()) + 1)));
+
+                    counterUp(dryingCustomer);
 
                 } else {
                     routers[2].addQueue(customer);
@@ -159,7 +176,7 @@ public class SimulatorController {
                     customer.getEventTypesToVisit().add(EventType.PAYING);
                     servicePoints[3].addQueue(customer);
 
-                    Platform.runLater(() -> payingCustomer.setText(String.valueOf(parseInt(payingCustomer.getText()) + 1)));
+                    counterUp(payingCustomer);
                 } else {
                     routers[0].addQueue(customer);
 
@@ -170,61 +187,29 @@ public class SimulatorController {
 
             // ServicePoint events
             case REFUELLING:
-                customer = servicePoints[0].removeQueue();
-                customer.finishService(EventType.REFUELLING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving REFUELLING.");
-
-                routers[2].addQueue(customer);
-
-                Platform.runLater(() -> refuellingCustomer.setText(String.valueOf(parseInt(refuellingCustomer.getText()) - 1)));
-
+                myEngine.doService(EventType.REFUELLING, 2);
+                counterDown(refuellingCustomer);
                 break;
 
             case WASHING:
-                customer = servicePoints[1].removeQueue();
-                customer.finishService(EventType.WASHING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving WASHING.");
-
-                routers[1].addQueue(customer);
-
-                Platform.runLater(() -> washingCustomer.setText(String.valueOf(parseInt(washingCustomer.getText()) - 1)));
+                myEngine.doService(EventType.WASHING, 1);
+                counterDown(washingCustomer);
                 break;
 
             case SHOPPING:
-                customer = servicePoints[2].removeQueue();
-                customer.finishService(EventType.SHOPPING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving SHOPPING.");
-
-                routers[2].addQueue(customer);
-
-                Platform.runLater(() -> shoppingCustomer.setText(String.valueOf(parseInt(shoppingCustomer.getText()) - 1)));
+                myEngine.doService(EventType.SHOPPING, 2);
+                counterDown(shoppingCustomer);
                 break;
 
             case PAYING:
-                customer = servicePoints[3].removeQueue();
-                customer.finishService(EventType.PAYING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving PAYING.");
-
-                customer.reportResults();
-
-                Platform.runLater(() -> payingCustomer.setText(String.valueOf(parseInt(payingCustomer.getText()) - 1)));
-                Platform.runLater(() -> exitCustomer.setText(String.valueOf(parseInt(exitCustomer.getText()) + 1)));
-
+                myEngine.doService(EventType.PAYING, -1);
+                counterDown(payingCustomer);
+                counterUp(exitCustomer);
                 break;
 
             case DRYING:
-                customer = servicePoints[4].removeQueue();
-                customer.finishService(EventType.DRYING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving DRYING.");
-
-                routers[2].addQueue(customer);
-
-                Platform.runLater(() -> dryingCustomer.setText(String.valueOf(parseInt(dryingCustomer.getText()) - 1)));
+                myEngine.doService(EventType.DRYING, 2);
+                counterDown(dryingCustomer);
                 break;
         }
     }

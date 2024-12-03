@@ -84,6 +84,25 @@ public class MyEngine extends Engine {
         );
     }
 
+    public void doService(EventType eventType, int routerIndex) {
+        int index = eventType.ordinal();
+        Customer customer = servicePoints[index].removeQueue();
+        try {
+            customer.finishService(eventType);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(
+            "!!!Customer " + customer.getId() + " leaving " + eventType + "."
+        );
+        if (routerIndex == -1) {
+            customer.reportResults();
+        } else {
+            routers[routerIndex].addQueue(customer);
+        }
+
+    }
+
     @Override
     public void initialize() {
         arrivalProcess.generateNextEvent();
@@ -155,48 +174,23 @@ public class MyEngine extends Engine {
 
             // ServicePoint events
             case REFUELLING:
-                customer = servicePoints[0].removeQueue();
-                customer.finishService(EventType.REFUELLING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving REFUELLING.");
-
-                routers[2].addQueue(customer);
+                doService(EventType.REFUELLING, 2);
                 break;
 
             case WASHING:
-                customer = servicePoints[1].removeQueue();
-                customer.finishService(EventType.WASHING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving WASHING.");
-
-                routers[1].addQueue(customer);
+                doService(EventType.WASHING, 1);
                 break;
 
             case SHOPPING:
-                customer = servicePoints[2].removeQueue();
-                customer.finishService(EventType.SHOPPING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving SHOPPING.");
-
-                routers[2].addQueue(customer);
+                doService(EventType.SHOPPING, 2);
                 break;
 
             case PAYING:
-                customer = servicePoints[3].removeQueue();
-                customer.finishService(EventType.PAYING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving PAYING.");
-
-                customer.reportResults();
+                doService(EventType.PAYING, -1);
                 break;
 
             case DRYING:
-                customer = servicePoints[4].removeQueue();
-                customer.finishService(EventType.DRYING);
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving DRYING.");
-
-                routers[2].addQueue(customer);
+                doService(EventType.DRYING, 2);
                 break;
         }
     }

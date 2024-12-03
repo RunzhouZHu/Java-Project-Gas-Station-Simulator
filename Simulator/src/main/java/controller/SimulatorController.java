@@ -12,7 +12,7 @@ import model.*;
 import static java.lang.Integer.parseInt;
 
 public class SimulatorController {
-    static MyEngine m = new MyEngine();
+    static MyEngine myEngine = new MyEngine();
 
     @FXML
     private Button startSimulationButton;
@@ -21,19 +21,19 @@ public class SimulatorController {
     private Label arrivedCustomer;
 
     @FXML
-    private Label gasCustomer;
+    private Label refuellingCustomer;
 
     @FXML
     private Label washingCustomer;
 
     @FXML
-    private Label dryerCustomer;
+    private Label dryingCustomer;
 
     @FXML
-    private Label repairCustomer;
+    private Label payingCustomer;
 
     @FXML
-    private Label storeCustomer;
+    private Label shoppingCustomer;
 
     @FXML
     private Label exitCustomer;
@@ -47,8 +47,7 @@ public class SimulatorController {
 
             Trace.setTraceLevel(Trace.Level.INFO);
 
-
-            m.setSimulationTime(1000);
+            myEngine.setSimulationTime(1000);
 
             try {
                 runSimulation();
@@ -64,14 +63,14 @@ public class SimulatorController {
 
     // Run simulation with UI
     private void runSimulation() throws InterruptedException {
-        m.initialize();
+        myEngine.initialize();
 
-        while (m.simulate()) {
+        while (myEngine.simulate()) {
 
             Thread.sleep(10);
 
-            Trace.out(Trace.Level.INFO, "\nA-phase: time is " + m.currentTime());
-            m.getClock().setClock(m.currentTime());
+            Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
+            myEngine.getClock().setClock(myEngine.currentTime());
 
             Trace.out(Trace.Level.INFO, "\nB-phase:");
             runBEventsWithUI();
@@ -80,19 +79,19 @@ public class SimulatorController {
             tryCEventsWithUI();
         }
 
-        m.results();
+        myEngine.results();
     }
 
     private void runBEventsWithUI() {
-        while (m.getEventList().getNextEventTime() == m.getClock().getClock()) {
-            runEventWithUI(m.getEventList().remove());
+        while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
+            runEventWithUI(myEngine.getEventList().remove());
         }
     }
 
     private void runEventWithUI(Event event) {
 
-        Router[] routers = m.getRouters();
-        ServicePoint[] servicePoints = m.getServicePoints();
+        Router[] routers = myEngine.getRouters();
+        ServicePoint[] servicePoints = myEngine.getServicePoints();
 
         Customer customer;
 
@@ -100,21 +99,13 @@ public class SimulatorController {
             case ARRIVE:
                 customer = new Customer();
                 customer.setEventTypesToVisit(); // Random
-
-                // Todo:
-                // If the customer do not want anything, add a gas refill default
-                // don't know if this is right, further discussing required.
-                if (customer.getEventTypesToVisit().isEmpty()) {
-                    customer.getEventTypesToVisit().add(EventType.REFUELLING);
-                }
-
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
 
                 routers[0].addQueue(customer);
 
                 Platform.runLater(() -> arrivedCustomer.setText(String.valueOf(parseInt(arrivedCustomer.getText()) + 1)));
 
-                m.getArrivalProcesses().generateNextEvent();
+                myEngine.getArrivalProcesses().generateNextEvent();
                 break;
 
             // Router events, the 'splits' should be at here
@@ -127,7 +118,7 @@ public class SimulatorController {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
 
-                        Platform.runLater(() -> gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) + 1)));
+                        Platform.runLater(() -> refuellingCustomer.setText(String.valueOf(parseInt(refuellingCustomer.getText()) + 1)));
 
                         break;
                     case WASHING, DRYING:
@@ -137,6 +128,8 @@ public class SimulatorController {
                         break;
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
+
+                        Platform.runLater(() -> shoppingCustomer.setText(String.valueOf(parseInt(shoppingCustomer.getText()) + 1)));
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
@@ -149,7 +142,8 @@ public class SimulatorController {
                 if (customer.getEventTypesToVisit().contains(EventType.DRYING)) {
                     servicePoints[4].addQueue(customer);
 
-                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DEP5.");
+                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DRYING.");
+                    Platform.runLater(() -> dryingCustomer.setText(String.valueOf(parseInt(dryingCustomer.getText()) + 1)));
 
                 } else {
                     routers[2].addQueue(customer);
@@ -162,8 +156,10 @@ public class SimulatorController {
             case Rot3:
                 customer = routers[2].removeQueue();
                 if (customer.getEventTypesToVisit().isEmpty()) {
-                    customer.setRemovalTime();
-                    customer.reportResults();
+                    customer.getEventTypesToVisit().add(EventType.PAYING);
+                    servicePoints[3].addQueue(customer);
+
+                    Platform.runLater(() -> payingCustomer.setText(String.valueOf(parseInt(payingCustomer.getText()) + 1)));
                 } else {
                     routers[0].addQueue(customer);
 
@@ -177,11 +173,11 @@ public class SimulatorController {
                 customer = servicePoints[0].removeQueue();
                 customer.finishService(EventType.REFUELLING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP1.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving REFUELLING.");
 
                 routers[2].addQueue(customer);
 
-                Platform.runLater(() -> gasCustomer.setText(String.valueOf(parseInt(gasCustomer.getText()) - 1)));
+                Platform.runLater(() -> refuellingCustomer.setText(String.valueOf(parseInt(refuellingCustomer.getText()) - 1)));
 
                 break;
 
@@ -189,7 +185,7 @@ public class SimulatorController {
                 customer = servicePoints[1].removeQueue();
                 customer.finishService(EventType.WASHING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP2.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving WASHING.");
 
                 routers[1].addQueue(customer);
 
@@ -200,37 +196,45 @@ public class SimulatorController {
                 customer = servicePoints[2].removeQueue();
                 customer.finishService(EventType.SHOPPING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP3.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving SHOPPING.");
 
                 routers[2].addQueue(customer);
+
+                Platform.runLater(() -> shoppingCustomer.setText(String.valueOf(parseInt(shoppingCustomer.getText()) - 1)));
                 break;
 
             case PAYING:
                 customer = servicePoints[3].removeQueue();
                 customer.finishService(EventType.PAYING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP4.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving PAYING.");
 
-                routers[2].addQueue(customer);
+                customer.reportResults();
+
+                Platform.runLater(() -> payingCustomer.setText(String.valueOf(parseInt(payingCustomer.getText()) - 1)));
+                Platform.runLater(() -> exitCustomer.setText(String.valueOf(parseInt(exitCustomer.getText()) + 1)));
+
                 break;
 
             case DRYING:
                 customer = servicePoints[4].removeQueue();
                 customer.finishService(EventType.DRYING);
 
-                System.out.println("!!!Customer " + customer.getId() + " leaving DEP5.");
+                System.out.println("!!!Customer " + customer.getId() + " leaving DRYING.");
 
                 routers[2].addQueue(customer);
+
+                Platform.runLater(() -> dryingCustomer.setText(String.valueOf(parseInt(dryingCustomer.getText()) - 1)));
                 break;
         }
     }
 
     public void tryCEventsWithUI() {
-        for (ServicePoint servicePoint : m.getServicePoints()) {
+        for (ServicePoint servicePoint : myEngine.getServicePoints()) {
             if (!servicePoint.isReserved() && servicePoint.isOnQueue()) {
                 servicePoint.beginService();
             }
-            for (Router router : m.getRouters()) {
+            for (Router router : myEngine.getRouters()) {
                 if (!router.isReserved() && router.isOnQueue()) {
                     router.beginService();
                 }

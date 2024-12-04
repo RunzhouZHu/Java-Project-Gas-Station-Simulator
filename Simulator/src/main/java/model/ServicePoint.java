@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 public class ServicePoint {
     private LinkedList<Customer> queue = new LinkedList<>();
+    private Integer addedCustomer = 0;
     private ContinuousGenerator generator;
     private EventList eventList;
     private EventType eventTypeScheduled;
@@ -23,6 +24,7 @@ public class ServicePoint {
     }
 
     public void addQueue(Customer customer) {
+        addedCustomer++;
         queue.add(customer);
     }
 

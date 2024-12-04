@@ -19,6 +19,9 @@ import static java.lang.Integer.parseInt;
 public class SimulatorController {
     static MyEngine myEngine = new MyEngine();
 
+    Router[] routers = myEngine.getRouters();
+    ServicePoint[] servicePoints = myEngine.getServicePoints();
+
     @FXML
     private Button startSimulationButton;
 
@@ -108,7 +111,7 @@ public class SimulatorController {
 
         while (myEngine.simulate()) {
 
-            Thread.sleep(10);
+            Thread.sleep(30);
 
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
             myEngine.getClock().setClock(myEngine.currentTime());
@@ -118,6 +121,8 @@ public class SimulatorController {
 
             Trace.out(Trace.Level.INFO, "\nC-phase:");
             tryCEventsWithUI();
+
+            updateUI();
         }
 
         myEngine.results();
@@ -130,9 +135,6 @@ public class SimulatorController {
     }
 
     private void runEventWithUI(Event event) {
-
-        Router[] routers = myEngine.getRouters();
-        ServicePoint[] servicePoints = myEngine.getServicePoints();
 
         Customer customer;
 
@@ -172,19 +174,16 @@ public class SimulatorController {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
 
-                        refuellingCustomer.setText(String.valueOf(servicePoints[0].getQueueSize())); ;
                         customer.getCarController().setCarTarget(250, 415);
 
                         break;
                     case WASHING, DRYING:
                         servicePoints[1].addQueue(customer);
 
-                        counterUp(washingCustomer);
                         break;
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
 
-                        counterUp(shoppingCustomer);
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
@@ -198,8 +197,6 @@ public class SimulatorController {
                     servicePoints[4].addQueue(customer);
 
                     System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DRYING.");
-
-                    counterUp(dryingCustomer);
 
                 } else {
                     routers[2].addQueue(customer);
@@ -215,7 +212,6 @@ public class SimulatorController {
                     customer.getEventTypesToVisit().add(EventType.PAYING);
                     servicePoints[3].addQueue(customer);
 
-                    counterUp(payingCustomer);
                 } else {
                     routers[0].addQueue(customer);
 
@@ -229,7 +225,6 @@ public class SimulatorController {
                 customer = servicePoints[0].removeQueue();
                 customer.getCarController().setCarTarget(270, 280);
                 myEngine.doService(customer, EventType.REFUELLING, 2);
-                counterDown(refuellingCustomer);
                 customer.getCarController().setCarTarget(270, 415);
                 break;
 
@@ -237,7 +232,6 @@ public class SimulatorController {
                 customer = servicePoints[1].removeQueue();
                 customer.getCarController().setCarTarget(270, 500);
                 myEngine.doService(customer, EventType.WASHING, 1);
-                counterDown(washingCustomer);
                 customer.getCarController().setCarTarget(270, 415);
                 break;
 
@@ -245,7 +239,6 @@ public class SimulatorController {
                 customer = servicePoints[2].removeQueue();
                 customer.getCarController().setCarTarget(600, 280);
                 myEngine.doService(customer, EventType.SHOPPING, 2);
-                counterDown(shoppingCustomer);
                 customer.getCarController().setCarTarget(600, 415);
                 break;
 
@@ -253,7 +246,6 @@ public class SimulatorController {
                 customer = servicePoints[3].removeQueue();
                 customer.getCarController().setCarTarget(900, 415);
                 myEngine.doService(customer, EventType.PAYING, -1);
-                counterDown(payingCustomer);
                 counterUp(exitCustomer);
                 break;
 
@@ -261,7 +253,6 @@ public class SimulatorController {
                 customer = servicePoints[4].removeQueue();
                 customer.getCarController().setCarTarget(600, 500);
                 myEngine.doService(customer, EventType.DRYING, 2);
-                counterDown(dryingCustomer);
                 customer.getCarController().setCarTarget(600, 415);
                 break;
         }
@@ -278,5 +269,15 @@ public class SimulatorController {
                 }
             }
         }
+    }
+
+    public void updateUI() {
+        Platform.runLater(() -> {
+            refuellingCustomer.setText(String.valueOf(servicePoints[0].getQueueSize()));
+            washingCustomer.setText(String.valueOf(servicePoints[1].getQueueSize()));
+            shoppingCustomer.setText(String.valueOf(servicePoints[2].getQueueSize()));
+            payingCustomer.setText(String.valueOf(servicePoints[3].getQueueSize()));
+            dryingCustomer.setText(String.valueOf(servicePoints[4].getQueueSize()));
+        });
     }
 }

@@ -1,8 +1,9 @@
 package model;
 
 import framework.Clock;
-//import framework.RandomChooserForCustomer;
 import framework.Trace;
+
+import controller.CarController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +13,9 @@ public class Customer {
     private double removalTime;
     private int id;
 
-    private static int i = 1;
+    private static int nextId = 1;
     private static long sum = 0;
+    private CarController carController = new CarController();
 
     // Set the which service points the customer want to visit
     // There are total 5 event types: DP1 ~ DP5
@@ -27,7 +29,7 @@ public class Customer {
     }});
 
     public Customer() {
-        id = i++;
+        id = nextId++;
 
         arrivalTime = Clock.getInstance().getClock();
         removalTime = arrivalTime;
@@ -54,6 +56,10 @@ public class Customer {
 
     public int getId() {
         return id;
+    }
+
+    public CarController getCarController() {
+        return carController;
     }
 
     public ArrayList<EventType> getEventTypesToVisit() {

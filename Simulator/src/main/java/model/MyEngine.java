@@ -84,6 +84,22 @@ public class MyEngine extends Engine {
         );
     }
 
+    public void doService(Customer customer, EventType eventType, int routerIndex) {
+        try {
+            customer.finishService(eventType);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(
+            "!!!Customer " + customer.getId() + " leaving " + eventType + "."
+        );
+        if (routerIndex == -1) {
+            customer.reportResults();
+        } else {
+            routers[routerIndex].addQueue(customer);
+        }
+
+    }
     public void doService(EventType eventType, int routerIndex) {
         int index = eventType.ordinal();
         Customer customer = servicePoints[index].removeQueue();

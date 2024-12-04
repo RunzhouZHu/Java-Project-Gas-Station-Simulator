@@ -57,15 +57,15 @@ public class MyEngine extends Engine {
 
         // Set the service points, remember to set suit mean and variance for service time!
         // Refuelling
-        servicePoints[0] = new ServicePoint(new Normal(10,6), eventList, EventType.REFUELLING);
+        servicePoints[0] = new ServicePoint(new Normal(50,6), eventList, EventType.REFUELLING);
         // Washing
-        servicePoints[1] = new ServicePoint(new Normal(10,6), eventList, EventType.WASHING);
+        servicePoints[1] = new ServicePoint(new Normal(50,6), eventList, EventType.WASHING);
         // Shopping
-        servicePoints[2] = new ServicePoint(new Normal(10,6), eventList, EventType.SHOPPING);
+        servicePoints[2] = new ServicePoint(new Normal(50,6), eventList, EventType.SHOPPING);
         // Paying
-        servicePoints[3] = new ServicePoint(new Normal(10,6), eventList, EventType.PAYING);
+        servicePoints[3] = new ServicePoint(new Normal(50,6), eventList, EventType.PAYING);
         // Drying
-        servicePoints[4] = new ServicePoint(new Normal(10,6), eventList, EventType.DRYING);
+        servicePoints[4] = new ServicePoint(new Normal(50,6), eventList, EventType.DRYING);
 
         // Set 3 Routers
         routers = new Router[3];
@@ -121,6 +121,9 @@ public class MyEngine extends Engine {
 
     @Override
     public void initialize() {
+        Clock clock = Clock.getInstance();
+        clock.setClock(0);
+
         arrivalProcess.generateNextEvent();
     }
 

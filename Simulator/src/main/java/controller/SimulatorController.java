@@ -108,7 +108,7 @@ public class SimulatorController {
 
         while (myEngine.simulate()) {
 
-            Thread.sleep(1000);
+            Thread.sleep(10);
 
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
             myEngine.getClock().setClock(myEngine.currentTime());
@@ -172,7 +172,7 @@ public class SimulatorController {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
 
-                        counterUp(refuellingCustomer);
+                        refuellingCustomer.setText(String.valueOf(servicePoints[0].getQueueSize())); ;
                         customer.getCarController().setCarTarget(250, 415);
 
                         break;

@@ -46,4 +46,8 @@ public class ServicePoint {
     public boolean isOnQueue() {
         return !queue.isEmpty();
     }
+
+    public Integer getQueueSize() {
+        return queue.size();
+    }
 }

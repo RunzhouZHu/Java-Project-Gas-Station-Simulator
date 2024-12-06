@@ -124,7 +124,7 @@ public class SimulatorController {
     }
 
     private void runBEventsWithUI() {
-        while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
+        while (myEngine.getEventList().getNextEventTime() <= myEngine.getClock().getClock()) {
             runEventWithUI(myEngine.getEventList().remove());
         }
     }
@@ -139,18 +139,6 @@ public class SimulatorController {
         switch ((EventType) event.getEventType()) {
             case ARRIVE:
                 customer = new Customer();
-
-                CarController carController = customer.getCarController();
-                driveCar(carController);
-                carController.turnRight();
-
-                new AnimationTimer() {
-                    @Override
-                    public void handle(long now) {
-                        carController.carMove();
-                        driveCar(carController);
-                    }
-                }.start();
 
                 customer.setEventTypesToVisit(); // Random
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
@@ -173,7 +161,6 @@ public class SimulatorController {
                         servicePoints[0].addQueue(customer);
 
                         counterUp(refuellingCustomer);
-                        customer.getCarController().setCarTarget(250, 415);
 
                         break;
                     case WASHING, DRYING:
@@ -227,31 +214,24 @@ public class SimulatorController {
             // ServicePoint events
             case REFUELLING:
                 customer = servicePoints[0].removeQueue();
-                customer.getCarController().setCarTarget(270, 280);
                 myEngine.doService(customer, EventType.REFUELLING, 2);
                 counterDown(refuellingCustomer);
-                customer.getCarController().setCarTarget(270, 415);
                 break;
 
             case WASHING:
                 customer = servicePoints[1].removeQueue();
-                customer.getCarController().setCarTarget(270, 500);
                 myEngine.doService(customer, EventType.WASHING, 1);
                 counterDown(washingCustomer);
-                customer.getCarController().setCarTarget(270, 415);
                 break;
 
             case SHOPPING:
                 customer = servicePoints[2].removeQueue();
-                customer.getCarController().setCarTarget(600, 280);
                 myEngine.doService(customer, EventType.SHOPPING, 2);
                 counterDown(shoppingCustomer);
-                customer.getCarController().setCarTarget(600, 415);
                 break;
 
             case PAYING:
                 customer = servicePoints[3].removeQueue();
-                customer.getCarController().setCarTarget(900, 415);
                 myEngine.doService(customer, EventType.PAYING, -1);
                 counterDown(payingCustomer);
                 counterUp(exitCustomer);
@@ -259,10 +239,8 @@ public class SimulatorController {
 
             case DRYING:
                 customer = servicePoints[4].removeQueue();
-                customer.getCarController().setCarTarget(600, 500);
                 myEngine.doService(customer, EventType.DRYING, 2);
                 counterDown(dryingCustomer);
-                customer.getCarController().setCarTarget(600, 415);
                 break;
         }
     }

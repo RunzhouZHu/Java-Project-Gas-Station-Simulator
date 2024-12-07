@@ -72,6 +72,11 @@ public class SimulatorController {
 
     }
 
+    @FXML
+    private void pauseSimulationButtonClicked() {
+        myEngine.pause();
+    }
+
     private void counterUp(Label counter) {
         Platform.runLater(
             () -> counter.setText(

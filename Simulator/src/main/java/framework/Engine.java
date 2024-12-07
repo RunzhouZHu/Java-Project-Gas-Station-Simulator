@@ -10,6 +10,9 @@ public class Engine {
     // events to be processed are stored here
     protected EventList eventList;
 
+    // Pause simulation button will control this
+    private boolean pause = false;
+
     public Engine() {
         clock = Clock.getInstance();
 
@@ -65,7 +68,14 @@ public class Engine {
     }
 
     public boolean simulate() {
-        return clock.getClock() < simulationTime;
+        return clock.getClock() < simulationTime && !pause;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+    public void resume() {
+        pause = false;
     }
 
     public Clock getClock() {

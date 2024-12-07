@@ -100,7 +100,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="startSimulationButton" mnemonicParsing="false" onMouseClicked="#startSimulationButtonClicked" prefWidth="150.0" text="Start Simulation">
+            <Button fx:id="startSimulationButton" mnemonicParsing="false" onMouseClicked="#startSimulationButtonClicked" prefHeight="30.0" prefWidth="230.0" text="Start Simulation">
                <font>
                   <Font size="18.0" />
                </font>
@@ -111,7 +111,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="pauseSimulationButton" mnemonicParsing="false" onMouseClicked="#pauseSimulationButtonClicked" prefWidth="150.0" text="Pause Simulation">
+            <Button fx:id="pauseSimulationButton" mnemonicParsing="false" onMouseClicked="#pauseSimulationButtonClicked" prefHeight="30.0" prefWidth="230.0" text="Pause Simulation">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>

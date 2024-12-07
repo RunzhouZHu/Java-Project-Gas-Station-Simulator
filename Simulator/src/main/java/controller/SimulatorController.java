@@ -26,6 +26,9 @@ public class SimulatorController {
     private Button startSimulationButton;
 
     @FXML
+    private Button pauseSimulationButton;
+
+    @FXML
     private Label arrivedCustomer;
 
     @FXML
@@ -54,6 +57,7 @@ public class SimulatorController {
 
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
+            pauseSimulationButton.setDisable(false);
         }
 
         Thread thread = new Thread(() -> {
@@ -79,6 +83,7 @@ public class SimulatorController {
     @FXML
     private void pauseSimulationButtonClicked() {
         myEngine.pause();
+        pauseSimulationButton.setDisable(true);
     }
 
     private void counterUp(Label counter) {

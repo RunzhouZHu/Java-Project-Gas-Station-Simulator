@@ -109,6 +109,25 @@ public class SimulatorController {
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
 
+        /*
+        while (myEngine.simulate()) {
+
+            Thread.sleep(30);
+
+            Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
+            myEngine.getClock().setClock(myEngine.currentTime());
+
+            Trace.out(Trace.Level.INFO, "\nB-phase:");
+            runBEventsWithUI();
+
+            Trace.out(Trace.Level.INFO, "\nC-phase:");
+            tryCEventsWithUI();
+
+            updateUI();
+        }
+
+         */
+
         while (myEngine.simulate()) {
 
             Thread.sleep(30);

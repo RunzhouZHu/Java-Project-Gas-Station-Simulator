@@ -77,6 +77,9 @@ public class Engine {
     public void resume() {
         pause = false;
     }
+    public boolean getPauseStatus() {
+        return pause;
+    }
 
     public Clock getClock() {
         return clock;

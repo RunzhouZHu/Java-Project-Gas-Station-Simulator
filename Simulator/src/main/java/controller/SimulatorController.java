@@ -52,6 +52,10 @@ public class SimulatorController {
     @FXML
     private void startSimulationButtonClicked() {
 
+        if (myEngine.getPauseStatus()) {
+            myEngine.resume();
+        }
+
         Thread thread = new Thread(() -> {
 
             System.out.println("startSimulationButtonClicked() called");

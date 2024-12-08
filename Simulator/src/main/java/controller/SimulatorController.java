@@ -24,6 +24,9 @@ public class SimulatorController {
     @FXML
     private Button pauseSimulationButton;
 
+    @FXML
+    private Button reloadButton;
+
     // Labels
     @FXML
     private Label arrivedCustomer;
@@ -103,6 +106,9 @@ public class SimulatorController {
     private Canvas mainCanvas;
 
     @FXML
+    private Label runningLabel;
+
+    @FXML
     private void initialize() {
         setSpinners();
         myEngine = new MyEngine(
@@ -119,19 +125,41 @@ public class SimulatorController {
                 arriveMain.getValue(),
                 arriveVariance.getValue()
         );
-        setMyEngineParameters();
+        // setMyEngineParameters();
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
+        runningLabel.setText("Preparing");
+
+        // Set UI
+        pauseSimulationButton.setDisable(true);
+        reloadButton.setDisable(true);
     }
 
     @FXML
     private void startSimulationButtonClicked() {
 
-        setMyEngineParameters();
+        pauseSimulationButton.setDisable(false);
+        startSimulationButton.setDisable(true);
 
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
-            pauseSimulationButton.setDisable(false);
+            // disable UI
+            reloadButton.setDisable(true);
+
+            arriveMain.setDisable(true);
+            arriveVariance.setDisable(true);
+            refuelMain.setDisable(true);
+            refuelVariance.setDisable(true);
+            washMain.setDisable(true);
+            washVariance.setDisable(true);
+            shoppingMain.setDisable(true);
+            shoppingVariance.setDisable(true);
+            payingMain.setDisable(true);
+            payingVariance.setDisable(true);
+            dryingMain.setDisable(true);
+            dryingVariance.setDisable(true);
+
+            runningLabel.setText("Running...");
         }
 
         Thread thread = new Thread(() -> {
@@ -159,12 +187,27 @@ public class SimulatorController {
         myEngine.pause();
 
         pauseSimulationButton.setDisable(true);
+
+        reloadButton.setDisable(false);
+        arriveMain.setDisable(false);
+        arriveVariance.setDisable(false);
+        refuelMain.setDisable(false);
+        refuelVariance.setDisable(false);
+        washMain.setDisable(false);
+        washVariance.setDisable(false);
+        shoppingMain.setDisable(false);
+        shoppingVariance.setDisable(false);
+        payingMain.setDisable(false);
+        payingVariance.setDisable(false);
+        dryingMain.setDisable(false);
+        dryingVariance.setDisable(false);
+
+        runningLabel.setText("Pausing...");
+        startSimulationButton.setDisable(false);
     }
 
     @FXML
     private void reloadButtonClicked() {
-        // myEngine.getClock().setClock(0);
-        System.out.println("reloadButtonClicked() called");
         myEngine = new MyEngine(
                 refuelMain.getValue(),
                 refuelVariance.getValue(),
@@ -179,8 +222,14 @@ public class SimulatorController {
                 arriveMain.getValue(),
                 arriveVariance.getValue()
         );
+        myEngine.pause();
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
+
+        updateUI();
+        runningLabel.setText("Preparing...");
+        reloadButton.setDisable(true);
+        startSimulationButton.setDisable(false);
     }
 
     // Run simulation with UI
@@ -258,22 +307,5 @@ public class SimulatorController {
         payingMain.setEditable(true);
         payingVariance.setValueFactory(payingVF);
         payingVariance.setEditable(true);
-    }
-
-    public void setMyEngineParameters() {
-        myEngine.setRefuelM(refuelMain.getValue());
-        myEngine.setRefuelV(refuelVariance.getValue());
-        myEngine.setWashM(washMain.getValue());
-        myEngine.setWashV(washVariance.getValue());
-        myEngine.setShopM(shoppingMain.getValue());
-        myEngine.setShopV(shoppingVariance.getValue());
-        myEngine.setDryM(dryingMain.getValue());
-        myEngine.setDryV(dryingVariance.getValue());
-        myEngine.setPayM(payingMain.getValue());
-        myEngine.setPayV(payingVariance.getValue());
-        myEngine.setArrM(arriveMain.getValue());
-        myEngine.setArrV(arriveVariance.getValue());
-
-        System.out.println(myEngine.getRefuelM());
     }
 }

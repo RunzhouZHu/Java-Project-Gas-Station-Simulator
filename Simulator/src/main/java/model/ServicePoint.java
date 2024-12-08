@@ -16,6 +16,10 @@ public class ServicePoint {
     // QueueStrategy strategy; // option: ordering of the customer
     private boolean reserved = false;
 
+    //
+    private Integer arrivedCustomer = 0;
+    private Integer servedCustomer = 0;
+
     public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType eventTypeScheduled) {
         this.generator = generator;
         this.eventList = eventList;
@@ -23,10 +27,12 @@ public class ServicePoint {
     }
 
     public void addQueue(Customer customer) {
+        arrivedCustomer++;
         queue.add(customer);
     }
 
     public Customer removeQueue() {
+        servedCustomer++;
         reserved = false;
         return queue.poll();
     }
@@ -45,5 +51,16 @@ public class ServicePoint {
 
     public boolean isOnQueue() {
         return !queue.isEmpty();
+    }
+
+    public Integer getQueueSize() {
+        return queue.size();
+    }
+
+    public Integer getNumberOfArrivedCustomer() {
+        return arrivedCustomer;
+    }
+    public Integer getNumberOfServedCustomer() {
+        return servedCustomer;
     }
 }

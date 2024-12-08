@@ -9,6 +9,7 @@ public class Router {
     private EventList eventList = new EventList();
     private EventType eventTypeScheduled;
     private boolean reserved = false;
+    private Integer arrivedCustomer = 0;
 
     public Router(EventList eventList, EventType eventTypeScheduled) {
         this.eventList = eventList;
@@ -16,6 +17,7 @@ public class Router {
     }
 
     public void addQueue(Customer customer) {
+        arrivedCustomer++;
         queue.add(customer);
     }
 
@@ -37,5 +39,9 @@ public class Router {
 
     public boolean isOnQueue() {
         return !queue.isEmpty();
+    }
+
+    public Integer getNumberOfArrivedCustomer() {
+        return arrivedCustomer;
     }
 }

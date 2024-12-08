@@ -10,6 +10,9 @@ public class Engine {
     // events to be processed are stored here
     protected EventList eventList;
 
+    // Pause simulation button will control this
+    private boolean pause = false;
+
     public Engine() {
         clock = Clock.getInstance();
 
@@ -23,6 +26,7 @@ public class Engine {
     public void run() {
         initialize(); // creating, e.g., the first event
 
+        /*
         while (simulate()) {
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + currentTime());
             clock.setClock(currentTime());
@@ -35,11 +39,25 @@ public class Engine {
 
         }
 
+         */
+
+        while (clock.getClock() < simulationTime) {
+            Trace.out(Trace.Level.INFO, "\nA-phase: time is " + currentTime());
+            // clock.setClock(currentTime());
+
+            Trace.out(Trace.Level.INFO, "\nB-phase:");
+            runBEvents();
+
+            Trace.out(Trace.Level.INFO, "\nC-phase:");
+            tryCEvents();
+
+            clock.gotoNextMoment();
+        }
         results();
     }
 
     private void runBEvents() {
-        while (eventList.getNextEventTime() == clock.getClock()) {
+        while (eventList.getNextEventTime() <= clock.getClock()) {
             runEvent(eventList.remove());
         }
     }
@@ -49,7 +67,17 @@ public class Engine {
     }
 
     public boolean simulate() {
-        return clock.getClock() < simulationTime;
+        return clock.getClock() < simulationTime && !pause;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+    public void resume() {
+        pause = false;
+    }
+    public boolean getPauseStatus() {
+        return pause;
     }
 
     public Clock getClock() {

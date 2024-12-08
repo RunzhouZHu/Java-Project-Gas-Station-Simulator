@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SimulatorController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SimulatorController">
    <top>
       <Label text="Gas Station Simulator" BorderPane.alignment="CENTER">
          <font>
@@ -20,87 +22,364 @@
          </font>
       </Label>
    </top>
-   <bottom>
-      <Button fx:id="startSimulationButton" mnemonicParsing="false" onMouseClicked="#startSimulationButtonClicked" text="Start Simulation" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-   </bottom>
    <center>
       <StackPane maxHeight="0.0" maxWidth="0.0" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1026.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="800.0" fitWidth="1026.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="632.0" fitWidth="813.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/station.jpg" />
                </image>
             </ImageView>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1026.0">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="810.0">
                <children>
-                  <Label fx:id="refuellingCustomer" layoutX="200.0" layoutY="355.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="washingCustomer" layoutX="200.0" layoutY="447.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dryingCustomer" layoutX="540.0" layoutY="447.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="shoppingCustomer" layoutX="540.0" layoutY="355.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="payingCustomer" layoutX="790.0" layoutY="355.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
+                  <VBox alignment="TOP_RIGHT" layoutX="37.0" layoutY="170.0" prefHeight="151.0" prefWidth="94.0">
+                     <children>
+                        <Label fx:id="refuellingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="refuellingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
+                           <graphic>
+                              <Label text="   Served: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" layoutX="388.0" layoutY="218.0" prefHeight="67.0" prefWidth="103.0">
+                     <children>
+                        <Label fx:id="shoppingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="shoppingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
+                           <graphic>
+                              <Label text="   Served: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" layoutX="39.0" layoutY="468.0" prefHeight="86.0" prefWidth="96.0">
+                     <children>
+                        <Label fx:id="washingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="washingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
+                           <graphic>
+                              <Label text="   Served: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" layoutX="393.0" layoutY="394.0" prefHeight="69.0" prefWidth="94.0">
+                     <children>
+                        <Label fx:id="dryingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="dryingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
+                           <graphic>
+                              <Label text="   Served: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_RIGHT" layoutX="639.0" layoutY="386.0" prefHeight="80.0" prefWidth="109.0">
+                     <children>
+                        <Label fx:id="payingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="payingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
+                           <graphic>
+                              <Label text="   Served: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
-            <Canvas fx:id="mainCanvas" height="800.0" width="1026.0" />
+            <Canvas fx:id="mainCanvas" height="635.0" width="814.0" />
          </children>
       </StackPane>
    </center>
    <left>
-      <VBox prefHeight="800.0" prefWidth="574.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="715.0" prefWidth="340.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="600.0">
-               <children>
-                  <Label prefHeight="24.0" prefWidth="216.0" text="Choose Service Router: ">
+            <Label fx:id="arrivedCustomer" prefHeight="24.0" prefWidth="236.0" text="0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="24.0" prefWidth="177.0" text="Arrived Customers: ">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="arrivedCustomer" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exitCustomer" text="0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
                   <Label text="Exit or Choose Another Service: ">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="exitCustomer" text="0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="192.0" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Arrive Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="arriveMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label prefHeight="26.0" prefWidth="326.0" text="Arrive Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="arriveVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Refuelling Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="refuelMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Refuelling Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="refuelVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Washing Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="washMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Washing Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="washVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Shopping Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="shoppingMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Shopping Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="shoppingVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Drying Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="dryingMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Drying Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="dryingVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Paying Main">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="payingMain" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Paying Variance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Spinner fx:id="payingVariance" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
          </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets left="20.0" />
+         </BorderPane.margin>
       </VBox>
    </left>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startSimulationButton" mnemonicParsing="false" onMouseClicked="#startSimulationButtonClicked" prefHeight="30.0" prefWidth="230.0" text="Start/Continue">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="pauseSimulationButton" mnemonicParsing="false" onMouseClicked="#pauseSimulationButtonClicked" prefHeight="30.0" prefWidth="230.0" text="Pause">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="reloadButton" onMouseClicked="#reloadButtonClicked" mnemonicParsing="false" prefHeight="30.0" prefWidth="230.0" text="Reload">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

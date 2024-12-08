@@ -1,27 +1,31 @@
 package controller;
 
-import framework.Clock;
-import framework.Event;
 import framework.Trace;
-import controller.CarController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import model.*;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.animation.AnimationTimer;
-
-import static java.lang.Integer.parseInt;
 
 public class SimulatorController {
     static MyEngine myEngine = new MyEngine();
 
+    Router[] routers = myEngine.getRouters();
+    ServicePoint[] servicePoints = myEngine.getServicePoints();
+
+    MyEngineController mEC = new MyEngineController();
+
+    // Buttons
     @FXML
     private Button startSimulationButton;
 
+    @FXML
+    private Button pauseSimulationButton;
+
+    // Labels
     @FXML
     private Label arrivedCustomer;
 
@@ -41,13 +45,79 @@ public class SimulatorController {
     private Label shoppingCustomer;
 
     @FXML
+    private Label refuellingCustomerServed;
+
+    @FXML
+    private Label washingCustomerServed;
+
+    @FXML
+    private Label dryingCustomerServed;
+
+    @FXML
+    private Label payingCustomerServed;
+
+    @FXML
+    private Label shoppingCustomerServed;
+
+    @FXML
+    private Spinner<Double> arriveMain;
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 8);
+    @FXML
+    private Spinner<Double> arriveVariance;
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 1);
+    @FXML
+    private Spinner<Double> refuelMain;
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    @FXML
+    private Spinner<Double> refuelVariance;
+    private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    @FXML
+    private Spinner<Double> washMain;
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    @FXML
+    private Spinner<Double> washVariance;
+    private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    @FXML
+    private Spinner<Double> shoppingMain;
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    @FXML
+    private Spinner<Double> shoppingVariance;
+    private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    @FXML
+    private Spinner<Double> dryingMain;
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    @FXML
+    private Spinner<Double> dryingVariance;
+    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    @FXML
+    private Spinner<Double> payingMain;
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    @FXML
+    private Spinner<Double> payingVariance;
+    private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+
+    //
+    @FXML
     private Label exitCustomer;
 
     @FXML
     private Canvas mainCanvas;
 
     @FXML
+    private void initialize() {
+        setSpinners();
+        setMyEngineParameters();
+    }
+
+    @FXML
     private void startSimulationButtonClicked() {
+
+        setMyEngineParameters();
+
+        if (myEngine.getPauseStatus()) {
+            myEngine.resume();
+            pauseSimulationButton.setDisable(false);
+        }
 
         Thread thread = new Thread(() -> {
 
@@ -69,214 +139,113 @@ public class SimulatorController {
 
     }
 
-    private void counterUp(Label counter) {
-        Platform.runLater(
-            () -> counter.setText(
-                String.valueOf(parseInt(counter.getText()) + 1)
-            )
-        );
+    @FXML
+    private void pauseSimulationButtonClicked() {
+        myEngine.pause();
+
+        pauseSimulationButton.setDisable(true);
     }
 
-    private void counterDown(Label counter) {
-        Platform.runLater(
-            () -> counter.setText(
-                String.valueOf(parseInt(counter.getText()) - 1)
-            )
-        );
-    }
-    
-    private void driveCar(CarController carController) {
-        Platform.runLater(
-            () -> {
-                GraphicsContext gc = mainCanvas.getGraphicsContext2D();
-                gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
-                Image carImage = new Image(carController.getCarIcon());
-                gc.drawImage(
-                    carImage,
-                    carController.getCarX(),
-                    carController.getCarY(),
-                    carController.getCarWidth(),
-                    carController.getCarHeight()
-                );
-            }
-        );
+    @FXML
+    private void reloadButtonClicked() {
+        // myEngine.getClock().setClock(0);
+        System.out.println("reloadButtonClicked() called");
+        myEngine = new MyEngine();
+        routers = myEngine.getRouters();
+        servicePoints = myEngine.getServicePoints();
     }
 
     // Run simulation with UI
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
-
         while (myEngine.simulate()) {
 
-            Thread.sleep(1000);
+            Thread.sleep(30);
+
+            System.out.println("This time is " + myEngine.getClock().getClock());
 
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
-            myEngine.getClock().setClock(myEngine.currentTime());
 
             Trace.out(Trace.Level.INFO, "\nB-phase:");
             runBEventsWithUI();
 
             Trace.out(Trace.Level.INFO, "\nC-phase:");
-            tryCEventsWithUI();
+            mEC.tryCEventsWithUI(myEngine);
+
+            updateUI();
+
+            myEngine.getClock().gotoNextMoment();
         }
 
         myEngine.results();
     }
 
     private void runBEventsWithUI() {
-        while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
-            runEventWithUI(myEngine.getEventList().remove());
+        while (myEngine.getEventList().getNextEventTime() <= myEngine.getClock().getClock()) {
+            mEC.runEventWithUI(myEngine.getEventList().remove(), routers, servicePoints, myEngine);
         }
     }
 
-    private void runEventWithUI(Event event) {
+    public void updateUI() {
+        Platform.runLater(() -> {
+            refuellingCustomer.setText(String.valueOf(servicePoints[0].getQueueSize()));
+            washingCustomer.setText(String.valueOf(servicePoints[1].getQueueSize()));
+            shoppingCustomer.setText(String.valueOf(servicePoints[2].getQueueSize()));
+            payingCustomer.setText(String.valueOf(servicePoints[3].getQueueSize()));
+            dryingCustomer.setText(String.valueOf(servicePoints[4].getQueueSize()));
 
-        Router[] routers = myEngine.getRouters();
-        ServicePoint[] servicePoints = myEngine.getServicePoints();
+            refuellingCustomerServed.setText(String.valueOf(servicePoints[0].getNumberOfServedCustomer()));
+            washingCustomerServed.setText(String.valueOf(servicePoints[1].getNumberOfServedCustomer()));
+            shoppingCustomerServed.setText(String.valueOf(servicePoints[2].getNumberOfServedCustomer()));
+            payingCustomerServed.setText(String.valueOf(servicePoints[3].getNumberOfServedCustomer()));
+            dryingCustomerServed.setText(String.valueOf(servicePoints[4].getNumberOfServedCustomer()));
 
-        Customer customer;
-
-        switch ((EventType) event.getEventType()) {
-            case ARRIVE:
-                customer = new Customer();
-
-                CarController carController = customer.getCarController();
-                driveCar(carController);
-                carController.turnRight();
-
-                new AnimationTimer() {
-                    @Override
-                    public void handle(long now) {
-                        carController.carMove();
-                        driveCar(carController);
-                    }
-                }.start();
-
-                customer.setEventTypesToVisit(); // Random
-                System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
-
-                routers[0].addQueue(customer);
-
-                counterUp(arrivedCustomer);
-
-                myEngine.getArrivalProcesses().generateNextEvent();
-                break;
-
-            // Router events, the 'splits' should be at here
-            case Rot1:
-                customer = routers[0].removeQueue();
-
-                System.out.println("!!!Customer " + customer.getId() + " leaving router1 and go to " + customer.getEventTypesToVisit().get(0));
-
-                switch (customer.getEventTypesToVisit().get(0)) {
-                    case REFUELLING:
-                        servicePoints[0].addQueue(customer);
-
-                        counterUp(refuellingCustomer);
-                        customer.getCarController().setCarTarget(250, 415);
-
-                        break;
-                    case WASHING, DRYING:
-                        servicePoints[1].addQueue(customer);
-
-                        counterUp(washingCustomer);
-                        break;
-                    case SHOPPING:
-                        servicePoints[2].addQueue(customer);
-
-                        counterUp(shoppingCustomer);
-                        break;
-                    case PAYING:
-                        servicePoints[3].addQueue(customer);
-                        break;
-                }
-                break;
-
-            case Rot2:
-                customer = routers[1].removeQueue();
-                if (customer.getEventTypesToVisit().contains(EventType.DRYING)) {
-                    servicePoints[4].addQueue(customer);
-
-                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to DRYING.");
-
-                    counterUp(dryingCustomer);
-
-                } else {
-                    routers[2].addQueue(customer);
-
-                    System.out.println("!!!Customer " + customer.getId() + " leaving router2 and go to router3.");
-
-                }
-                break;
-
-            case Rot3:
-                customer = routers[2].removeQueue();
-                if (customer.getEventTypesToVisit().isEmpty()) {
-                    customer.getEventTypesToVisit().add(EventType.PAYING);
-                    servicePoints[3].addQueue(customer);
-
-                    counterUp(payingCustomer);
-                } else {
-                    routers[0].addQueue(customer);
-
-                    System.out.println("!!!Customer " + customer.getId() + " leaving router3 and reenter the system.");
-
-                }
-                break;
-
-            // ServicePoint events
-            case REFUELLING:
-                customer = servicePoints[0].removeQueue();
-                customer.getCarController().setCarTarget(270, 280);
-                myEngine.doService(customer, EventType.REFUELLING, 2);
-                counterDown(refuellingCustomer);
-                customer.getCarController().setCarTarget(270, 415);
-                break;
-
-            case WASHING:
-                customer = servicePoints[1].removeQueue();
-                customer.getCarController().setCarTarget(270, 500);
-                myEngine.doService(customer, EventType.WASHING, 1);
-                counterDown(washingCustomer);
-                customer.getCarController().setCarTarget(270, 415);
-                break;
-
-            case SHOPPING:
-                customer = servicePoints[2].removeQueue();
-                customer.getCarController().setCarTarget(600, 280);
-                myEngine.doService(customer, EventType.SHOPPING, 2);
-                counterDown(shoppingCustomer);
-                customer.getCarController().setCarTarget(600, 415);
-                break;
-
-            case PAYING:
-                customer = servicePoints[3].removeQueue();
-                customer.getCarController().setCarTarget(900, 415);
-                myEngine.doService(customer, EventType.PAYING, -1);
-                counterDown(payingCustomer);
-                counterUp(exitCustomer);
-                break;
-
-            case DRYING:
-                customer = servicePoints[4].removeQueue();
-                customer.getCarController().setCarTarget(600, 500);
-                myEngine.doService(customer, EventType.DRYING, 2);
-                counterDown(dryingCustomer);
-                customer.getCarController().setCarTarget(600, 415);
-                break;
-        }
+            arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
+            exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
+        });
     }
 
-    public void tryCEventsWithUI() {
-        for (ServicePoint servicePoint : myEngine.getServicePoints()) {
-            if (!servicePoint.isReserved() && servicePoint.isOnQueue()) {
-                servicePoint.beginService();
-            }
-            for (Router router : myEngine.getRouters()) {
-                if (!router.isReserved() && router.isOnQueue()) {
-                    router.beginService();
-                }
-            }
-        }
+    public void setSpinners() {
+        arriveMain.setValueFactory(arriveMF);
+        arriveMain.setEditable(true);
+        arriveVariance.setValueFactory(arriveVF);
+        arriveVariance.setEditable(true);
+        refuelMain.setValueFactory(refuelMF);
+        refuelMain.setEditable(true);
+        refuelVariance.setValueFactory(refuelVF);
+        refuelVariance.setEditable(true);
+        washMain.setValueFactory(washMF);
+        washMain.setEditable(true);
+        washVariance.setValueFactory(washVF);
+        washVariance.setEditable(true);
+        shoppingMain.setValueFactory(shoppingMF);
+        shoppingMain.setEditable(true);
+        shoppingVariance.setValueFactory(shoppingVF);
+        shoppingVariance.setEditable(true);
+        dryingMain.setValueFactory(dryingMF);
+        dryingMain.setEditable(true);
+        dryingVariance.setValueFactory(dryingVF);
+        dryingVariance.setEditable(true);
+        payingMain.setValueFactory(payingMF);
+        payingMain.setEditable(true);
+        payingVariance.setValueFactory(payingVF);
+        payingVariance.setEditable(true);
+    }
+
+    public void setMyEngineParameters() {
+        myEngine.setRefuelM(refuelMain.getValue());
+        myEngine.setRefuelV(refuelVariance.getValue());
+        myEngine.setWashM(washMain.getValue());
+        myEngine.setWashV(washVariance.getValue());
+        myEngine.setShopM(shoppingMain.getValue());
+        myEngine.setShopV(shoppingVariance.getValue());
+        myEngine.setDryM(dryingMain.getValue());
+        myEngine.setDryV(dryingVariance.getValue());
+        myEngine.setPayM(payingMain.getValue());
+        myEngine.setPayV(payingVariance.getValue());
+        myEngine.setArrM(arriveMain.getValue());
+        myEngine.setArrV(arriveVariance.getValue());
+
+        System.out.println(myEngine.getRefuelM());
     }
 }

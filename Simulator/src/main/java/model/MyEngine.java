@@ -140,6 +140,7 @@ public class MyEngine extends Engine {
         clock.setClock(0);
 
         arrivalProcess.generateNextEvent();
+
     }
 
     @Override
@@ -249,6 +250,40 @@ public class MyEngine extends Engine {
         System.out.println("Result, haven't done this part yet.");
     }
 
+    public void reload() {
+
+        this.servicePoints = new ServicePoint[5];
+
+        this.servicePoints[0] = new ServicePoint(new Normal(refuelM,refuelV), eventList, EventType.REFUELLING);
+        // Washing
+        this.servicePoints[1] = new ServicePoint(new Normal(washM,washV), eventList, EventType.WASHING);
+        // Shopping
+        this.servicePoints[2] = new ServicePoint(new Normal(shopM,shopV), eventList, EventType.SHOPPING);
+        // Paying
+        this.servicePoints[3] = new ServicePoint(new Normal(payM,payV), eventList, EventType.PAYING);
+        // Drying
+        this.servicePoints[4] = new ServicePoint(new Normal(dryM,dryV), eventList, EventType.DRYING);
+
+        // Set 3 Routers
+        this.routers = new Router[3];
+        // Router 1, Choose Service Router
+        this.routers[0] = new Router(eventList, EventType.Rot1);
+
+        // Router 2, Dry or not Router
+        this.routers[1] = new Router(eventList, EventType.Rot2);
+
+        // Router 3, Pay or Choose another service Router
+        this.routers[2] = new Router(eventList, EventType.Rot3);
+
+        // Set arrival process
+        this.arrivalProcess = new ArrivalProcess(
+                new Normal(arrM, arrV), eventList, EventType.ARRIVE
+        );
+    }
+
+
+    // Getter and setters
+    // ----------------------------------------------------------------------
     public Router[] getRouters() {
         return routers;
     }

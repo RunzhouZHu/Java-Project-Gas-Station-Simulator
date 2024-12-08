@@ -67,31 +67,31 @@ public class SimulatorController {
     private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 1);
     @FXML
     private Spinner<Double> refuelMain;
-    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> refuelVariance;
     private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> washMain;
-    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> washVariance;
     private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
-    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> shoppingVariance;
     private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
-    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> dryingVariance;
     private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> payingMain;
-    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
@@ -142,7 +142,17 @@ public class SimulatorController {
     @FXML
     private void pauseSimulationButtonClicked() {
         myEngine.pause();
+
         pauseSimulationButton.setDisable(true);
+    }
+
+    @FXML
+    private void reloadButtonClicked() {
+        // myEngine.getClock().setClock(0);
+        System.out.println("reloadButtonClicked() called");
+        myEngine = new MyEngine();
+        routers = myEngine.getRouters();
+        servicePoints = myEngine.getServicePoints();
     }
 
     // Run simulation with UI

@@ -1,13 +1,10 @@
 package model;
 
-import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
 import framework.ArrivalProcess;
 import framework.Clock;
 import framework.Engine;
 import framework.Event;
-
-import java.util.HashMap;
 
 public class MyEngine extends Engine {
     private ArrivalProcess arrivalProcess;

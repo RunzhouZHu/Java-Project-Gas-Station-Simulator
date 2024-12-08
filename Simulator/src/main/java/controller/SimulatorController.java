@@ -1,12 +1,13 @@
 package controller;
 
-import framework.Event;
 import framework.Trace;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import model.*;
 
 public class SimulatorController {
@@ -58,12 +59,70 @@ public class SimulatorController {
     @FXML
     private Label shoppingCustomerServed;
 
+    @FXML
+    private Spinner<Double> arriveMain;
+    @FXML
+    private Spinner<Double> arriveVariance;
+    @FXML
+    private Spinner<Double> refuelMain;
+    @FXML
+    private Spinner<Double> refuelVariance;
+    @FXML
+    private Spinner<Double> washMain;
+    @FXML
+    private Spinner<Double> washVariance;
+    @FXML
+    private Spinner<Double> shoppingMain;
+    @FXML
+    private Spinner<Double> shoppingVariance;
+    @FXML
+    private Spinner<Double> dryingMain;
+    @FXML
+    private Spinner<Double> dryingVariance;
+    @FXML
+    private Spinner<Double> payingMain;
+    @FXML
+    private Spinner<Double> payingVariance;
+    private final SpinnerValueFactory<Double> mainFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private SpinnerValueFactory<Double> varianceFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+
     //
     @FXML
     private Label exitCustomer;
 
     @FXML
     private Canvas mainCanvas;
+
+    @FXML
+    private void initialize() {
+        arriveMain.setValueFactory(mainFactory);
+        arriveMain.setEditable(true);
+        arriveVariance.setValueFactory(varianceFactory);
+        arriveVariance.setEditable(true);
+        refuelMain.setValueFactory(mainFactory);
+        refuelMain.setEditable(true);
+        refuelVariance.setValueFactory(varianceFactory);
+        refuelVariance.setEditable(true);
+        washMain.setValueFactory(mainFactory);
+        washMain.setEditable(true);
+        washVariance.setValueFactory(varianceFactory);
+        washVariance.setEditable(true);
+        shoppingMain.setValueFactory(mainFactory);
+        shoppingMain.setEditable(true);
+        shoppingVariance.setValueFactory(varianceFactory);
+        shoppingVariance.setEditable(true);
+        dryingMain.setValueFactory(mainFactory);
+        dryingMain.setEditable(true);
+        dryingVariance.setValueFactory(varianceFactory);
+        dryingVariance.setEditable(true);
+        payingMain.setValueFactory(mainFactory);
+        payingMain.setEditable(true);
+        payingVariance.setValueFactory(varianceFactory);
+        payingVariance.setEditable(true);
+
+
+
+    }
 
     @FXML
     private void startSimulationButtonClicked() {

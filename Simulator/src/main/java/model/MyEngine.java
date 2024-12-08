@@ -16,19 +16,19 @@ public class MyEngine extends Engine {
 
     // Set parameters
     // ------------------------------------------------------------
-    private Double refuelM = 0.1;
-    private Double refuelV = 0.1;
-    private Double washM = 0.1;
-    private Double washV = 0.1;
-    private Double shopM = 0.1;
-    private Double shopV = 0.1;
-    private Double payM = 0.1;
-    private Double payV = 0.1;
-    private Double dryM = 0.1;
-    private Double dryV = 0.1;
+    private Double refuelM;
+    private Double refuelV;
+    private Double washM;
+    private Double washV;
+    private Double shopM;
+    private Double shopV;
+    private Double payM;
+    private Double payV;
+    private Double dryM;
+    private Double dryV;
 
-    private Double arrM = 0.1;
-    private Double arrV = 0.1;
+    private Double arrM;
+    private Double arrV;
 
     // ------------------------------------------------------------
 
@@ -67,7 +67,7 @@ public class MyEngine extends Engine {
                                 EXIT
      */
 
-    public MyEngine() {
+    public MyEngine(Double refuelM, Double refuelV,Double washM, Double washV, Double shopM, Double shopV, Double payM, Double payV, Double dryM, Double dryV, Double arrM, Double arrV) {
         servicePoints = new ServicePoint[5];
 
         // Set the service points, remember to set suit mean and variance for service time!
@@ -248,37 +248,6 @@ public class MyEngine extends Engine {
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
-    }
-
-    public void reload() {
-
-        this.servicePoints = new ServicePoint[5];
-
-        this.servicePoints[0] = new ServicePoint(new Normal(refuelM,refuelV), eventList, EventType.REFUELLING);
-        // Washing
-        this.servicePoints[1] = new ServicePoint(new Normal(washM,washV), eventList, EventType.WASHING);
-        // Shopping
-        this.servicePoints[2] = new ServicePoint(new Normal(shopM,shopV), eventList, EventType.SHOPPING);
-        // Paying
-        this.servicePoints[3] = new ServicePoint(new Normal(payM,payV), eventList, EventType.PAYING);
-        // Drying
-        this.servicePoints[4] = new ServicePoint(new Normal(dryM,dryV), eventList, EventType.DRYING);
-
-        // Set 3 Routers
-        this.routers = new Router[3];
-        // Router 1, Choose Service Router
-        this.routers[0] = new Router(eventList, EventType.Rot1);
-
-        // Router 2, Dry or not Router
-        this.routers[1] = new Router(eventList, EventType.Rot2);
-
-        // Router 3, Pay or Choose another service Router
-        this.routers[2] = new Router(eventList, EventType.Rot3);
-
-        // Set arrival process
-        this.arrivalProcess = new ArrivalProcess(
-                new Normal(arrM, arrV), eventList, EventType.ARRIVE
-        );
     }
 
 

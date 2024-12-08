@@ -11,10 +11,9 @@ import javafx.scene.control.SpinnerValueFactory;
 import model.*;
 
 public class SimulatorController {
-    static MyEngine myEngine = new MyEngine();
-
-    Router[] routers = myEngine.getRouters();
-    ServicePoint[] servicePoints = myEngine.getServicePoints();
+    MyEngine myEngine;
+    Router[] routers;
+    ServicePoint[] servicePoints;
 
     MyEngineController mEC = new MyEngineController();
 
@@ -106,7 +105,23 @@ public class SimulatorController {
     @FXML
     private void initialize() {
         setSpinners();
+        myEngine = new MyEngine(
+                refuelMain.getValue(),
+                refuelVariance.getValue(),
+                washMain.getValue(),
+                washVariance.getValue(),
+                shoppingMain.getValue(),
+                shoppingVariance.getValue(),
+                payingMain.getValue(),
+                payingVariance.getValue(),
+                dryingMain.getValue(),
+                dryingVariance.getValue(),
+                arriveMain.getValue(),
+                arriveVariance.getValue()
+        );
         setMyEngineParameters();
+        routers = myEngine.getRouters();
+        servicePoints = myEngine.getServicePoints();
     }
 
     @FXML
@@ -150,7 +165,20 @@ public class SimulatorController {
     private void reloadButtonClicked() {
         // myEngine.getClock().setClock(0);
         System.out.println("reloadButtonClicked() called");
-        myEngine = new MyEngine();
+        myEngine = new MyEngine(
+                refuelMain.getValue(),
+                refuelVariance.getValue(),
+                washMain.getValue(),
+                washVariance.getValue(),
+                shoppingMain.getValue(),
+                shoppingVariance.getValue(),
+                payingMain.getValue(),
+                payingVariance.getValue(),
+                dryingMain.getValue(),
+                dryingVariance.getValue(),
+                arriveMain.getValue(),
+                arriveVariance.getValue()
+        );
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
     }

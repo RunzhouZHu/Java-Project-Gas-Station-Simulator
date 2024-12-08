@@ -14,6 +14,24 @@ public class MyEngine extends Engine {
     public static final boolean FIXEDARRIVALTIMES = false;
     public static final boolean FIXEDSERVICETIMES = false;
 
+    // Set parameters
+    // ------------------------------------------------------------
+    private Double refuelM = 20.0;
+    private Double refuelV = 5.0;
+    private Double washM = 20.0;
+    private Double washV = 5.0;
+    private Double shopM = 20.0;
+    private Double shopV = 5.0;
+    private Double payM = 20.0;
+    private Double payV = 5.0;
+    private Double dryM = 20.0;
+    private Double dryV = 5.0;
+
+    private Double arrM = 5.0;
+    private Double arrV = 5.0;
+
+    // ------------------------------------------------------------
+
     /*
     Simulation case: a gas station with 5 different service points
 
@@ -54,15 +72,15 @@ public class MyEngine extends Engine {
 
         // Set the service points, remember to set suit mean and variance for service time!
         // Refuelling
-        servicePoints[0] = new ServicePoint(new Normal(20,6), eventList, EventType.REFUELLING);
+        servicePoints[0] = new ServicePoint(new Normal(refuelM,refuelV), eventList, EventType.REFUELLING);
         // Washing
-        servicePoints[1] = new ServicePoint(new Normal(30,6), eventList, EventType.WASHING);
+        servicePoints[1] = new ServicePoint(new Normal(washM,washV), eventList, EventType.WASHING);
         // Shopping
-        servicePoints[2] = new ServicePoint(new Normal(30,6), eventList, EventType.SHOPPING);
+        servicePoints[2] = new ServicePoint(new Normal(shopM,shopV), eventList, EventType.SHOPPING);
         // Paying
-        servicePoints[3] = new ServicePoint(new Normal(30,6), eventList, EventType.PAYING);
+        servicePoints[3] = new ServicePoint(new Normal(payM,payV), eventList, EventType.PAYING);
         // Drying
-        servicePoints[4] = new ServicePoint(new Normal(30,6), eventList, EventType.DRYING);
+        servicePoints[4] = new ServicePoint(new Normal(dryM,dryV), eventList, EventType.DRYING);
 
         // Set 3 Routers
         routers = new Router[3];
@@ -77,7 +95,7 @@ public class MyEngine extends Engine {
 
         // Set arrival process
         arrivalProcess = new ArrivalProcess(
-            new Normal(5, 5), eventList, EventType.ARRIVE
+            new Normal(arrM, arrV), eventList, EventType.ARRIVE
         );
     }
 
@@ -243,4 +261,76 @@ public class MyEngine extends Engine {
         return arrivalProcess;
     }
 
+    public Double getRefuelM() {
+        return refuelM;
+    }
+    public void setRefuelM(Double refuelM) {
+        this.refuelM = refuelM;
+    }
+    public Double getRefuelV() {
+        return refuelV;
+    }
+    public void setRefuelV(Double refuelV) {
+        this.refuelV = refuelV;
+    }
+    public Double getWashM() {
+        return washM;
+    }
+    public void setWashM(Double washM) {
+        this.washM = washM;
+    }
+    public Double getWashV() {
+        return washV;
+    }
+    public void setWashV(Double washV) {
+        this.washV = washV;
+    }
+    public Double getShopM() {
+        return shopM;
+    }
+    public void setShopM(Double shopM) {
+        this.shopM = shopM;
+    }
+    public Double getShopV() {
+        return shopV;
+    }
+    public void setShopV(Double shopV) {
+        this.shopV = shopV;
+    }
+    public Double getPayM() {
+        return payM;
+    }
+    public void setPayM(Double payM) {
+        this.payM = payM;
+    }
+    public Double getPayV() {
+        return payV;
+    }
+    public void setPayV(Double payV) {
+        this.payV = payV;
+    }
+    public Double getDryM() {
+        return dryM;
+    }
+    public void setDryM(Double dryM) {
+        this.dryM = dryM;
+    }
+    public Double getDryV() {
+        return dryV;
+    }
+    public void setDryV(Double dryV) {
+        this.dryV = dryV;
+    }
+    public Double getArrM() {
+        return arrM;
+    }
+    public void setArrM(Double arrM) {
+        this.arrM = arrM;
+    }
+    public Double getArrV() {
+        return arrV;
+    }
+    public void setArrV(Double arrV) {
+        this.arrV = arrV;
+    }
 }

@@ -61,30 +61,40 @@ public class SimulatorController {
 
     @FXML
     private Spinner<Double> arriveMain;
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> arriveVariance;
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> refuelMain;
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> refuelVariance;
+    private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> washMain;
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> washVariance;
+    private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> shoppingVariance;
+    private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> dryingVariance;
+    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> payingMain;
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
     @FXML
     private Spinner<Double> payingVariance;
-    private final SpinnerValueFactory<Double> mainFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
-    private SpinnerValueFactory<Double> varianceFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
 
     //
     @FXML
@@ -95,37 +105,14 @@ public class SimulatorController {
 
     @FXML
     private void initialize() {
-        arriveMain.setValueFactory(mainFactory);
-        arriveMain.setEditable(true);
-        arriveVariance.setValueFactory(varianceFactory);
-        arriveVariance.setEditable(true);
-        refuelMain.setValueFactory(mainFactory);
-        refuelMain.setEditable(true);
-        refuelVariance.setValueFactory(varianceFactory);
-        refuelVariance.setEditable(true);
-        washMain.setValueFactory(mainFactory);
-        washMain.setEditable(true);
-        washVariance.setValueFactory(varianceFactory);
-        washVariance.setEditable(true);
-        shoppingMain.setValueFactory(mainFactory);
-        shoppingMain.setEditable(true);
-        shoppingVariance.setValueFactory(varianceFactory);
-        shoppingVariance.setEditable(true);
-        dryingMain.setValueFactory(mainFactory);
-        dryingMain.setEditable(true);
-        dryingVariance.setValueFactory(varianceFactory);
-        dryingVariance.setEditable(true);
-        payingMain.setValueFactory(mainFactory);
-        payingMain.setEditable(true);
-        payingVariance.setValueFactory(varianceFactory);
-        payingVariance.setEditable(true);
-
-
-
+        setSpinners();
+        setMyEngineParameters();
     }
 
     @FXML
     private void startSimulationButtonClicked() {
+
+        setMyEngineParameters();
 
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
@@ -203,5 +190,49 @@ public class SimulatorController {
             arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
             exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
         });
+    }
+
+    public void setSpinners() {
+        arriveMain.setValueFactory(arriveMF);
+        arriveMain.setEditable(true);
+        arriveVariance.setValueFactory(arriveVF);
+        arriveVariance.setEditable(true);
+        refuelMain.setValueFactory(refuelMF);
+        refuelMain.setEditable(true);
+        refuelVariance.setValueFactory(refuelVF);
+        refuelVariance.setEditable(true);
+        washMain.setValueFactory(washMF);
+        washMain.setEditable(true);
+        washVariance.setValueFactory(washVF);
+        washVariance.setEditable(true);
+        shoppingMain.setValueFactory(shoppingMF);
+        shoppingMain.setEditable(true);
+        shoppingVariance.setValueFactory(shoppingVF);
+        shoppingVariance.setEditable(true);
+        dryingMain.setValueFactory(dryingMF);
+        dryingMain.setEditable(true);
+        dryingVariance.setValueFactory(dryingVF);
+        dryingVariance.setEditable(true);
+        payingMain.setValueFactory(payingMF);
+        payingMain.setEditable(true);
+        payingVariance.setValueFactory(payingVF);
+        payingVariance.setEditable(true);
+    }
+
+    public void setMyEngineParameters() {
+
+        System.out.println("setMyEngineParameters() called");
+        myEngine.setRefuelM(refuelMain.getValue());
+        myEngine.setRefuelV(refuelVariance.getValue());
+        myEngine.setWashM(washMain.getValue());
+        myEngine.setWashV(washVariance.getValue());
+        myEngine.setShopM(shoppingMain.getValue());
+        myEngine.setShopV(shoppingVariance.getValue());
+        myEngine.setDryM(dryingMain.getValue());
+        myEngine.setDryV(dryingVariance.getValue());
+        myEngine.setPayM(payingMain.getValue());
+        myEngine.setPayV(payingVariance.getValue());
+        myEngine.setArrM(arriveMain.getValue());
+        myEngine.setArrV(arriveVariance.getValue());
     }
 }

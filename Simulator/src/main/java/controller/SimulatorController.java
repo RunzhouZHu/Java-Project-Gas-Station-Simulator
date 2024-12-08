@@ -106,6 +106,9 @@ public class SimulatorController {
     private Canvas mainCanvas;
 
     @FXML
+    private Label runningLabel;
+
+    @FXML
     private void initialize() {
         setSpinners();
         myEngine = new MyEngine(
@@ -125,14 +128,22 @@ public class SimulatorController {
         // setMyEngineParameters();
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
+        runningLabel.setText("Preparing");
+
+        // Set UI
+        pauseSimulationButton.setDisable(true);
+        reloadButton.setDisable(true);
     }
 
     @FXML
     private void startSimulationButtonClicked() {
+
+        pauseSimulationButton.setDisable(false);
+        startSimulationButton.setDisable(true);
+
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
             // disable UI
-            pauseSimulationButton.setDisable(false);
             reloadButton.setDisable(true);
 
             arriveMain.setDisable(true);
@@ -147,6 +158,8 @@ public class SimulatorController {
             payingVariance.setDisable(true);
             dryingMain.setDisable(true);
             dryingVariance.setDisable(true);
+
+            runningLabel.setText("Running...");
         }
 
         Thread thread = new Thread(() -> {
@@ -188,6 +201,9 @@ public class SimulatorController {
         payingVariance.setDisable(false);
         dryingMain.setDisable(false);
         dryingVariance.setDisable(false);
+
+        runningLabel.setText("Pausing...");
+        startSimulationButton.setDisable(false);
     }
 
     @FXML
@@ -211,6 +227,9 @@ public class SimulatorController {
         servicePoints = myEngine.getServicePoints();
 
         updateUI();
+        runningLabel.setText("Preparing...");
+        reloadButton.setDisable(true);
+        startSimulationButton.setDisable(false);
     }
 
     // Run simulation with UI

@@ -10,12 +10,15 @@ import java.util.LinkedList;
 
 public class ServicePoint {
     private LinkedList<Customer> queue = new LinkedList<>();
-    private Integer addedCustomer = 0;
     private ContinuousGenerator generator;
     private EventList eventList;
     private EventType eventTypeScheduled;
     // QueueStrategy strategy; // option: ordering of the customer
     private boolean reserved = false;
+
+    //
+    private Integer arrivedCustomer = 0;
+    private Integer servedCustomer = 0;
 
     public ServicePoint(ContinuousGenerator generator, EventList eventList, EventType eventTypeScheduled) {
         this.generator = generator;
@@ -24,11 +27,12 @@ public class ServicePoint {
     }
 
     public void addQueue(Customer customer) {
-        addedCustomer++;
+        arrivedCustomer++;
         queue.add(customer);
     }
 
     public Customer removeQueue() {
+        servedCustomer++;
         reserved = false;
         return queue.poll();
     }
@@ -51,5 +55,12 @@ public class ServicePoint {
 
     public Integer getQueueSize() {
         return queue.size();
+    }
+
+    public Integer getNumberOfArrivedCustomer() {
+        return arrivedCustomer;
+    }
+    public Integer getNumberOfServedCustomer() {
+        return servedCustomer;
     }
 }

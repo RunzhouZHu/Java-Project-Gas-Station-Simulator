@@ -16,19 +16,19 @@ public class MyEngine extends Engine {
 
     // Set parameters
     // ------------------------------------------------------------
-    private Double refuelM = 20.0;
-    private Double refuelV = 5.0;
-    private Double washM = 20.0;
-    private Double washV = 5.0;
-    private Double shopM = 20.0;
-    private Double shopV = 5.0;
-    private Double payM = 20.0;
-    private Double payV = 5.0;
-    private Double dryM = 20.0;
-    private Double dryV = 5.0;
+    private Double refuelM = 0.1;
+    private Double refuelV = 0.1;
+    private Double washM = 0.1;
+    private Double washV = 0.1;
+    private Double shopM = 0.1;
+    private Double shopV = 0.1;
+    private Double payM = 0.1;
+    private Double payV = 0.1;
+    private Double dryM = 0.1;
+    private Double dryV = 0.1;
 
-    private Double arrM = 5.0;
-    private Double arrV = 5.0;
+    private Double arrM = 0.1;
+    private Double arrV = 0.1;
 
     // ------------------------------------------------------------
 

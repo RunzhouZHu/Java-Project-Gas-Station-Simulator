@@ -61,37 +61,37 @@ public class SimulatorController {
 
     @FXML
     private Spinner<Double> arriveMain;
-    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 8);
     @FXML
     private Spinner<Double> arriveVariance;
-    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 1);
     @FXML
     private Spinner<Double> refuelMain;
-    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
     @FXML
     private Spinner<Double> refuelVariance;
     private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> washMain;
-    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
     @FXML
     private Spinner<Double> washVariance;
     private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
-    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
     @FXML
     private Spinner<Double> shoppingVariance;
     private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
-    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
     @FXML
     private Spinner<Double> dryingVariance;
     private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
     @FXML
     private Spinner<Double> payingMain;
-    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 5);
     @FXML
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
@@ -152,8 +152,9 @@ public class SimulatorController {
 
             Thread.sleep(30);
 
+            System.out.println("This time is " + myEngine.getClock().getClock());
+
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
-            myEngine.getClock().setClock(myEngine.currentTime());
 
             Trace.out(Trace.Level.INFO, "\nB-phase:");
             runBEventsWithUI();
@@ -162,13 +163,15 @@ public class SimulatorController {
             mEC.tryCEventsWithUI(myEngine);
 
             updateUI();
+
+            myEngine.getClock().gotoNextMoment();
         }
 
         myEngine.results();
     }
 
     private void runBEventsWithUI() {
-        while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
+        while (myEngine.getEventList().getNextEventTime() <= myEngine.getClock().getClock()) {
             mEC.runEventWithUI(myEngine.getEventList().remove(), routers, servicePoints, myEngine);
         }
     }
@@ -220,8 +223,6 @@ public class SimulatorController {
     }
 
     public void setMyEngineParameters() {
-
-        System.out.println("setMyEngineParameters() called");
         myEngine.setRefuelM(refuelMain.getValue());
         myEngine.setRefuelV(refuelVariance.getValue());
         myEngine.setWashM(washMain.getValue());
@@ -234,5 +235,7 @@ public class SimulatorController {
         myEngine.setPayV(payingVariance.getValue());
         myEngine.setArrM(arriveMain.getValue());
         myEngine.setArrV(arriveVariance.getValue());
+
+        System.out.println(myEngine.getRefuelM());
     }
 }

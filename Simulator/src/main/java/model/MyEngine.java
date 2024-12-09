@@ -251,10 +251,11 @@ public class MyEngine extends Engine {
     @Override
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
-        System.out.println("Result, haven't done this part yet.");
-        for (Customer customer : customerResults) {
-            System.out.println(customer.getId() + ", " + customer.getArrivalTime());
-        }
+
+        System.out.println("A, arrived clients count (arrival count): " + routers[0].getNumberOfArrivedCustomer());
+        System.out.println("C, clients serviced count (completed count): " + servicePoints[3].getNumberOfServedCustomer());
+        System.out.println("T, total simulation time (time): " + Clock.getInstance().getClock());
+
     }
 
 

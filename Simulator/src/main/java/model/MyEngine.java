@@ -137,7 +137,6 @@ public class MyEngine extends Engine {
     @Override
     public void initialize() {
         Clock clock = Clock.getInstance();
-        clock.setClock(0);
 
         arrivalProcess.generateNextEvent();
 

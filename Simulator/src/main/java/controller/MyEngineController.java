@@ -125,7 +125,7 @@ public class MyEngineController {
 
             case WASHING:
                 customer = servicePoints[1].removeQueue();
-                customer.setEnterCashTime(myEngine.getClock().getClock());
+                customer.setExitWashingTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.WASHING, 1);
                 break;
 
@@ -137,14 +137,14 @@ public class MyEngineController {
 
             case PAYING:
                 customer = servicePoints[3].removeQueue();
-                customer.setEnterCashTime(myEngine.getClock().getClock());
+                customer.setExitCashTime(myEngine.getClock().getClock());
                 myEngine.getCustomers().add(customer);
                 myEngine.doService(customer, EventType.PAYING, -1);
                 break;
 
             case DRYING:
                 customer = servicePoints[4].removeQueue();
-                customer.setExitCashTime(myEngine.getClock().getClock());
+                customer.setExitDryingTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.DRYING, 2);
                 break;
         }

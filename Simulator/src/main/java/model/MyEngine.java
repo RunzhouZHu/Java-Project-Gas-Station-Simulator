@@ -254,8 +254,8 @@ public class MyEngine extends Engine {
 
         System.out.println("A, arrived clients count (arrival count): " + routers[0].getNumberOfArrivedCustomer());
         System.out.println("C, clients serviced count (completed count): " + servicePoints[3].getNumberOfServedCustomer());
+        System.out.println("B, active time in service point (busy time): " + Result.busyTime(customerResults));
         System.out.println("T, total simulation time (time): " + Clock.getInstance().getClock());
-
     }
 
 

@@ -45,14 +45,15 @@ public class Customer {
     public Customer() {
         id = nextId++;
 
-        arrivalTime = Clock.getInstance().getClock();
-        removalTime = arrivalTime;
-        Trace.out(Trace.Level.INFO, "New customer " + id + " arrivalTime=" + arrivalTime);
+        // arrivalTime = Clock.getInstance().getClock();
+        // removalTime = arrivalTime;
+        // Trace.out(Trace.Level.INFO, "New customer " + id + " arrivalTime=" + arrivalTime);
     }
 
+    /*
     public void setArrivalTime(double arrivalTime) {
         this.arrivalTime = arrivalTime;
-    }
+    } */
 
     //public void setRemovalTime(double removalTime) {
     public void setRemovalTime() {

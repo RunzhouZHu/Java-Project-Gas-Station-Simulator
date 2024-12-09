@@ -17,6 +17,20 @@ public class Customer {
     private static long sum = 0;
     private CarController carController = new CarController();
 
+    // Customer action records
+    private double arriveTime = 0.0;
+    private double enterRefuelTime = 0.0;
+    private double exitRefuelTime = 0.0;
+    private double enterWashingTime = 0.0;
+    private double exitWashingTime = 0.0;
+    private double enterShopTime = 0.0;
+    private double exitShopTime = 0.0;
+    private double enterDryingTime = 0.0;
+    private double exitDryingTime = 0.0;
+    private double enterCashTime = 0.0;
+    private double exitCashTime = 0.0;
+
+
     // Set the which service points the customer want to visit
     // There are total 5 event types: DP1 ~ DP5
     private ArrayList<EventType> eventTypesToVisit = new ArrayList<EventType>();
@@ -86,6 +100,7 @@ public class Customer {
     }
 
     public void reportResults() {
+        /*
         framework.Trace.out(framework.Trace.Level.INFO, "\nCustomer " + id + " ready! ");
         framework.Trace.out(framework.Trace.Level.INFO, "Customer " + id + " arrived: " + arrivalTime);
         framework.Trace.out(framework.Trace.Level.INFO, "Customer " + id + " removed: " + removalTime);
@@ -94,6 +109,76 @@ public class Customer {
         sum += (long) (removalTime - arrivalTime);
         double mean = (double) sum / id;
         System.out.println("Current mean of the customer service times " + mean);
+
+         */
+
+        System.out.println("Customer report results called.");
     }
 
+    public double getArriveTime() {
+        return arriveTime;
+    }
+    public void setArriveTime(double arriveTime) {
+        this.arriveTime = arriveTime;
+    }
+    public double getEnterRefuelTime() {
+        return enterRefuelTime;
+    }
+    public void setEnterRefuelTime(double enterRefuelTime) {
+        this.enterRefuelTime = enterRefuelTime;
+    }
+    public double getExitRefuelTime() {
+        return exitRefuelTime;
+    }
+    public void setExitRefuelTime(double exitRefuelTime) {
+        this.exitRefuelTime = exitRefuelTime;
+    }
+    public double getEnterWashingTime() {
+        return enterWashingTime;
+    }
+    public void setEnterWashingTime(double enterWashingTime) {
+        this.enterWashingTime = enterWashingTime;
+    }
+    public double getExitWashingTime() {
+        return exitWashingTime;
+    }
+    public void setExitWashingTime(double exitWashingTime) {
+        this.exitWashingTime = exitWashingTime;
+    }
+    public double getEnterShopTime() {
+        return enterShopTime;
+    }
+    public void setEnterShopTime(double enterShopTime) {
+        this.enterShopTime = enterShopTime;
+    }
+    public double getExitShopTime() {
+        return exitShopTime;
+    }
+    public void setExitShopTime(double exitShopTime) {
+        this.exitShopTime = exitShopTime;
+    }
+    public double getEnterDryingTime() {
+        return enterDryingTime;
+    }
+    public void setEnterDryingTime(double enterDryingTime) {
+        this.enterDryingTime = enterDryingTime;
+    }
+    public double getExitDryingTime() {
+        return exitDryingTime;
+    }
+    public void setExitDryingTime(double exitDryingTime) {
+        this.exitDryingTime = exitDryingTime;
+    }
+    public double getEnterCashTime() {
+        return enterCashTime;
+    }
+    public void setEnterCashTime(double enterCashTime) {
+        this.enterCashTime = enterCashTime;
+    }
+    public double getExitCashTime() {
+        return exitCashTime;
+    }
+    public void setExitCashTime(double exitCashTime) {
+        this.exitCashTime = exitCashTime;
+    }
 }

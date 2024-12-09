@@ -6,7 +6,12 @@ import framework.Clock;
 import framework.Engine;
 import framework.Event;
 
+import java.util.ArrayList;
+
 public class MyEngine extends Engine {
+
+    private ArrayList<Customer> customerResults = new ArrayList<>();
+
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
     private Router[] routers;
@@ -247,11 +252,22 @@ public class MyEngine extends Engine {
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
         System.out.println("Result, haven't done this part yet.");
+        for (Customer customer : customerResults) {
+            System.out.println(customer.getId() + ", " + customer.getArrivalTime());
+        }
     }
 
 
     // Getter and setters
     // ----------------------------------------------------------------------
+    public ArrayList<Customer> getCustomers() {
+        return customerResults;
+    }
+
+    public void setCustomers(ArrayList<Customer> customerResults) {
+        this.customerResults = customerResults;
+    }
+
     public Router[] getRouters() {
         return routers;
     }

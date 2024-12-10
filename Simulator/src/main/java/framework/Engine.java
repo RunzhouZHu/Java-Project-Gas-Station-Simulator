@@ -26,7 +26,6 @@ public class Engine {
     public void run() {
         initialize(); // creating, e.g., the first event
 
-        /*
         while (simulate()) {
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + currentTime());
             clock.setClock(currentTime());
@@ -39,20 +38,6 @@ public class Engine {
 
         }
 
-         */
-
-        while (clock.getClock() < simulationTime) {
-            Trace.out(Trace.Level.INFO, "\nA-phase: time is " + currentTime());
-            // clock.setClock(currentTime());
-
-            Trace.out(Trace.Level.INFO, "\nB-phase:");
-            runBEvents();
-
-            Trace.out(Trace.Level.INFO, "\nC-phase:");
-            tryCEvents();
-
-            clock.gotoNextMoment();
-        }
         results();
     }
 

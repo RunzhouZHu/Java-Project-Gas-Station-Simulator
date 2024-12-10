@@ -1,10 +1,8 @@
 package framework;
 
 public class Clock {
-    private double clock;
-    private static Clock instance;
-
-    private double timeStep = 0.1;
+	private double clock;
+	private static Clock instance;
 
     private Clock() {
         clock = 0;
@@ -25,11 +23,4 @@ public class Clock {
         return clock;
     }
 
-    public void gotoNextMoment() {
-        clock += timeStep;
-    }
-
-    public void setTimeStep(double timeStep) {
-        this.timeStep = timeStep;
-    }
 }

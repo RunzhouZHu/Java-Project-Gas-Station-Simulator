@@ -242,6 +242,7 @@ public class SimulatorController {
             System.out.println("This time is " + myEngine.getClock().getClock());
 
             Trace.out(Trace.Level.INFO, "\nA-phase: time is " + myEngine.currentTime());
+            myEngine.getClock().setClock(myEngine.currentTime());
 
             Trace.out(Trace.Level.INFO, "\nB-phase:");
             runBEventsWithUI();
@@ -250,15 +251,13 @@ public class SimulatorController {
             mEC.tryCEventsWithUI(myEngine);
 
             updateUI();
-
-            myEngine.getClock().gotoNextMoment();
         }
 
         myEngine.results();
     }
 
     private void runBEventsWithUI() {
-        while (myEngine.getEventList().getNextEventTime() <= myEngine.getClock().getClock()) {
+        while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
             mEC.runEventWithUI(myEngine.getEventList().remove(), routers, servicePoints, myEngine);
         }
     }

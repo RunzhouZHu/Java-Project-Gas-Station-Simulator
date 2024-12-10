@@ -6,7 +6,15 @@ import framework.Clock;
 import framework.Engine;
 import framework.Event;
 
+import java.util.ArrayList;
+/**
+ * The MyEngine class extends the Engine class and simulates a gas station with multiple service points.
+ * It handles the arrival of customers, their routing through various service points, and the collection of simulation results.
+ */
 public class MyEngine extends Engine {
+
+    private ArrayList<Customer> customerResults = new ArrayList<>();
+
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
     private Router[] routers;
@@ -66,7 +74,22 @@ public class MyEngine extends Engine {
                                  ▼
                                 EXIT
      */
-
+    /**
+     * Constructs a MyEngine instance with specified parameters for service points and arrival process.
+     *
+     * @param refuelM mean service time for refuelling
+     * @param refuelV variance of service time for refuelling
+     * @param washM mean service time for washing
+     * @param washV variance of service time for washing
+     * @param shopM mean service time for shopping
+     * @param shopV variance of service time for shopping
+     * @param payM mean service time for paying
+     * @param payV variance of service time for paying
+     * @param dryM mean service time for drying
+     * @param dryV variance of service time for drying
+     * @param arrM mean arrival time
+     * @param arrV variance of arrival time
+     */
     public MyEngine(Double refuelM, Double refuelV,Double washM, Double washV, Double shopM, Double shopV, Double payM, Double payV, Double dryM, Double dryV, Double arrM, Double arrV) {
         servicePoints = new ServicePoint[5];
 
@@ -99,6 +122,12 @@ public class MyEngine extends Engine {
         );
     }
 
+    /**
+     * Handles the service completion for a customer at a specific service point and routes them to the next router.
+     *
+     * @param eventType the type of event/service point
+     * @param routerIndex the index of the next router to route the customer to
+     */
     public void doService(EventType eventType, int routerIndex) {
         int index = eventType.ordinal();
         Customer customer = servicePoints[index].removeQueue();
@@ -118,6 +147,9 @@ public class MyEngine extends Engine {
 
     }
 
+    /**
+     * Initializes the simulation by generating the first arrival event.
+     */
     @Override
     public void initialize() {
         Clock clock = Clock.getInstance();
@@ -126,6 +158,11 @@ public class MyEngine extends Engine {
 
     }
 
+    /**
+     * Runs the specified event, handling customer arrivals, routing, and service completions.
+     *
+     * @param event the event to run
+     */
     @Override
     public void runEvent(Event event) {
         Customer customer;
@@ -149,15 +186,23 @@ public class MyEngine extends Engine {
                 switch (customer.getEventTypesToVisit().get(0)) {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
+                        customer.setLineRefuelTime(getClock().getClock());
                         break;
-                    case WASHING, DRYING:
+                    case WASHING:
                         servicePoints[1].addQueue(customer);
+                        customer.setLineWashTime(getClock().getClock());
+                        break;
+                    case DRYING:
+                        servicePoints[1].addQueue(customer);
+                        customer.setLineDryingTime(getClock().getClock());
                         break;
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
+                        customer.setLineShopTime(getClock().getClock());
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
+                        customer.setLineCashTime(getClock().getClock());
                         break;
                 }
                 break;
@@ -213,6 +258,9 @@ public class MyEngine extends Engine {
         }
     }
 
+    /**
+     * Tries to execute C-phase events with UI updates.
+     */
     @Override
     public void tryCEvents() {
         for (ServicePoint servicePoint : servicePoints) {
@@ -227,15 +275,59 @@ public class MyEngine extends Engine {
         }
     }
 
+    /**
+     * Outputs the results of the simulation, including various performance metrics.
+     */
     @Override
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
-        System.out.println("Result, haven't done this part yet.");
+
+        // Directly observable variables are:
+        int arrivalCount = routers[0].getNumberOfArrivedCustomer();
+        int completedCount = servicePoints[3].getNumberOfServedCustomer();
+        double busyTime = Result.busyTime(customerResults);
+        double time = Clock.getInstance().getClock();
+
+        System.out.println("A, arrived clients count (arrival count): " + arrivalCount);
+        System.out.println("C, clients serviced count (completed count): " + completedCount);
+        System.out.println("B, active time in service point (busy time): " + busyTime);
+        System.out.println("T, total simulation time (time): " + time);
+
+        // Derived variables (from the previous variables) are:
+        double servicePointUtilization = busyTime / time;
+        double serviceThroughput = completedCount / time;
+        double serviceTime = busyTime / completedCount;
+
+        System.out.println("U, service point utilization related to the max capacity, U = B/T: " + servicePointUtilization);
+        System.out.println("X, service throughput, number of clients serviced related to the time, X = C/T: " + serviceThroughput);
+        System.out.println("S, service time, average service time in the service point, S = B/C: " + serviceTime);
+
+        // Additional directly observable variables are:
+        double waitingTime = Result.waitTime(customerResults);
+
+        System.out.println("W, waiting time, cumulative response times sum of all clients: " + waitingTime);
+
+        // From these last two, we can further derive the following quantities:
+        double responseTime = waitingTime / completedCount;
+        double averageQueueLength = waitingTime / time;
+
+        System.out.println("R, response time, average throughput time at the service point, R = W/C: " + responseTime);
+        System.out.println("N, average queue length at the service point (including the served) N = W/T: " + averageQueueLength);
+
+        Result.generateResultFile(customerResults, arrivalCount);
     }
 
 
     // Getter and setters
     // ----------------------------------------------------------------------
+    public ArrayList<Customer> getCustomers() {
+        return customerResults;
+    }
+
+    public void setCustomers(ArrayList<Customer> customerResults) {
+        this.customerResults = customerResults;
+    }
+
     public Router[] getRouters() {
         return routers;
     }

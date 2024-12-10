@@ -12,8 +12,6 @@ public class SimulatorController {
     Router[] routers;
     ServicePoint[] servicePoints;
 
-    MyEngineController mEC = new MyEngineController();
-
     // Buttons
     @FXML
     private Button startSimulationButton;
@@ -215,7 +213,7 @@ public class SimulatorController {
             runBEventsWithUI();
 
             Trace.out(Trace.Level.INFO, "\nC-phase:");
-            mEC.tryCEventsWithUI(myEngine);
+            myEngine.tryCEvents();
 
             updateUI();
         }
@@ -227,7 +225,7 @@ public class SimulatorController {
 
     private void runBEventsWithUI() {
         while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
-            mEC.runEventWithUI(myEngine.getEventList().remove(), routers, servicePoints, myEngine);
+            myEngine.runEvent(myEngine.getEventList().remove());
         }
     }
 

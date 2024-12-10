@@ -19,14 +19,24 @@ public class Customer {
 
     // Customer action records
     private double arriveTime = 0.0;
+
+    private double lineRefuelTime = 0.0;
     private double enterRefuelTime = 0.0;
     private double exitRefuelTime = 0.0;
+
+    private double lineWashTime = 0.0;
     private double enterWashingTime = 0.0;
     private double exitWashingTime = 0.0;
+
+    private double lineShopTime = 0.0;
     private double enterShopTime = 0.0;
     private double exitShopTime = 0.0;
+
+    private double lineDryingTime = 0.0;
     private double enterDryingTime = 0.0;
     private double exitDryingTime = 0.0;
+
+    private double lineCashTime = 0.0;
     private double enterCashTime = 0.0;
     private double exitCashTime = 0.0;
 
@@ -181,5 +191,45 @@ public class Customer {
     }
     public void setExitCashTime(double exitCashTime) {
         this.exitCashTime = exitCashTime;
+    }
+
+    public double getLineRefuelTime() {
+        return lineRefuelTime;
+    }
+
+    public void setLineRefuelTime(double lineRefuelTime) {
+        this.lineRefuelTime = lineRefuelTime;
+    }
+
+    public double getLineWashTime() {
+        return lineWashTime;
+    }
+
+    public void setLineWashTime(double lineWashTime) {
+        this.lineWashTime = lineWashTime;
+    }
+
+    public double getLineDryingTime() {
+        return lineDryingTime;
+    }
+
+    public void setLineDryingTime(double linesDryingTime) {
+        this.lineDryingTime = linesDryingTime;
+    }
+
+    public double getLineCashTime() {
+        return lineCashTime;
+    }
+
+    public void setLineCashTime(double lineCashTime) {
+        this.lineCashTime = lineCashTime;
+    }
+
+    public double getLineShopTime() {
+        return lineShopTime;
+    }
+
+    public void setLineShopTime(double lineShopTime) {
+        this.lineShopTime = lineShopTime;
     }
 }

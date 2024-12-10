@@ -72,17 +72,22 @@ public class MyEngineController {
                 switch (customer.getEventTypesToVisit().get(0)) {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
+                        customer.setLineRefuelTime(myEngine.getClock().getClock());
                         break;
-                    case WASHING, DRYING:
+                    case WASHING:
                         servicePoints[1].addQueue(customer);
-
+                        customer.setLineWashTime(myEngine.getClock().getClock());
                         break;
+                    case DRYING:
+                        servicePoints[1].addQueue(customer);
+                        customer.setLineDryingTime(myEngine.getClock().getClock());
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
-
+                        customer.setLineShopTime(myEngine.getClock().getClock());
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
+                        customer.setLineCashTime(myEngine.getClock().getClock());
                         break;
                 }
                 break;

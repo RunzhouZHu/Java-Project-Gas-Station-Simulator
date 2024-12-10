@@ -24,6 +24,16 @@ public class Clock {
         }
         return instance;
     }
+
+    /**
+     * Sets the singleton instance of the Clock.
+     *
+     * @param clockInstance the clock instance to set
+     */
+    public static void setInstance(Clock clockInstance) {
+        instance = clockInstance;
+    }
+
     /**
      * Sets the current time of the clock.
      *

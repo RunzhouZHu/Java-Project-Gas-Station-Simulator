@@ -132,4 +132,13 @@ public class Engine {
      * Collects and processes the results of the simulation.
      */
     protected void results() {}
+
+    /**
+     * Returns the simulation time.
+     *
+     * @return the simulation time
+     */
+    public double getSimulationTime() {
+        return simulationTime;
+    }
 }

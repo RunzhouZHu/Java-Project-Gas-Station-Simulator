@@ -3,11 +3,8 @@ package controller;
 import framework.Trace;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import model.*;
 
 public class SimulatorController {
@@ -109,6 +106,12 @@ public class SimulatorController {
     private Label runningLabel;
 
     @FXML
+    private Label currentTime;
+
+    @FXML
+    private TextField simulationTime;
+
+    @FXML
     private void initialize() {
         setSpinners();
         myEngine = new MyEngine(
@@ -133,6 +136,9 @@ public class SimulatorController {
         // Set UI
         pauseSimulationButton.setDisable(true);
         reloadButton.setDisable(true);
+
+        // Set Time
+        simulationTime.setText("1000");
     }
 
     @FXML
@@ -168,7 +174,7 @@ public class SimulatorController {
 
             Trace.setTraceLevel(Trace.Level.INFO);
 
-            myEngine.setSimulationTime(1000);
+            myEngine.setSimulationTime(Double.parseDouble(simulationTime.getText()));
 
             try {
                 runSimulation();
@@ -226,6 +232,7 @@ public class SimulatorController {
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
 
+        myEngine.getClock().setClock(0);
         updateUI();
         runningLabel.setText("Preparing...");
         reloadButton.setDisable(true);
@@ -237,7 +244,7 @@ public class SimulatorController {
         myEngine.initialize();
         while (myEngine.simulate()) {
 
-            Thread.sleep(30);
+            Thread.sleep(1);
 
             System.out.println("This time is " + myEngine.getClock().getClock());
 
@@ -278,6 +285,8 @@ public class SimulatorController {
 
             arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
             exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
+
+            currentTime.setText(String.format("%.2f", myEngine.getClock().getClock()));
         });
     }
 

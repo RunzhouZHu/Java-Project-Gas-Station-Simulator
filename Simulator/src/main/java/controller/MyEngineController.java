@@ -30,6 +30,10 @@ public class MyEngineController {
         for (ServicePoint servicePoint : myEngine.getServicePoints()) {
             if (!servicePoint.isReserved() && servicePoint.isOnQueue()) {
                 servicePoint.beginService();
+                switch (servicePoint.getEventType()) {
+                    case REFUELLING:
+
+                }
             }
             for (Router router : myEngine.getRouters()) {
                 if (!router.isReserved() && router.isOnQueue()) {
@@ -54,6 +58,7 @@ public class MyEngineController {
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
 
                 routers[0].addQueue(customer);
+                customer.setArriveTime(myEngine.getClock().getClock());
 
                 myEngine.getArrivalProcesses().generateNextEvent();
                 break;
@@ -67,17 +72,22 @@ public class MyEngineController {
                 switch (customer.getEventTypesToVisit().get(0)) {
                     case REFUELLING:
                         servicePoints[0].addQueue(customer);
+                        customer.setLineRefuelTime(myEngine.getClock().getClock());
                         break;
-                    case WASHING, DRYING:
+                    case WASHING:
                         servicePoints[1].addQueue(customer);
-
+                        customer.setLineWashTime(myEngine.getClock().getClock());
                         break;
+                    case DRYING:
+                        servicePoints[1].addQueue(customer);
+                        customer.setLineDryingTime(myEngine.getClock().getClock());
                     case SHOPPING:
                         servicePoints[2].addQueue(customer);
-
+                        customer.setLineShopTime(myEngine.getClock().getClock());
                         break;
                     case PAYING:
                         servicePoints[3].addQueue(customer);
+                        customer.setLineCashTime(myEngine.getClock().getClock());
                         break;
                 }
                 break;
@@ -114,32 +124,34 @@ public class MyEngineController {
             // ServicePoint events
             case REFUELLING:
                 customer = servicePoints[0].removeQueue();
+                customer.setExitRefuelTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.REFUELLING, 2);
                 break;
 
             case WASHING:
                 customer = servicePoints[1].removeQueue();
+                customer.setExitWashingTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.WASHING, 1);
                 break;
 
             case SHOPPING:
                 customer = servicePoints[2].removeQueue();
+                customer.setExitShopTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.SHOPPING, 2);
                 break;
 
             case PAYING:
                 customer = servicePoints[3].removeQueue();
+                customer.setExitCashTime(myEngine.getClock().getClock());
+                myEngine.getCustomers().add(customer);
                 myEngine.doService(customer, EventType.PAYING, -1);
                 break;
 
             case DRYING:
                 customer = servicePoints[4].removeQueue();
+                customer.setExitDryingTime(myEngine.getClock().getClock());
                 myEngine.doService(customer, EventType.DRYING, 2);
                 break;
         }
     }
-
-
-
-
 }

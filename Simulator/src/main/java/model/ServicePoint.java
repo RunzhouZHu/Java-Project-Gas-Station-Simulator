@@ -43,6 +43,29 @@ public class ServicePoint {
         reserved = true;
         double serviceTime = generator.sample();
         eventList.add(new Event(eventTypeScheduled, Clock.getInstance().getClock() + serviceTime));
+
+        switch (eventTypeScheduled) {
+            case REFUELLING -> {
+                assert queue.peek() != null;
+                queue.peek().setEnterRefuelTime(Clock.getInstance().getClock());
+            }
+            case WASHING -> {
+                assert queue.peek() != null;
+                queue.peek().setEnterWashingTime(Clock.getInstance().getClock());
+            }
+            case SHOPPING -> {
+                assert queue.peek() != null;
+                queue.peek().setEnterShopTime(Clock.getInstance().getClock());
+            }
+            case DRYING -> {
+                assert queue.peek() != null;
+                queue.peek().setEnterDryingTime(Clock.getInstance().getClock());
+            }
+            case PAYING -> {
+                assert queue.peek() != null;
+                queue.peek().setEnterCashTime(Clock.getInstance().getClock());
+            }
+        }
     }
 
     public boolean isReserved() {
@@ -62,5 +85,9 @@ public class ServicePoint {
     }
     public Integer getNumberOfServedCustomer() {
         return servedCustomer;
+    }
+
+    public EventType getEventType() {
+        return eventTypeScheduled;
     }
 }

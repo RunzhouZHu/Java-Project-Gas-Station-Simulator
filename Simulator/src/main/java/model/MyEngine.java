@@ -6,7 +6,12 @@ import framework.Clock;
 import framework.Engine;
 import framework.Event;
 
+import java.util.ArrayList;
+
 public class MyEngine extends Engine {
+
+    private ArrayList<Customer> customerResults = new ArrayList<>();
+
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
     private Router[] routers;
@@ -246,12 +251,53 @@ public class MyEngine extends Engine {
     @Override
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
-        System.out.println("Result, haven't done this part yet.");
+
+        // Directly observable variables are:
+        int arrivalCount = routers[0].getNumberOfArrivedCustomer();
+        int completedCount = servicePoints[3].getNumberOfServedCustomer();
+        double busyTime = Result.busyTime(customerResults);
+        double time = Clock.getInstance().getClock();
+
+        System.out.println("A, arrived clients count (arrival count): " + arrivalCount);
+        System.out.println("C, clients serviced count (completed count): " + completedCount);
+        System.out.println("B, active time in service point (busy time): " + busyTime);
+        System.out.println("T, total simulation time (time): " + time);
+
+        // Derived variables (from the previous variables) are:
+        double servicePointUtilization = busyTime / time;
+        double serviceThroughput = completedCount / time;
+        double serviceTime = busyTime / completedCount;
+
+        System.out.println("U, service point utilization related to the max capacity, U = B/T: " + servicePointUtilization);
+        System.out.println("X, service throughput, number of clients serviced related to the time, X = C/T: " + serviceThroughput);
+        System.out.println("S, service time, average service time in the service point, S = B/C: " + serviceTime);
+
+        // Additional directly observable variables are:
+        double waitingTime = Result.waitTime(customerResults);
+
+        System.out.println("W, waiting time, cumulative response times sum of all clients: " + waitingTime);
+
+        // From these last two, we can further derive the following quantities:
+        double responseTime = waitingTime / completedCount;
+        double averageQueueLength = waitingTime / time;
+
+        System.out.println("R, response time, average throughput time at the service point, R = W/C: " + responseTime);
+        System.out.println("N, average queue length at the service point (including the served) N = W/T: " + averageQueueLength);
+
+        Result.generateResultFile(customerResults, arrivalCount);
     }
 
 
     // Getter and setters
     // ----------------------------------------------------------------------
+    public ArrayList<Customer> getCustomers() {
+        return customerResults;
+    }
+
+    public void setCustomers(ArrayList<Customer> customerResults) {
+        this.customerResults = customerResults;
+    }
+
     public Router[] getRouters() {
         return routers;
     }

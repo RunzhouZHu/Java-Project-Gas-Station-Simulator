@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.canvas.Canvas;
 import model.*;
-
+/**
+ * Controller class for the simulator. Manages the UI components and the simulation engine.
+ */
 public class SimulatorController {
     MyEngine myEngine;
     Router[] routers;
@@ -110,7 +112,9 @@ public class SimulatorController {
 
     @FXML
     private TextField simulationTime;
-
+    /**
+     * Initializes the controller. Sets up the spinners, engine, and UI components.
+     */
     @FXML
     private void initialize() {
         setSpinners();
@@ -145,7 +149,9 @@ public class SimulatorController {
         updateUI();
         simulationTime.setText("1000");
     }
-
+    /**
+     * Handles the start simulation button click event. Starts or resumes the simulation.
+     */
     @FXML
     private void startSimulationButtonClicked() {
 
@@ -179,7 +185,9 @@ public class SimulatorController {
         thread.start();
 
     }
-
+    /**
+     * Handles the pause simulation button click event. Pauses the simulation.
+     */
     @FXML
     private void pauseSimulationButtonClicked() {
         myEngine.pause();
@@ -193,13 +201,19 @@ public class SimulatorController {
         runningLabel.setText("Pausing...");
         startSimulationButton.setDisable(false);
     }
-
+    /**
+     * Handles the reload button click event. Reinitializes the simulation.
+     */
     @FXML
     private void reloadButtonClicked() {
         initialize();
     }
 
     // Run simulation with UI
+    /**
+     * Runs the simulation with UI updates.
+     * @throws InterruptedException if the simulation thread is interrupted
+     */
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
         while (myEngine.simulate()) {
@@ -224,13 +238,17 @@ public class SimulatorController {
 
         myEngine.results();
     }
-
+    /**
+     * Runs B-phase events with UI updates.
+     */
     private void runBEventsWithUI() {
         while (myEngine.getEventList().getNextEventTime() == myEngine.getClock().getClock()) {
             mEC.runEventWithUI(myEngine.getEventList().remove(), routers, servicePoints, myEngine);
         }
     }
-
+    /**
+     * Updates the UI components with the current simulation state.
+     */
     public void updateUI() {
         Platform.runLater(() -> {
 
@@ -258,7 +276,9 @@ public class SimulatorController {
             currentTime.setText(String.format("%.2f", myEngine.getClock().getClock()));
         });
     }
-
+    /**
+     * Sets up the spinners with their value factories.
+     */
     public void setSpinners() {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
@@ -275,7 +295,10 @@ public class SimulatorController {
             spinners[i].setEditable(true);
         }
     }
-
+    /**
+     * Enables or disables the form components.
+     * @param disable true to disable the form components, false to enable them
+     */
     public void setFormDisable(boolean disable) {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,

@@ -7,9 +7,14 @@ import model.*;
 
 import static java.lang.Integer.parseInt;
 
-
+/**
+ * Controller class for managing the engine and its events.
+ */
 public class MyEngineController {
-
+    /**
+     * Increments the counter label by 1.
+     * @param counter the label to be incremented
+     */
     public void counterUp(Label counter) {
         Platform.runLater(
                 () -> counter.setText(
@@ -17,7 +22,10 @@ public class MyEngineController {
                 )
         );
     }
-
+    /**
+     * Decrements the counter label by 1.
+     * @param counter the label to be decremented
+     */
     private void counterDown(Label counter) {
         Platform.runLater(
                 () -> counter.setText(
@@ -25,7 +33,10 @@ public class MyEngineController {
                 )
         );
     }
-
+    /**
+     * Tries to execute C-phase events with UI updates.
+     * @param myEngine the engine instance
+     */
     public void tryCEventsWithUI(MyEngine myEngine) {
         for (ServicePoint servicePoint : myEngine.getServicePoints()) {
             if (!servicePoint.isReserved() && servicePoint.isOnQueue()) {
@@ -46,6 +57,13 @@ public class MyEngineController {
 
     // Main logic method:
     // ---------------------------------------------------------------------------------------
+    /**
+     * Runs an event with UI updates.
+     * @param event the event to be run
+     * @param routers the array of routers
+     * @param servicePoints the array of service points
+     * @param myEngine the engine instance
+     */
     public void runEventWithUI(Event event, Router[] routers, ServicePoint[] servicePoints, MyEngine myEngine) {
 
         Customer customer;

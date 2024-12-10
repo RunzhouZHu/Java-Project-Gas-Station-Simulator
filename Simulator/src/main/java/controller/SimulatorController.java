@@ -128,6 +128,8 @@ public class SimulatorController {
                 arriveMain.getValue(),
                 arriveVariance.getValue()
         );
+        myEngine.getClock().setClock(0);
+
         // setMyEngineParameters();
         routers = myEngine.getRouters();
         servicePoints = myEngine.getServicePoints();
@@ -136,8 +138,11 @@ public class SimulatorController {
         // Set UI
         pauseSimulationButton.setDisable(true);
         reloadButton.setDisable(true);
+        startSimulationButton.setDisable(false);
+        setFormDisable(false);
 
         // Set Time
+        updateUI();
         simulationTime.setText("1000");
     }
 
@@ -151,22 +156,9 @@ public class SimulatorController {
             myEngine.resume();
             // disable UI
             reloadButton.setDisable(true);
-
-            arriveMain.setDisable(true);
-            arriveVariance.setDisable(true);
-            refuelMain.setDisable(true);
-            refuelVariance.setDisable(true);
-            washMain.setDisable(true);
-            washVariance.setDisable(true);
-            shoppingMain.setDisable(true);
-            shoppingVariance.setDisable(true);
-            payingMain.setDisable(true);
-            payingVariance.setDisable(true);
-            dryingMain.setDisable(true);
-            dryingVariance.setDisable(true);
-
-            runningLabel.setText("Running...");
         }
+        runningLabel.setText("Running...");
+        setFormDisable(true);
 
         Thread thread = new Thread(() -> {
 
@@ -195,18 +187,8 @@ public class SimulatorController {
         pauseSimulationButton.setDisable(true);
 
         reloadButton.setDisable(false);
-        arriveMain.setDisable(false);
-        arriveVariance.setDisable(false);
-        refuelMain.setDisable(false);
-        refuelVariance.setDisable(false);
-        washMain.setDisable(false);
-        washVariance.setDisable(false);
-        shoppingMain.setDisable(false);
-        shoppingVariance.setDisable(false);
-        payingMain.setDisable(false);
-        payingVariance.setDisable(false);
-        dryingMain.setDisable(false);
-        dryingVariance.setDisable(false);
+
+        setFormDisable(false);
 
         runningLabel.setText("Pausing...");
         startSimulationButton.setDisable(false);
@@ -214,29 +196,7 @@ public class SimulatorController {
 
     @FXML
     private void reloadButtonClicked() {
-        myEngine = new MyEngine(
-                refuelMain.getValue(),
-                refuelVariance.getValue(),
-                washMain.getValue(),
-                washVariance.getValue(),
-                shoppingMain.getValue(),
-                shoppingVariance.getValue(),
-                payingMain.getValue(),
-                payingVariance.getValue(),
-                dryingMain.getValue(),
-                dryingVariance.getValue(),
-                arriveMain.getValue(),
-                arriveVariance.getValue()
-        );
-        myEngine.pause();
-        routers = myEngine.getRouters();
-        servicePoints = myEngine.getServicePoints();
-
-        myEngine.getClock().setClock(0);
-        updateUI();
-        runningLabel.setText("Preparing...");
-        reloadButton.setDisable(true);
-        startSimulationButton.setDisable(false);
+        initialize();
     }
 
     // Run simulation with UI
@@ -259,6 +219,8 @@ public class SimulatorController {
 
             updateUI();
         }
+        reloadButton.setDisable(false);
+        pauseSimulationButton.setDisable(true);
 
         myEngine.results();
     }
@@ -271,18 +233,25 @@ public class SimulatorController {
 
     public void updateUI() {
         Platform.runLater(() -> {
-            refuellingCustomer.setText(String.valueOf(servicePoints[0].getQueueSize()));
-            washingCustomer.setText(String.valueOf(servicePoints[1].getQueueSize()));
-            shoppingCustomer.setText(String.valueOf(servicePoints[2].getQueueSize()));
-            payingCustomer.setText(String.valueOf(servicePoints[3].getQueueSize()));
-            dryingCustomer.setText(String.valueOf(servicePoints[4].getQueueSize()));
 
-            refuellingCustomerServed.setText(String.valueOf(servicePoints[0].getNumberOfServedCustomer()));
-            washingCustomerServed.setText(String.valueOf(servicePoints[1].getNumberOfServedCustomer()));
-            shoppingCustomerServed.setText(String.valueOf(servicePoints[2].getNumberOfServedCustomer()));
-            payingCustomerServed.setText(String.valueOf(servicePoints[3].getNumberOfServedCustomer()));
-            dryingCustomerServed.setText(String.valueOf(servicePoints[4].getNumberOfServedCustomer()));
+            Label[][] counters = {
+                {refuellingCustomer, refuellingCustomerServed},
+                {washingCustomer, washingCustomerServed},
+                {shoppingCustomer, shoppingCustomerServed},
+                {payingCustomer, payingCustomerServed},
+                {dryingCustomer, dryingCustomerServed}
+            };
 
+            for (int i = 0; i < counters.length; i++) {
+                counters[i][0].setText(
+                    String.valueOf(servicePoints[i].getQueueSize())
+                );
+                counters[i][1].setText(
+                    String.valueOf(
+                        servicePoints[i].getNumberOfServedCustomer()
+                    )
+                );
+            }
             arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
             exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
 
@@ -291,29 +260,35 @@ public class SimulatorController {
     }
 
     public void setSpinners() {
-        arriveMain.setValueFactory(arriveMF);
-        arriveMain.setEditable(true);
-        arriveVariance.setValueFactory(arriveVF);
-        arriveVariance.setEditable(true);
-        refuelMain.setValueFactory(refuelMF);
-        refuelMain.setEditable(true);
-        refuelVariance.setValueFactory(refuelVF);
-        refuelVariance.setEditable(true);
-        washMain.setValueFactory(washMF);
-        washMain.setEditable(true);
-        washVariance.setValueFactory(washVF);
-        washVariance.setEditable(true);
-        shoppingMain.setValueFactory(shoppingMF);
-        shoppingMain.setEditable(true);
-        shoppingVariance.setValueFactory(shoppingVF);
-        shoppingVariance.setEditable(true);
-        dryingMain.setValueFactory(dryingMF);
-        dryingMain.setEditable(true);
-        dryingVariance.setValueFactory(dryingVF);
-        dryingVariance.setEditable(true);
-        payingMain.setValueFactory(payingMF);
-        payingMain.setEditable(true);
-        payingVariance.setValueFactory(payingVF);
-        payingVariance.setEditable(true);
+        Spinner[] spinners = new Spinner[] {
+            arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
+            washVariance, shoppingMain, shoppingVariance, payingMain,
+            payingVariance, dryingMain, dryingVariance
+        };
+        SpinnerValueFactory<Double>[] factorySpinners = new SpinnerValueFactory[] {
+            arriveMF, arriveVF, refuelMF, refuelVF, washMF, washVF,
+            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF
+        };
+
+        for (int i = 0; i < spinners.length; i++) {
+            spinners[i].setValueFactory(factorySpinners[i]);
+            spinners[i].setEditable(true);
+        }
+    }
+
+    public void setFormDisable(boolean disable) {
+        Spinner[] spinners = new Spinner[] {
+            arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
+            washVariance, shoppingMain, shoppingVariance, payingMain,
+            payingVariance, dryingMain, dryingVariance
+        };
+
+        for (Spinner spinner : spinners) {
+            spinner.setDisable(disable);
+        }
+
+        simulationTime.setDisable(disable);
+
+
     }
 }

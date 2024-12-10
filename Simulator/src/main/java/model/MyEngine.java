@@ -329,7 +329,7 @@ public class MyEngine extends Engine {
         System.out.println("R, response time, average throughput time at the service point, R = W/C: " + responseTime);
         System.out.println("N, average queue length at the service point (including the served) N = W/T: " + averageQueueLength);
 
-        Result.generateResultFile(customerResults, arrivalCount);
+        Result.generateResultFile(customerResults, arrivalCount, completedCount, busyTime, time, servicePointUtilization, serviceThroughput, serviceTime, waitingTime, responseTime, averageQueueLength);
     }
 
 

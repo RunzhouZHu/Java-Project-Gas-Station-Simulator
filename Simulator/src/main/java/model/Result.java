@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * The Result class provides methods to calculate and generate results for the gas station simulation.
- * It includes methods to calculate busy time, wait time, and generate a result file in markdown format.
+ * It includes methods to calculate busy time, wait time, and generate a result file in Markdown format.
  */
 
 public class Result {
@@ -62,17 +62,42 @@ public class Result {
         return waitTime;
     }
     /**
-     * Generates a result file in markdown format with the simulation results.
+     * Generates a result file in Markdown format with the simulation results.
      *
      * @param customerResults the list of customer results
      * @param arrivalCount the number of arrived customers
      */
-    public static void generateResultFile(ArrayList<Customer> customerResults, int arrivalCount) {
+    public static void generateResultFile(ArrayList<Customer> customerResults,
+                                          int arrivalCount,
+                                          int completedCount,
+                                          double busyTime,
+                                          double time,
+                                          double servicePointUtilization,
+                                          double serviceThroughput,
+                                          double serviceTime,
+                                          double waitingTime,
+                                          double responseTime,
+                                          double averageQueueLength) {
         String markdownContent = "# The Result of Gas Station Simulation\n\n" +
                 "## Directly observable variables: \n\n" +
-                "A, arrived clients count (arrival count): " + arrivalCount;
+                "- A, arrived clients count (arrival count): " + arrivalCount + "\n" +
+                "- C, clients serviced count (completed count): " + completedCount + "\n" +
+                "- B, active time in service point (busy time): " + String.format("%.2f", busyTime) + "\n" +
+                "- T, total simulation time (time): " + String.format("%.2f", time) + "\n" +
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("results.md", true))) {
+                "## Derived variables (from the previous variables) are:\n\n" +
+                "- U, service point utilization related to the max capacity, U = B/T: " + String.format("%.2f", servicePointUtilization) + "\n" +
+                "- X, service throughput, number of clients serviced related to the time, X = C/T: " + String.format("%.2f", serviceThroughput) + "\n" +
+                "- S, service time, average service time in the service point, S = B/C: " + String.format("%.2f", serviceTime) + "\n" +
+
+                "## Additional directly observable variables are:\n\n" +
+                "- W, waiting time, cumulative response times sum of all clients: " + String.format("%.2f", waitingTime) + "\n" +
+
+                "## From these last two, we can further derive the following quantities:\n\n" +
+                "- R, response time, average throughput time at the service point, R = W/C: " + String.format("%.2f", responseTime) + "\n" +
+                "- N, average queue length at the service point (including the served) N = W/T: " + String.format("%.2f", averageQueueLength) + "\n";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("results.md", false))) {
             writer.write(markdownContent);
         } catch (IOException e) {
             throw new RuntimeException(e);

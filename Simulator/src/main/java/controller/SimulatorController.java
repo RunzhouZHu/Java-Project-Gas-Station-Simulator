@@ -204,7 +204,7 @@ public class SimulatorController {
         myEngine.initialize();
         while (myEngine.simulate()) {
 
-            Thread.sleep(1);
+            Thread.sleep(30);
 
             System.out.println("This time is " + myEngine.getClock().getClock());
 

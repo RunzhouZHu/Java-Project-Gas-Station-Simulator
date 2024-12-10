@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Outputs the results of the simulation, including various performance metrics.
+ */
 public class RandomChooserForCustomer {
     private HashMap<EventType, Double> eventTypes;
 
+    /**
+     * Constructs a RandomChooserForCustomer with specified event types and their probabilities.
+     *
+     * @param eventTypes a map of event types and their corresponding probabilities
+     */
     public RandomChooserForCustomer(HashMap<EventType, Double> eventTypes) {
         this.eventTypes = eventTypes;
         for (EventType eventType : eventTypes.keySet()) {
@@ -16,6 +24,11 @@ public class RandomChooserForCustomer {
         }
     }
 
+    /**
+     * Chooses event types for a customer based on the predefined probabilities.
+     *
+     * @return a list of chosen event types
+     */
     public ArrayList<EventType> choose() {
         ArrayList<EventType> result = new ArrayList<EventType>();
         for (EventType eventType : eventTypes.keySet()) {
@@ -26,6 +39,11 @@ public class RandomChooserForCustomer {
         return result;
     }
 
+    /**
+     * Main method for testing the RandomChooserForCustomer class.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         HashMap<EventType, Double> eventTypes = new HashMap<>();
         eventTypes.put(EventType.REFUELLING, 0.5);

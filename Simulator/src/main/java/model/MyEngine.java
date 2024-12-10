@@ -7,7 +7,10 @@ import framework.Engine;
 import framework.Event;
 
 import java.util.ArrayList;
-
+/**
+ * The MyEngine class extends the Engine class and simulates a gas station with multiple service points.
+ * It handles the arrival of customers, their routing through various service points, and the collection of simulation results.
+ */
 public class MyEngine extends Engine {
 
     private ArrayList<Customer> customerResults = new ArrayList<>();
@@ -71,7 +74,22 @@ public class MyEngine extends Engine {
                                  ▼
                                 EXIT
      */
-
+    /**
+     * Constructs a MyEngine instance with specified parameters for service points and arrival process.
+     *
+     * @param refuelM mean service time for refuelling
+     * @param refuelV variance of service time for refuelling
+     * @param washM mean service time for washing
+     * @param washV variance of service time for washing
+     * @param shopM mean service time for shopping
+     * @param shopV variance of service time for shopping
+     * @param payM mean service time for paying
+     * @param payV variance of service time for paying
+     * @param dryM mean service time for drying
+     * @param dryV variance of service time for drying
+     * @param arrM mean arrival time
+     * @param arrV variance of arrival time
+     */
     public MyEngine(Double refuelM, Double refuelV,Double washM, Double washV, Double shopM, Double shopV, Double payM, Double payV, Double dryM, Double dryV, Double arrM, Double arrV) {
         servicePoints = new ServicePoint[5];
 
@@ -103,7 +121,13 @@ public class MyEngine extends Engine {
             new Normal(arrM, arrV), eventList, EventType.ARRIVE
         );
     }
-
+    /**
+     * Handles the service completion for a customer at a specific service point and routes them to the next router.
+     *
+     * @param customer the customer being serviced
+     * @param eventType the type of event/service point
+     * @param routerIndex the index of the next router to route the customer to
+     */
     public void doService(Customer customer, EventType eventType, int routerIndex) {
         try {
             customer.finishService(eventType);
@@ -120,6 +144,13 @@ public class MyEngine extends Engine {
         }
 
     }
+
+    /**
+     * Handles the service completion for a customer at a specific service point and routes them to the next router.
+     *
+     * @param eventType the type of event/service point
+     * @param routerIndex the index of the next router to route the customer to
+     */
     public void doService(EventType eventType, int routerIndex) {
         int index = eventType.ordinal();
         Customer customer = servicePoints[index].removeQueue();
@@ -139,6 +170,9 @@ public class MyEngine extends Engine {
 
     }
 
+    /**
+     * Initializes the simulation by generating the first arrival event.
+     */
     @Override
     public void initialize() {
         Clock clock = Clock.getInstance();
@@ -147,6 +181,11 @@ public class MyEngine extends Engine {
 
     }
 
+    /**
+     * Runs the specified event, handling customer arrivals, routing, and service completions.
+     *
+     * @param event the event to run
+     */
     @Override
     protected void runEvent(Event event) {
         Customer customer;
@@ -234,6 +273,9 @@ public class MyEngine extends Engine {
         }
     }
 
+    /**
+     * Checks and begins service for customers in the queues of service points and routers.
+     */
     @Override
     protected void tryCEvents() {
         for (ServicePoint servicePoint : servicePoints) {
@@ -248,6 +290,9 @@ public class MyEngine extends Engine {
         }
     }
 
+    /**
+     * Outputs the results of the simulation, including various performance metrics.
+     */
     @Override
     public void results() {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());

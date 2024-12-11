@@ -1,5 +1,7 @@
 package model;
 
+import dao.CustomerDao;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -112,5 +114,10 @@ public class Result {
         }
 
         System.out.println("Markdown generated");
+    }
+
+    public static void database(ArrayList<Customer> customerResults) {
+        CustomerDao customerDao = new CustomerDao();
+        customerDao.persist(customerResults);
     }
 }

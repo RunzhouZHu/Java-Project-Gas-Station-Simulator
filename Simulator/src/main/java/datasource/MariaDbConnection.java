@@ -13,7 +13,7 @@ public class MariaDbConnection {
             // connect if necessary
             try {
                 conn = DriverManager.getConnection(
-                        "jdbc:mariadb://localhost:3306/currency_converter?user=appuser&password=password");
+                        "jdbc:mariadb://localhost:3306/simulator?user=root&password=hhdhhdhhd");
             } catch (SQLException e) {
                 System.out.println("Connection failed.");
                 e.printStackTrace();

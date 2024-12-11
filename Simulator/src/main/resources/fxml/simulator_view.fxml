@@ -195,12 +195,12 @@
    <left>
       <VBox prefHeight="715.0" prefWidth="340.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <Label fx:id="arrivedCustomer" prefHeight="24.0" prefWidth="236.0" text="0">
+            <Label fx:id="arrivedCustomer" prefHeight="24.0" prefWidth="300.0" text="0">
                <font>
                   <Font size="18.0" />
                </font>
                <graphic>
-                  <Label prefHeight="24.0" prefWidth="160.0" text="Arrived Customers: ">
+                  <Label prefHeight="24.0" prefWidth="200.0" text="Arrived Customers: ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -210,12 +210,12 @@
                   <Insets bottom="8.0" top="8.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="exitCustomer" prefWidth="236.0" text="0">
+            <Label fx:id="exitCustomer" prefWidth="300.0" text="0">
                <font>
                   <Font size="18.0" />
                </font>
                <graphic>
-                  <Label prefWidth="160.0" text="Exit Customers: ">
+                  <Label prefWidth="200.0" text="Exit Customers: ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -305,22 +305,22 @@
             </GridPane>
             <HBox prefHeight="64.0" prefWidth="340.0">
                <children>
-                  <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="150.0" text="Simulation Time: ">
+                  <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="180.0" text="Simulation Time: ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="currentTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0" text="0">
+                  <Label fx:id="currentTime" alignment="CENTER" prefHeight="27.0" prefWidth="80.0" text="0">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label alignment="TOP_CENTER" text=" /  ">
+                  <Label alignment="CENTER" text=" /  ">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0" text="0">
+                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="60.0" text="0">
                      <font>
                         <Font size="14.0" />
                      </font>

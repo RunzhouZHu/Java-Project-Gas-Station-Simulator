@@ -97,9 +97,6 @@ public class SimulatorController {
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
 
-    //
-    @FXML
-    private Label exitCustomer;
 
     @FXML
     private Canvas mainCanvas;
@@ -305,8 +302,7 @@ public class SimulatorController {
                     )
                 );
             }
-            arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
-            exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
+            arrivedCustomer.setText(String.valueOf(myEngine.getArrivedCount()));
 
             currentTime.setText(String.format("%.2f", myEngine.getClock().getClock()));
         });

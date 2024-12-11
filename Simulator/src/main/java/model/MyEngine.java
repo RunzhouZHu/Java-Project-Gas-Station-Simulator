@@ -37,6 +37,9 @@ public class MyEngine extends Engine {
     public static final boolean FIXEDARRIVALTIMES = false;
     public static final boolean FIXEDSERVICETIMES = false;
 
+    // Arrived customer count
+    private int arrivedCount = 0;
+
     // Set parameters
     // ------------------------------------------------------------
     private Double refuelM;
@@ -143,6 +146,14 @@ public class MyEngine extends Engine {
         this.delay = delay;
     }
 
+    public int getArrivedCount() {
+        return arrivedCount;
+    }
+
+    public void setArrivedCount(int arrivedCount) {
+        this.arrivedCount = arrivedCount;
+    }
+
     /**
      * Handles the service completion for a customer at a specific service point and routes them to the next router.
      *
@@ -201,9 +212,12 @@ public class MyEngine extends Engine {
                 customer.setEventTypesToVisit(); // Random
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
 
+                arrivedCount++;
                 routers[0].addQueue(customer);
-                arrivalProcess.generateNextEvent();
-                driveCar(0, 1);
+                if (simulate()) {
+                    arrivalProcess.generateNextEvent();
+                    driveCar(0, 1);
+                }
                 break;
 
             // Router events, the 'splits' should be at here
@@ -322,6 +336,12 @@ public class MyEngine extends Engine {
         }
     }
 
+    public boolean simulateDone() {
+        return !(simulate() || servicePoints[0].isOnQueue() ||
+        servicePoints[1].isOnQueue() || servicePoints[2].isOnQueue() ||
+        servicePoints[3].isOnQueue() || servicePoints[4].isOnQueue());
+    }
+
     /**
      * Outputs the results of the simulation, including various performance metrics.
      */
@@ -330,7 +350,7 @@ public class MyEngine extends Engine {
         System.out.println("Simulation ended at " + Clock.getInstance().getClock());
 
         // Directly observable variables are:
-        int arrivalCount = routers[0].getNumberOfArrivedCustomer();
+        int arrivalCount = getArrivedCount();
         int completedCount = servicePoints[3].getNumberOfServedCustomer();
         double busyTime = Result.busyTime(customerResults);
         double time = Clock.getInstance().getClock();

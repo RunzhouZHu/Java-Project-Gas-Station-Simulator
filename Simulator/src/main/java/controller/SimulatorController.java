@@ -97,9 +97,6 @@ public class SimulatorController {
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
 
-    //
-    @FXML
-    private Label exitCustomer;
 
     @FXML
     private Canvas mainCanvas;
@@ -153,7 +150,9 @@ public class SimulatorController {
 
         // Set Time
         updateUI();
-        simulationTime.setText("1000");
+        if (Double.parseDouble(simulationTime.getText()) <= 0) {
+            simulationTime.setText("1000");
+        }
     }
     /**
      * Handles the start simulation button click event. Starts or resumes the simulation.
@@ -248,7 +247,8 @@ public class SimulatorController {
      */
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
-        while (myEngine.simulate()) {
+        while (!myEngine.simulateDone()) {
+        //while (true) {
 
             Thread.sleep(myEngine.getDelay()*20);
 
@@ -302,8 +302,7 @@ public class SimulatorController {
                     )
                 );
             }
-            arrivedCustomer.setText(String.valueOf(routers[0].getNumberOfArrivedCustomer()));
-            exitCustomer.setText(String.valueOf(routers[2].getNumberOfArrivedCustomer()));
+            arrivedCustomer.setText(String.valueOf(myEngine.getArrivedCount()));
 
             currentTime.setText(String.format("%.2f", myEngine.getClock().getClock()));
         });

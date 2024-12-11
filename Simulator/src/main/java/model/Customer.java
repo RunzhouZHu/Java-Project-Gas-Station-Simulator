@@ -3,8 +3,6 @@ package model;
 import framework.Clock;
 import framework.Trace;
 
-import controller.CarController;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -19,7 +17,6 @@ public class Customer {
 
     private static int nextId = 1;
     private static long sum = 0;
-    private CarController carController = new CarController();
 
     // Customer action records
     private double arriveTime = 0.0;
@@ -105,15 +102,6 @@ public class Customer {
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     * Returns the CarController associated with the customer.
-     *
-     * @return the CarController
-     */
-    public CarController getCarController() {
-        return carController;
     }
 
     /**

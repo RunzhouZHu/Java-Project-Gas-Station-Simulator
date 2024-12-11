@@ -36,146 +36,126 @@
             </ImageView>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="810.0">
                <children>
-                  <VBox alignment="TOP_RIGHT" layoutX="37.0" layoutY="170.0" prefHeight="151.0" prefWidth="110.0">
-                     <children>
-                        <Label fx:id="refuellingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <graphic>
-                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="refuellingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
-                           <graphic>
-                              <Label text="   Served: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
+                  <Label fx:id="refuellingCustomer" layoutX="130.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Queue: ">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_RIGHT" layoutX="388.0" layoutY="218.0" prefHeight="67.0" prefWidth="110.0">
-                     <children>
-                        <Label fx:id="shoppingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <graphic>
-                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="shoppingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
-                           <graphic>
-                              <Label text="   Served: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="refuellingCustomerServed" layoutX="130.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served: ">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_RIGHT" layoutX="39.0" layoutY="468.0" prefHeight="86.0" prefWidth="110.0">
-                     <children>
-                        <Label fx:id="washingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <graphic>
-                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="washingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
-                           <graphic>
-                              <Label text="   Served: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="shoppingCustomer" layoutX="480.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Queue: ">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_RIGHT" layoutX="393.0" layoutY="394.0" prefHeight="69.0" prefWidth="110.0">
-                     <children>
-                        <Label fx:id="dryingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <graphic>
-                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="dryingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
-                           <graphic>
-                              <Label text="   Served: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="shoppingCustomerServed" layoutX="480.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <graphic>
+                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="70.0" text="Served:">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_RIGHT" layoutX="639.0" layoutY="386.0" prefHeight="80.0" prefWidth="110.0">
-                     <children>
-                        <Label fx:id="payingCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="98.0" text="0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <graphic>
-                              <Label prefHeight="41.0" prefWidth="75.0" text="In Queue: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="payingCustomerServed" prefHeight="20.0" prefWidth="98.0" text="0">
-                           <graphic>
-                              <Label text="   Served: ">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </graphic>
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="washingCustomer" layoutX="130.0" layoutY="550.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Queue: ">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                     </children>
-                  </VBox>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="washingCustomerServed" layoutX="130.0" layoutY="575.0" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dryingCustomer" layoutX="480.0" layoutY="550.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Queue: ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="dryingCustomerServed" layoutX="480.0" layoutY="575.0" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="payingCustomer" layoutX="650.0" layoutY="215.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Queue:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="payingCustomerServed" layoutX="650.0" layoutY="240.0" prefHeight="30.0" prefWidth="100.0" text="0">
+                     <graphic>
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
                   <Label fx:id="runningLabel" layoutX="42.0" layoutY="596.0" prefHeight="34.0" prefWidth="138.0" text="Running...">
                      <font>
                         <Font size="18.0" />
@@ -298,14 +278,14 @@
                   <Insets top="20.0" />
                </padding>
             </GridPane>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="64.0" prefWidth="340.0">
                <children>
-                  <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="130.0" text="Simulation Time: ">
+                  <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="150.0" text="Simulation Time: ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="currentTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="90.0" text="0">
+                  <Label fx:id="currentTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0" text="0">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -315,11 +295,24 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="90.0">
+                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="64.0" prefWidth="340.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="150.0" text="Delay:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Spinner fx:id="delay" />
                </children>
                <padding>
                   <Insets top="20.0" />

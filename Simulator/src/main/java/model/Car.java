@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 /**
  * Represents a car in the simulation.
  * The car can move to a target position and change direction.
@@ -14,7 +16,14 @@ public class Car {
     private double height;
     private String icon;
     private String direction;
-    private double step = 5;
+    private double step = 10;
+    static String[] icons = {
+        "images/black.png",
+        "images/blue.png",
+        "images/red.png",
+        "images/yellow.png",
+        "images/white.png"
+    };
 
     /**
      * Constructs a Car with the specified position, dimensions, and icon.
@@ -25,16 +34,29 @@ public class Car {
      * @param height the height of the car
      * @param icon the icon representing the car
      */
-    public Car(double x, double y, double width, double height, String icon) {
+    public Car() {
+        this.x = 20;
+        this.y = 326;
+        this.targetX = 20;
+        this.targetY = 326;
+        this.moving = false;
+        this.width = 26;
+        this.height = 53;
+        this.icon = "images/red.png";
+        //Random random = new Random();
+        //this.icon = icons[random.nextInt(icons.length)];
+        this.direction = "right";
+    }
+
+    /**
+     * Sets the source position for the car to move from.
+     *
+     * @param x the source x-coordinate
+     * @param y the source y-coordinate
+     */
+    public void setSource(double x, double y) {
         this.x = x;
         this.y = y;
-        this.targetX = x;
-        this.targetY = y;
-        this.moving = false;
-        this.width = width;
-        this.height = height;
-        this.icon = icon;
-        this.direction = "right";
     }
 
     /**
@@ -58,34 +80,33 @@ public class Car {
         double dx = targetX - x;
         double dy = targetY - y;
 
-        if (Math.abs(dx) <= step && Math.abs(dy) <= step) {
-            moving = false;
+        if (Math.abs(dx) <= step) {
             x = targetX;
+        }
+        if (Math.abs(dy) <= step) {
             y = targetY;
+        } 
+        if (x == targetX && y == targetY) {
+            moving = false;
             return;
-        } 
-
-        if (y > 415 && Math.abs(dx) > 0) {
-            moveUp();
-        } else if (y < 415 && Math.abs(dx) > 0) {
-            moveDown();
-        } 
+        }
 
         if (dx > 0) {
-            setDirection("right");
             moveRight();
-        } else if (dx < 0) {
-            setDirection("left");
-            moveLeft();
-        } else if (dy != 0) {
-            if (dy > 0) {
-                setDirection("down");
-                moveDown();
-            } else {
-                setDirection("up");
-                moveUp();
-            }
         }
+        if (dx < 0) {
+            moveLeft();
+        }
+        if (dy > 0) {
+            moveDown();
+        }
+        if (dy < 0) {
+            moveUp();
+        }
+    }
+
+    public boolean getMoving() {
+        return moving;
     }
 
     /**
@@ -99,6 +120,7 @@ public class Car {
      * Moves the car up by the step size.
      */
     public void moveUp() {
+        setDirection("up");
         y -= step;
     }
 
@@ -106,6 +128,7 @@ public class Car {
      * Moves the car down by the step size.
      */
     public void moveDown() {
+        setDirection("down");
         y += step;
     }
 
@@ -113,6 +136,7 @@ public class Car {
      * Moves the car left by the step size.
      */
     public void moveLeft() {
+        setDirection("left");
         x -= step;
     }
 
@@ -120,6 +144,7 @@ public class Car {
      * Moves the car right by the step size.
      */
     public void moveRight() {
+        setDirection("right");
         x += step;
     }
 

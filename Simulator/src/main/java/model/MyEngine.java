@@ -5,6 +5,8 @@ import framework.ArrivalProcess;
 import framework.Clock;
 import framework.Engine;
 import framework.Event;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import java.util.ArrayList;
 /**
@@ -13,7 +15,20 @@ import java.util.ArrayList;
  */
 public class MyEngine extends Engine {
 
+    private BlockingQueue<Car> carQueue = new LinkedBlockingQueue<>();
     private ArrayList<Customer> customerResults = new ArrayList<>();
+
+    private int[][] points = {
+        {20, 326},  // Initial position
+        {340, 326}, // Waiting position 1
+        {220, 200}, // Refuelling position
+        {220, 400}, // Washing position
+        {460, 200}, // Shopping position
+        {460, 400}, // Drying position
+        {700, 326}, // Paying position
+        {220, 326},  // Turning position1
+        {460, 326},  // Turning position2
+    };
 
     private ArrivalProcess arrivalProcess;
     private ServicePoint[] servicePoints;
@@ -37,6 +52,8 @@ public class MyEngine extends Engine {
 
     private Double arrM;
     private Double arrV;
+
+    private Double delay;
 
     // ------------------------------------------------------------
 
@@ -90,7 +107,10 @@ public class MyEngine extends Engine {
      * @param arrM mean arrival time
      * @param arrV variance of arrival time
      */
-    public MyEngine(Double refuelM, Double refuelV,Double washM, Double washV, Double shopM, Double shopV, Double payM, Double payV, Double dryM, Double dryV, Double arrM, Double arrV) {
+    public MyEngine(
+        Double refuelM, Double refuelV,Double washM, Double washV, Double
+        shopM, Double shopV, Double payM, Double payV, Double dryM, Double
+        dryV, Double arrM, Double arrV, Double delay) {
         servicePoints = new ServicePoint[5];
 
         // Set the service points, remember to set suit mean and variance for service time!
@@ -120,6 +140,7 @@ public class MyEngine extends Engine {
         arrivalProcess = new ArrivalProcess(
             new Normal(arrM, arrV), eventList, EventType.ARRIVE
         );
+        this.delay = delay;
     }
 
     /**
@@ -158,6 +179,13 @@ public class MyEngine extends Engine {
 
     }
 
+    public void driveCar(int source, int target) {
+        Car car = new Car();
+        car.setSource(points[source][0], points[source][1]);
+        car.setTarget(points[target][0], points[target][1]);
+        carQueue.add(car);
+    }
+
     /**
      * Runs the specified event, handling customer arrivals, routing, and service completions.
      *
@@ -175,6 +203,7 @@ public class MyEngine extends Engine {
 
                 routers[0].addQueue(customer);
                 arrivalProcess.generateNextEvent();
+                driveCar(0, 1);
                 break;
 
             // Router events, the 'splits' should be at here
@@ -185,22 +214,31 @@ public class MyEngine extends Engine {
 
                 switch (customer.getEventTypesToVisit().get(0)) {
                     case REFUELLING:
+                        driveCar(1, 7);
+                        driveCar(7, 2);
                         servicePoints[0].addQueue(customer);
                         customer.setLineRefuelTime(getClock().getClock());
                         break;
                     case WASHING:
+                        driveCar(1, 7);
+                        driveCar(7, 3);
                         servicePoints[1].addQueue(customer);
                         customer.setLineWashTime(getClock().getClock());
                         break;
                     case DRYING:
+                        driveCar(1, 8);
+                        driveCar(8, 5);
                         servicePoints[1].addQueue(customer);
                         customer.setLineDryingTime(getClock().getClock());
                         break;
                     case SHOPPING:
+                        driveCar(1, 8);
+                        driveCar(8, 4);
                         servicePoints[2].addQueue(customer);
                         customer.setLineShopTime(getClock().getClock());
                         break;
                     case PAYING:
+                        //driveCar(points[1][0], points[1][1], points[6][0], points[6][1]);
                         servicePoints[3].addQueue(customer);
                         customer.setLineCashTime(getClock().getClock());
                         break;
@@ -238,21 +276,30 @@ public class MyEngine extends Engine {
             // ServicePoint events
             case REFUELLING:
                 doService(EventType.REFUELLING, 2);
+                driveCar(2, 7);
+                driveCar(7, 1);
                 break;
 
             case WASHING:
                 doService(EventType.WASHING, 1);
+                driveCar(3, 7);
+                driveCar(7, 1);
                 break;
 
             case SHOPPING:
+                driveCar(4, 8);
+                driveCar(8, 1);
                 doService(EventType.SHOPPING, 2);
                 break;
 
             case PAYING:
+                driveCar(1, 6);
                 doService(EventType.PAYING, -1);
                 break;
 
             case DRYING:
+                driveCar(5, 8);
+                driveCar(8, 1);
                 doService(EventType.DRYING, 2);
                 break;
         }
@@ -320,6 +367,10 @@ public class MyEngine extends Engine {
 
     // Getter and setters
     // ----------------------------------------------------------------------
+    public BlockingQueue<Car> getCarQueue() {
+        return carQueue;
+    }
+
     public ArrayList<Customer> getCustomers() {
         return customerResults;
     }
@@ -411,5 +462,14 @@ public class MyEngine extends Engine {
     }
     public void setArrV(Double arrV) {
         this.arrV = arrV;
+    }
+
+    public Long getDelay() {
+        long delayLong = delay.longValue();
+        return delayLong;
+    }
+
+    public void setDelay(Long delay) {
+        this.delay = delay.doubleValue();
     }
 }

@@ -3,8 +3,10 @@ package controller;
 import framework.Trace;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.control.*;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import model.*;
 /**
  * Controller class for the simulator. Manages the UI components and the simulation engine.
@@ -60,40 +62,40 @@ public class SimulatorController {
 
     @FXML
     private Spinner<Double> arriveMain;
-    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 8);
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 8);
     @FXML
     private Spinner<Double> arriveVariance;
-    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 1);
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 1);
     @FXML
     private Spinner<Double> refuelMain;
-    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
     @FXML
     private Spinner<Double> refuelVariance;
-    private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> washMain;
-    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
     @FXML
     private Spinner<Double> washVariance;
-    private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
-    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
     @FXML
     private Spinner<Double> shoppingVariance;
-    private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
-    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
     @FXML
     private Spinner<Double> dryingVariance;
-    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> payingMain;
-    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 50, 20);
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
     @FXML
     private Spinner<Double> payingVariance;
-    private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 5);
+    private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
 
     //
     @FXML
@@ -110,6 +112,11 @@ public class SimulatorController {
 
     @FXML
     private TextField simulationTime;
+
+    @FXML
+    private Spinner<Double> delay;
+    private final SpinnerValueFactory<Double> delayDefault = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 20, 1);
+
     /**
      * Initializes the controller. Sets up the spinners, engine, and UI components.
      */
@@ -128,7 +135,8 @@ public class SimulatorController {
                 dryingMain.getValue(),
                 dryingVariance.getValue(),
                 arriveMain.getValue(),
-                arriveVariance.getValue()
+                arriveVariance.getValue(),
+                delay.getValue()
         );
         myEngine.getClock().setClock(0);
 
@@ -164,6 +172,9 @@ public class SimulatorController {
         runningLabel.setText("Running...");
         setFormDisable(true);
 
+        GraphicsContext gc = mainCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+
         Thread thread = new Thread(() -> {
 
             System.out.println("startSimulationButtonClicked() called");
@@ -182,6 +193,28 @@ public class SimulatorController {
 
         thread.start();
 
+        Thread carThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Car car = myEngine.getCarQueue().take();
+                    while (car.getMoving()) {
+                        car.move();
+                        Platform.runLater(() -> drawCar(gc, car));
+                        Thread.sleep(myEngine.getDelay());
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        carThread.start();
+
+    }
+
+    public void drawCar(GraphicsContext gc, Car car) {
+        gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+        Image carImage = new Image(car.getIcon());
+        gc.drawImage(carImage, car.getX(), car.getY(), car.getWidth(), car.getHeight());
     }
     /**
      * Handles the pause simulation button click event. Pauses the simulation.
@@ -216,7 +249,7 @@ public class SimulatorController {
         myEngine.initialize();
         while (myEngine.simulate()) {
 
-            Thread.sleep(1);
+            Thread.sleep(myEngine.getDelay()*20);
 
             System.out.println("This time is " + myEngine.getClock().getClock());
 
@@ -281,11 +314,12 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance
+            payingVariance, dryingMain, dryingVariance, delay
         };
         SpinnerValueFactory<Double>[] factorySpinners = new SpinnerValueFactory[] {
             arriveMF, arriveVF, refuelMF, refuelVF, washMF, washVF,
-            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF
+            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF,
+            delayDefault
         };
 
         for (int i = 0; i < spinners.length; i++) {
@@ -301,7 +335,7 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance
+            payingVariance, dryingMain, dryingVariance, delay
         };
 
         for (Spinner spinner : spinners) {

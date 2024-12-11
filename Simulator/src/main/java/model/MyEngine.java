@@ -163,6 +163,26 @@ public class MyEngine extends Engine {
     public void doService(EventType eventType, int routerIndex) {
         int index = eventType.ordinal();
         Customer customer = servicePoints[index].removeQueue();
+
+        switch (eventType){
+            case REFUELLING:
+                customer.setExitRefuelTime(getClock().getClock());
+                break;
+            case WASHING:
+                customer.setExitWashingTime(getClock().getClock());
+                break;
+            case SHOPPING:
+                customer.setExitShopTime(getClock().getClock());
+                break;
+            case PAYING:
+                customer.setExitCashTime(getClock().getClock());
+                break;
+            case DRYING:
+                customer.setExitDryingTime(getClock().getClock());
+                getCustomers().add(customer);
+                break;
+        }
+
         try {
             customer.finishService(eventType);
         } catch (InterruptedException e) {
@@ -214,6 +234,8 @@ public class MyEngine extends Engine {
 
                 arrivedCount++;
                 routers[0].addQueue(customer);
+                customer.setArriveTime(getClock().getClock());
+
                 if (simulate()) {
                     arrivalProcess.generateNextEvent();
                     driveCar(0, 1);

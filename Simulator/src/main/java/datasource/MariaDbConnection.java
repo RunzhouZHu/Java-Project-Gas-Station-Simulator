@@ -18,11 +18,8 @@ public class MariaDbConnection {
                 System.out.println("Connection failed.");
                 e.printStackTrace();
             }
-            return conn;
         }
-        else {
-            return conn;
-        }
+        return conn;
     }
 
     public static void terminate() {

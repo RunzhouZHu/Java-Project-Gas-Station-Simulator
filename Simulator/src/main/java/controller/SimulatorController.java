@@ -153,7 +153,9 @@ public class SimulatorController {
 
         // Set Time
         updateUI();
-        simulationTime.setText("1000");
+        if (Double.parseDouble(simulationTime.getText()) <= 0) {
+            simulationTime.setText("1000");
+        }
     }
     /**
      * Handles the start simulation button click event. Starts or resumes the simulation.
@@ -248,7 +250,8 @@ public class SimulatorController {
      */
     private void runSimulation() throws InterruptedException {
         myEngine.initialize();
-        while (myEngine.simulate()) {
+        while (!myEngine.simulateDone()) {
+        //while (true) {
 
             Thread.sleep(myEngine.getDelay()*20);
 

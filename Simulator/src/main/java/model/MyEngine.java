@@ -202,8 +202,10 @@ public class MyEngine extends Engine {
                 System.out.println("!!!!!New customer arrives: Customer" + customer.getId() + ", want service " + customer.getEventTypesToVisit());
 
                 routers[0].addQueue(customer);
-                arrivalProcess.generateNextEvent();
-                driveCar(0, 1);
+                if (simulate()) {
+                    arrivalProcess.generateNextEvent();
+                    driveCar(0, 1);
+                }
                 break;
 
             // Router events, the 'splits' should be at here
@@ -320,6 +322,12 @@ public class MyEngine extends Engine {
                 }
             }
         }
+    }
+
+    public boolean simulateDone() {
+        return !(simulate() || servicePoints[0].isOnQueue() ||
+        servicePoints[1].isOnQueue() || servicePoints[2].isOnQueue() ||
+        servicePoints[3].isOnQueue() || servicePoints[4].isOnQueue());
     }
 
     /**

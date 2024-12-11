@@ -41,6 +41,10 @@ public class EventList {
      * @return the time of the next event
      */
     public double getNextEventTime() {
-        return eventlist.peek().getTime();
+        Event e = eventlist.peek();
+        if (e == null) {
+            return 0;
+        }
+        return e.getTime();
     }
 }

@@ -53,7 +53,7 @@
                         </Label>
                      </graphic>
                   </Label>
-                  <Label fx:id="refuellingCustomerServed" layoutX="130.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0" textFill="WHITE">
+                  <Label fx:id="refuellingCustomerServed" layoutX="130.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
                         <Label prefHeight="30.0" prefWidth="70.0" text="Served: " textFill="WHITE">
                            <font>
@@ -82,7 +82,7 @@
                         </Label>
                      </graphic>
                   </Label>
-                  <Label fx:id="shoppingCustomerServed" layoutX="395.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" text="0" textFill="WHITE">
+                  <Label fx:id="shoppingCustomerServed" layoutX="395.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
                         <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="70.0" text="Served:" textFill="WHITE">
                            <font>
@@ -111,7 +111,7 @@
                         </Label>
                      </graphic>
                   </Label>
-                  <Label fx:id="washingCustomerServed" layoutX="130.0" layoutY="550.0" prefHeight="30.0" prefWidth="100.0" text="0" textFill="WHITE">
+                  <Label fx:id="washingCustomerServed" layoutX="130.0" layoutY="550.0" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
                         <Label prefHeight="30.0" prefWidth="70.0" text="Served:" textFill="WHITE">
                            <font>
@@ -140,7 +140,7 @@
                         </Label>
                      </graphic>
                   </Label>
-                  <Label fx:id="dryingCustomerServed" layoutX="390.0" layoutY="550.0" prefHeight="30.0" prefWidth="100.0" text="0" textFill="WHITE">
+                  <Label fx:id="dryingCustomerServed" layoutX="390.0" layoutY="550.0" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
                         <Label prefHeight="30.0" prefWidth="70.0" text="Served:" textFill="WHITE">
                            <font>
@@ -169,9 +169,9 @@
                         </Label>
                      </graphic>
                   </Label>
-                  <Label fx:id="payingCustomerServed" layoutX="645.0" layoutY="240.0" prefHeight="30.0" prefWidth="100.0" text="0" textFill="WHITE">
+                  <Label fx:id="payingCustomerServed" layoutX="645.0" layoutY="240.0" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
-                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:" textFill="WHITE">
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -320,7 +320,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0">
+                  <TextField fx:id="simulationTime" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="70.0" text="0">
                      <font>
                         <Font size="14.0" />
                      </font>

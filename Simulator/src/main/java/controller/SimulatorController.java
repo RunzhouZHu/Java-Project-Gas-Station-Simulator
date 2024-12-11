@@ -160,6 +160,7 @@ public class SimulatorController {
      */
     @FXML
     private void startSimulationButtonClicked() {
+        initialize();
 
         pauseSimulationButton.setDisable(false);
         startSimulationButton.setDisable(true);

@@ -18,7 +18,8 @@ public class Simulator {
                 20.0,
                 5.0,
                 5.0,
-                5.0
+                5.0,
+                1.0
         );
         m.setSimulationTime(1000);
         m.run();

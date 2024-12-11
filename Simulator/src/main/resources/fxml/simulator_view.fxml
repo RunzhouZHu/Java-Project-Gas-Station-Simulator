@@ -171,7 +171,7 @@
                   </Label>
                   <Label fx:id="payingCustomerServed" layoutX="645.0" layoutY="240.0" prefHeight="30.0" prefWidth="150.0" text="0" textFill="WHITE">
                      <graphic>
-                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:">
+                        <Label prefHeight="30.0" prefWidth="70.0" text="Served:" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -201,21 +201,6 @@
                </font>
                <graphic>
                   <Label prefHeight="24.0" prefWidth="200.0" text="Arrived Customers: ">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-               </graphic>
-               <VBox.margin>
-                  <Insets bottom="8.0" top="8.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="exitCustomer" prefWidth="300.0" text="0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <graphic>
-                  <Label prefWidth="200.0" text="Exit Customers: ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

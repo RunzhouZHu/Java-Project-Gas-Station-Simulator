@@ -40,6 +40,7 @@ public class CustomerDao {
                 stmt.setDouble(17, customer.getExitCashTime());
                 stmt.executeUpdate();
             }
+            System.out.println("!!!!!!!!Customers persisted");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

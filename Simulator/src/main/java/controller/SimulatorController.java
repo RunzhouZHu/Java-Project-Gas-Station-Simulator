@@ -8,6 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import model.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 /**
  * Controller class for the simulator. Manages the UI components and the simulation engine.
  */
@@ -110,9 +113,13 @@ public class SimulatorController {
     @FXML
     private TextField simulationTime;
 
+    //@FXML
+    //private Spinner<Double> delay;
+    //private final SpinnerValueFactory<Double> delayDefault = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 20, 1);
+
     @FXML
-    private Spinner<Double> delay;
-    private final SpinnerValueFactory<Double> delayDefault = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 20, 1);
+    private Slider delay;
+
 
     /**
      * Initializes the controller. Sets up the spinners, engine, and UI components.
@@ -159,16 +166,24 @@ public class SimulatorController {
      */
     @FXML
     private void startSimulationButtonClicked() {
-        initialize();
+        delay.valueProperty().addListener((observable, oldValue, newValue) -> {
+            //label.setText("Current value: " + newValue.intValue());
+            myEngine.setDelay(newValue.intValue());
+        });
 
-        pauseSimulationButton.setDisable(false);
-        startSimulationButton.setDisable(true);
 
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
             // disable UI
+            myEngine.setDelay(delay.getValue());
             reloadButton.setDisable(true);
+        } else {
+            initialize();
         }
+
+        pauseSimulationButton.setDisable(false);
+        startSimulationButton.setDisable(true);
+
         runningLabel.setText("Running...");
         setFormDisable(true);
 
@@ -314,12 +329,11 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance, delay
+            payingVariance, dryingMain, dryingVariance//, delay
         };
         SpinnerValueFactory<Double>[] factorySpinners = new SpinnerValueFactory[] {
             arriveMF, arriveVF, refuelMF, refuelVF, washMF, washVF,
-            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF,
-            delayDefault
+            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF
         };
 
         for (int i = 0; i < spinners.length; i++) {
@@ -335,7 +349,7 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance, delay
+            payingVariance, dryingMain, dryingVariance//, delay
         };
 
         for (Spinner spinner : spinners) {

@@ -65,37 +65,37 @@ public class SimulatorController {
 
     @FXML
     private Spinner<Double> arriveMain;
-    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 8);
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 7);
     @FXML
     private Spinner<Double> arriveVariance;
-    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 1);
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> refuelMain;
-    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> refuelVariance;
     private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> washMain;
-    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 40, 40);
     @FXML
     private Spinner<Double> washVariance;
     private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
-    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> shoppingVariance;
     private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
-    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 40, 40);
     @FXML
     private Spinner<Double> dryingVariance;
-    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
+    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 1);
     @FXML
     private Spinner<Double> payingMain;
-    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);

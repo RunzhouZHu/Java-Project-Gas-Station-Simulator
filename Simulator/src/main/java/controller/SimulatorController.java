@@ -8,6 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import model.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 /**
  * Controller class for the simulator. Manages the UI components and the simulation engine.
  */
@@ -62,37 +65,37 @@ public class SimulatorController {
 
     @FXML
     private Spinner<Double> arriveMain;
-    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 8);
+    private final SpinnerValueFactory<Double> arriveMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 7);
     @FXML
     private Spinner<Double> arriveVariance;
-    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 1);
+    private final SpinnerValueFactory<Double> arriveVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> refuelMain;
-    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> refuelMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> refuelVariance;
     private final SpinnerValueFactory<Double> refuelVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> washMain;
-    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> washMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 40, 40);
     @FXML
     private Spinner<Double> washVariance;
     private final SpinnerValueFactory<Double> washVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> shoppingMain;
-    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> shoppingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> shoppingVariance;
     private final SpinnerValueFactory<Double> shoppingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
     @FXML
     private Spinner<Double> dryingMain;
-    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> dryingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 40, 40);
     @FXML
     private Spinner<Double> dryingVariance;
-    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
+    private final SpinnerValueFactory<Double> dryingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 1);
     @FXML
     private Spinner<Double> payingMain;
-    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 20);
+    private final SpinnerValueFactory<Double> payingMF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 50, 50);
     @FXML
     private Spinner<Double> payingVariance;
     private final SpinnerValueFactory<Double> payingVF = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 10, 5);
@@ -110,9 +113,13 @@ public class SimulatorController {
     @FXML
     private TextField simulationTime;
 
+    //@FXML
+    //private Spinner<Double> delay;
+    //private final SpinnerValueFactory<Double> delayDefault = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 20, 1);
+
     @FXML
-    private Spinner<Double> delay;
-    private final SpinnerValueFactory<Double> delayDefault = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 20, 1);
+    private Slider delay;
+
 
     /**
      * Initializes the controller. Sets up the spinners, engine, and UI components.
@@ -159,16 +166,24 @@ public class SimulatorController {
      */
     @FXML
     private void startSimulationButtonClicked() {
-        initialize();
+        delay.valueProperty().addListener((observable, oldValue, newValue) -> {
+            //label.setText("Current value: " + newValue.intValue());
+            myEngine.setDelay(newValue.intValue());
+        });
 
-        pauseSimulationButton.setDisable(false);
-        startSimulationButton.setDisable(true);
 
         if (myEngine.getPauseStatus()) {
             myEngine.resume();
             // disable UI
+            myEngine.setDelay(delay.getValue());
             reloadButton.setDisable(true);
+        } else {
+            initialize();
         }
+
+        pauseSimulationButton.setDisable(false);
+        startSimulationButton.setDisable(true);
+
         runningLabel.setText("Running...");
         setFormDisable(true);
 
@@ -314,12 +329,11 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance, delay
+            payingVariance, dryingMain, dryingVariance//, delay
         };
         SpinnerValueFactory<Double>[] factorySpinners = new SpinnerValueFactory[] {
             arriveMF, arriveVF, refuelMF, refuelVF, washMF, washVF,
-            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF,
-            delayDefault
+            shoppingMF, shoppingVF, payingMF, payingVF, dryingMF, dryingVF
         };
 
         for (int i = 0; i < spinners.length; i++) {
@@ -335,7 +349,7 @@ public class SimulatorController {
         Spinner[] spinners = new Spinner[] {
             arriveMain, arriveVariance, refuelMain, refuelVariance, washMain,
             washVariance, shoppingMain, shoppingVariance, payingMain,
-            payingVariance, dryingMain, dryingVariance, delay
+            payingVariance, dryingMain, dryingVariance//, delay
         };
 
         for (Spinner spinner : spinners) {
@@ -345,5 +359,128 @@ public class SimulatorController {
         simulationTime.setDisable(disable);
 
 
+    }
+    public Button getStartSimulationButton() {
+        return startSimulationButton;
+    }
+
+    public Button getPauseSimulationButton() {
+        return pauseSimulationButton;
+    }
+
+    public Button getReloadButton() {
+        return reloadButton;
+    }
+
+    public Label getArrivedCustomer() {
+        return arrivedCustomer;
+    }
+
+    public Label getRefuellingCustomer() {
+        return refuellingCustomer;
+    }
+
+    public Label getWashingCustomer() {
+        return washingCustomer;
+    }
+
+    public Label getDryingCustomer() {
+        return dryingCustomer;
+    }
+
+    public Label getPayingCustomer() {
+        return payingCustomer;
+    }
+
+    public Label getShoppingCustomer() {
+        return shoppingCustomer;
+    }
+
+    public Label getRefuellingCustomerServed() {
+        return refuellingCustomerServed;
+    }
+
+    public Label getWashingCustomerServed() {
+        return washingCustomerServed;
+    }
+
+    public Label getDryingCustomerServed() {
+        return dryingCustomerServed;
+    }
+
+    public Label getPayingCustomerServed() {
+        return payingCustomerServed;
+    }
+
+    public Label getShoppingCustomerServed() {
+        return shoppingCustomerServed;
+    }
+
+    public Spinner<Double> getArriveMain() {
+        return arriveMain;
+    }
+
+    public Spinner<Double> getArriveVariance() {
+        return arriveVariance;
+    }
+
+    public Spinner<Double> getRefuelMain() {
+        return refuelMain;
+    }
+
+    public Spinner<Double> getRefuelVariance() {
+        return refuelVariance;
+    }
+
+    public Spinner<Double> getWashMain() {
+        return washMain;
+    }
+
+    public Spinner<Double> getWashVariance() {
+        return washVariance;
+    }
+
+    public Spinner<Double> getShoppingMain() {
+        return shoppingMain;
+    }
+
+    public Spinner<Double> getShoppingVariance() {
+        return shoppingVariance;
+    }
+
+    public Spinner<Double> getDryingMain() {
+        return dryingMain;
+    }
+
+    public Spinner<Double> getDryingVariance() {
+        return dryingVariance;
+    }
+
+    public Spinner<Double> getPayingMain() {
+        return payingMain;
+    }
+
+    public Spinner<Double> getPayingVariance() {
+        return payingVariance;
+    }
+
+    public Canvas getMainCanvas() {
+        return mainCanvas;
+    }
+
+    public Label getRunningLabel() {
+        return runningLabel;
+    }
+
+    public Label getCurrentTime() {
+        return currentTime;
+    }
+
+    public TextField getSimulationTime() {
+        return simulationTime;
+    }
+
+    public Slider getDelay() {
+        return delay;
     }
 }

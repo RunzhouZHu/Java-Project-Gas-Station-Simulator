@@ -361,7 +361,8 @@ public class MyEngine extends Engine {
     public boolean simulateDone() {
         return !(simulate() || servicePoints[0].isOnQueue() ||
         servicePoints[1].isOnQueue() || servicePoints[2].isOnQueue() ||
-        servicePoints[3].isOnQueue() || servicePoints[4].isOnQueue());
+        servicePoints[3].isOnQueue() || servicePoints[4].isOnQueue()) ||
+        getPauseStatus();
     }
 
     /**
@@ -511,7 +512,7 @@ public class MyEngine extends Engine {
         return delayLong;
     }
 
-    public void setDelay(Long delay) {
-        this.delay = delay.doubleValue();
+    public void setDelay(double delay) {
+        this.delay = delay;
     }
 }

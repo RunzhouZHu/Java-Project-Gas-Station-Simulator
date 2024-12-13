@@ -42,9 +42,9 @@ public class Car {
         this.moving = false;
         this.width = 26;
         this.height = 53;
-        this.icon = "images/red.png";
-        //Random random = new Random();
-        //this.icon = icons[random.nextInt(icons.length)];
+        //this.icon = "images/red.png";
+        Random random = new Random();
+        this.icon = icons[random.nextInt(icons.length)];
         this.direction = "right";
     }
 

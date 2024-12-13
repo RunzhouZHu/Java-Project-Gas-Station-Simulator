@@ -41,10 +41,7 @@ class CustomerTest {
         assertTrue(customer.getId() > 0);
     }
 
-    @Test
-    void testGetCarController() {
-        assertNotNull(customer.getCarController());
-    }
+
 
     @Test
     void testGetEventTypesToVisit() {

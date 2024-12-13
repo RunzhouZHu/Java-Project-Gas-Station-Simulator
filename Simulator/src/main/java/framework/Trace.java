@@ -30,4 +30,8 @@ public class Trace {
             System.out.println(text);
         }
     }
+
+    public static Level getTraceLevel() {
+        return traceLevel;
+    }
 }

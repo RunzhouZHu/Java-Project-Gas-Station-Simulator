@@ -360,4 +360,127 @@ public class SimulatorController {
 
 
     }
+    public Button getStartSimulationButton() {
+        return startSimulationButton;
+    }
+
+    public Button getPauseSimulationButton() {
+        return pauseSimulationButton;
+    }
+
+    public Button getReloadButton() {
+        return reloadButton;
+    }
+
+    public Label getArrivedCustomer() {
+        return arrivedCustomer;
+    }
+
+    public Label getRefuellingCustomer() {
+        return refuellingCustomer;
+    }
+
+    public Label getWashingCustomer() {
+        return washingCustomer;
+    }
+
+    public Label getDryingCustomer() {
+        return dryingCustomer;
+    }
+
+    public Label getPayingCustomer() {
+        return payingCustomer;
+    }
+
+    public Label getShoppingCustomer() {
+        return shoppingCustomer;
+    }
+
+    public Label getRefuellingCustomerServed() {
+        return refuellingCustomerServed;
+    }
+
+    public Label getWashingCustomerServed() {
+        return washingCustomerServed;
+    }
+
+    public Label getDryingCustomerServed() {
+        return dryingCustomerServed;
+    }
+
+    public Label getPayingCustomerServed() {
+        return payingCustomerServed;
+    }
+
+    public Label getShoppingCustomerServed() {
+        return shoppingCustomerServed;
+    }
+
+    public Spinner<Double> getArriveMain() {
+        return arriveMain;
+    }
+
+    public Spinner<Double> getArriveVariance() {
+        return arriveVariance;
+    }
+
+    public Spinner<Double> getRefuelMain() {
+        return refuelMain;
+    }
+
+    public Spinner<Double> getRefuelVariance() {
+        return refuelVariance;
+    }
+
+    public Spinner<Double> getWashMain() {
+        return washMain;
+    }
+
+    public Spinner<Double> getWashVariance() {
+        return washVariance;
+    }
+
+    public Spinner<Double> getShoppingMain() {
+        return shoppingMain;
+    }
+
+    public Spinner<Double> getShoppingVariance() {
+        return shoppingVariance;
+    }
+
+    public Spinner<Double> getDryingMain() {
+        return dryingMain;
+    }
+
+    public Spinner<Double> getDryingVariance() {
+        return dryingVariance;
+    }
+
+    public Spinner<Double> getPayingMain() {
+        return payingMain;
+    }
+
+    public Spinner<Double> getPayingVariance() {
+        return payingVariance;
+    }
+
+    public Canvas getMainCanvas() {
+        return mainCanvas;
+    }
+
+    public Label getRunningLabel() {
+        return runningLabel;
+    }
+
+    public Label getCurrentTime() {
+        return currentTime;
+    }
+
+    public TextField getSimulationTime() {
+        return simulationTime;
+    }
+
+    public Slider getDelay() {
+        return delay;
+    }
 }

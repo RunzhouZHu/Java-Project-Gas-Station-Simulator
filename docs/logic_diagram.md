@@ -5,12 +5,11 @@ graph TD
     C --> D{EventList Empty?}
     D -->|No| E[Get Next Event]
     E -->|Advance Clock| F[Set Clock to Event Time]
-    F -->|Execute Events| G[Process Events at Current Time]
-    G -->|Run B-Phase| H[Execute Event from EventList]
-    G -->|Run C-Phase| I[Conditionally Trigger Additional Events]
-    H -->|Remove Processed Event| E
-    I -->|Schedule New Events| C
-    D -->|Yes| J[End Simulation]
-    J --> K[Generate Results]
+    F -->|Process Events| G[Run B-Phase: Execute Events]
+    G -->|Process New State| H[Run C-Phase: Trigger Additional Events]
+    H -->|Add New Events| C
+    D -->|Yes| I[End Simulation]
+    I --> J[Generate Results]
+
 
 ```
